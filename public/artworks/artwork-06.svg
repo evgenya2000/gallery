@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480" role="img"><rect width="480" height="480" fill="#d9d0bd"/><g>
+  <rect width="480" height="480" fill="#d9d0bd"/>
+  <rect x="34" y="34" width="412" height="412" fill="none" stroke="#d96a4d" stroke-width="2" opacity=".45"/>
+  <path d="M0 295H480" stroke="#d96a4d" stroke-width="2" opacity=".4"/>
+  <circle cx="178" cy="201" r="87" fill="#30534e"/>
+  <path d="M205 76L420 383H138Z" fill="#292a29" opacity=".88"/>
+  <path d="M52 390H428M52 405H278" stroke="#d96a4d" stroke-width="5" opacity=".72"/>
+  <circle cx="260" cy="229" r="26" fill="#d9d0bd"/>
+</g><rect width="480" height="480" fill="url(#paper-grain)" opacity=".09"/><defs><filter id="paper-grain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter></defs></svg>
