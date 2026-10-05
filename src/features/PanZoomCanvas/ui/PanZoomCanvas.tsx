@@ -14,6 +14,9 @@ interface ViewportSize {
 const fitScale = ({ width, height }: ViewportSize) =>
   Math.max(MIN_SCALE, Math.min(1, width / CANVAS_WIDTH, height / CANVAS_HEIGHT));
 
+const initialScale = ({ width, height }: ViewportSize) =>
+  Math.min(3, fitScale({ width, height }) * 1.15);
+
 const CanvasViewport = styled.div`
   width: 100%;
   height: 100%;
@@ -88,13 +91,13 @@ export function PanZoomCanvas({ children }: PropsWithChildren) {
           onInit={(instance) => {
             transformRef.current = instance;
           }}
-          initialScale={fitScale(viewportSize)}
+          initialScale={initialScale(viewportSize)}
           minScale={MIN_SCALE}
           maxScale={3}
           centerOnInit
           limitToBounds
           panning={{ velocityDisabled: true }}
-          wheel={{ step: 0.12 }}
+          wheel={{ step: 0.0008 }}
           pinch={{ disabled: true }}
           doubleClick={{ disabled: true }}
         >

@@ -11,7 +11,7 @@ export const cards: CardData[] = [
     description: 'A small phrase that gives a noisy day room to breathe.',
     image: artwork(1),
     presentation: 'framed',
-    position: { x: 80, y: 100, width: 132, height: 132, rotation: 0 },
+    position: { x: -13, y: 32, width: 152, height: 152, rotation: 0 },
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ export const cards: CardData[] = [
     description: 'Observations gathered slowly, with attention to what usually passes by.',
     image: artwork(2),
     presentation: 'image',
-    position: { x: 260, y: 45, width: 166, height: 126, rotation: -2.5 },
+    position: { x: 194, y: -31, width: 191, height: 145, rotation: -2.5 },
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ export const cards: CardData[] = [
     description: 'A reminder that not every detail needs to be sharp to be remembered.',
     image: artwork(3),
     presentation: 'framed',
-    position: { x: 505, y: 132, width: 120, height: 120, rotation: 1.8 },
+    position: { x: 476, y: 69, width: 138, height: 138, rotation: 1.8 },
   },
   {
     id: 4,
@@ -38,7 +38,7 @@ export const cards: CardData[] = [
     description: 'A line between the familiar room and the wider world outside.',
     image: artwork(4),
     presentation: 'image',
-    position: { x: 735, y: 75, width: 118, height: 155, rotation: 2.2 },
+    position: { x: 740, y: 4, width: 136, height: 178, rotation: 2.2 },
   },
   {
     id: 5,
@@ -47,7 +47,7 @@ export const cards: CardData[] = [
     description: 'A note on presence: simple, quiet, and enough for now.',
     image: artwork(5),
     presentation: 'framed',
-    position: { x: 985, y: 130, width: 146, height: 146, rotation: -1.5 },
+    position: { x: 1028, y: 67, width: 168, height: 168, rotation: -1.5 },
   },
   {
     id: 6,
@@ -56,7 +56,7 @@ export const cards: CardData[] = [
     description: 'The last cool light resting on rooftops just before evening settles in.',
     image: artwork(6),
     presentation: 'image',
-    position: { x: 1190, y: 72, width: 150, height: 112, rotation: 1.1 },
+    position: { x: 1264, y: 0, width: 172, height: 129, rotation: 1.1 },
   },
   {
     id: 7,
@@ -65,7 +65,7 @@ export const cards: CardData[] = [
     description: 'Reflections turn an ordinary street into a second, brighter landscape.',
     image: artwork(7),
     presentation: 'framed',
-    position: { x: 110, y: 325, width: 138, height: 138, rotation: -1.3 },
+    position: { x: 22, y: 291, width: 159, height: 159, rotation: -1.3 },
   },
   {
     id: 8,
@@ -74,7 +74,7 @@ export const cards: CardData[] = [
     description: 'An abstract study of the marks water leaves behind as it recedes.',
     image: artwork(8),
     presentation: 'image',
-    position: { x: 340, y: 300, width: 123, height: 166, rotation: 1.4 },
+    position: { x: 286, y: 262, width: 141, height: 191, rotation: 1.4 },
   },
   {
     id: 9,
@@ -83,7 +83,7 @@ export const cards: CardData[] = [
     description: 'Layered tones hold the feeling of a faraway place in late sunlight.',
     image: artwork(9),
     presentation: 'framed',
-    position: { x: 535, y: 330, width: 118, height: 118, rotation: 0.8 },
+    position: { x: 510, y: 297, width: 136, height: 136, rotation: 0.8 },
   },
   {
     id: 10,
@@ -92,7 +92,7 @@ export const cards: CardData[] = [
     description: 'A composition about the little worlds that form around everyday rituals.',
     image: artwork(10),
     presentation: 'image',
-    position: { x: 745, y: 282, width: 182, height: 136, rotation: -1.8 },
+    position: { x: 752, y: 242, width: 209, height: 156, rotation: -1.8 },
   },
   {
     id: 11,
@@ -101,7 +101,7 @@ export const cards: CardData[] = [
     description: 'The first loose marks that make a new idea feel possible.',
     image: artwork(11),
     presentation: 'framed',
-    position: { x: 970, y: 350, width: 128, height: 128, rotation: 1.7 },
+    position: { x: 1010, y: 320, width: 147, height: 147, rotation: 1.7 },
   },
   {
     id: 12,
@@ -110,7 +110,7 @@ export const cards: CardData[] = [
     description: 'A quick outline traced from a shape noticed in the landscape.',
     image: artwork(12),
     presentation: 'image',
-    position: { x: 1165, y: 302, width: 144, height: 166, rotation: 1.2 },
+    position: { x: 1235, y: 265, width: 166, height: 191, rotation: 1.2 },
   },
   {
     id: 13,
@@ -119,7 +119,7 @@ export const cards: CardData[] = [
     description: 'One continuous line follows a path through an imagined hillside.',
     image: artwork(13),
     presentation: 'image',
-    position: { x: 60, y: 575, width: 170, height: 130, rotation: -2.1 },
+    position: { x: -36, y: 579, width: 195, height: 150, rotation: -2.1 },
   },
   {
     id: 14,
@@ -128,7 +128,7 @@ export const cards: CardData[] = [
     description: 'A collection of botanical gestures, left open and unfinished.',
     image: artwork(14),
     presentation: 'framed',
-    position: { x: 300, y: 600, width: 132, height: 132, rotation: 1.1 },
+    position: { x: 240, y: 608, width: 152, height: 152, rotation: 0.5 },
   },
   {
     id: 15,
@@ -137,7 +137,7 @@ export const cards: CardData[] = [
     description: 'A wandering study that connects fragments without forcing an answer.',
     image: artwork(15),
     presentation: 'image',
-    position: { x: 480, y: 555, width: 122, height: 164, rotation: -1.4 },
+    position: { x: 447, y: 556, width: 140, height: 189, rotation: -1.4 },
   },
   {
     id: 16,
@@ -146,7 +146,7 @@ export const cards: CardData[] = [
     description: 'A simple mark for finding direction when the map is incomplete.',
     image: artwork(16),
     presentation: 'framed',
-    position: { x: 745, y: 630, width: 116, height: 116, rotation: 1.6 },
+    position: { x: 752, y: 642, width: 133, height: 133, rotation: 1.6 },
   },
   {
     id: 17,
@@ -155,7 +155,7 @@ export const cards: CardData[] = [
     description: 'Two forms meet at the center, making a place they can both share.',
     image: artwork(17),
     presentation: 'image',
-    position: { x: 950, y: 570, width: 180, height: 138, rotation: 1.5 },
+    position: { x: 988, y: 573, width: 207, height: 159, rotation: 1.5 },
   },
   {
     id: 18,
@@ -165,7 +165,7 @@ export const cards: CardData[] = [
     image: artwork(18),
     externalUrl: 'https://t.me/AnnaArtCreator',
     presentation: 'framed',
-    position: { x: 630, y: 480, width: 140, height: 140, rotation: 0 },
+    position: { x: 620, y: 470, width: 161, height: 161, rotation: 0 },
   },
   {
     id: 19,
@@ -174,7 +174,7 @@ export const cards: CardData[] = [
     description: 'A quiet emblem for the small rituals that shape a day.',
     image: artwork(19),
     presentation: 'framed',
-    position: { x: 260, y: 855, width: 124, height: 124, rotation: -1.8 },
+    position: { x: 194, y: 901, width: 143, height: 143, rotation: -1.8 },
   },
   {
     id: 20,
@@ -183,6 +183,6 @@ export const cards: CardData[] = [
     description: 'A sign of renewal drawn from the first green appearing after winter.',
     image: artwork(20),
     presentation: 'image',
-    position: { x: 900, y: 860, width: 176, height: 132, rotation: 1.3 },
+    position: { x: 930, y: 906, width: 202, height: 152, rotation: 1.3 },
   },
 ];
