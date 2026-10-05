@@ -6,8 +6,8 @@ import { CardModal } from '../../../features/CardModal';
 
 const Grid = styled(motion.div)`
   position: relative;
-  width: 1400px;
-  height: 1100px;
+  width: 1600px;
+  height: 1300px;
 
   @media (max-width: 1199px) {
     display: grid;

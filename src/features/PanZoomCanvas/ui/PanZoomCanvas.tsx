@@ -2,8 +2,8 @@ import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
 import { TransformComponent, TransformWrapper, type ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
 import styled from 'styled-components';
 
-const CANVAS_WIDTH = 1400;
-const CANVAS_HEIGHT = 1100;
+const CANVAS_WIDTH = 1600;
+const CANVAS_HEIGHT = 1300;
 const MIN_SCALE = 0.5;
 
 interface ViewportSize {

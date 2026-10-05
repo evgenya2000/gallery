@@ -34,8 +34,8 @@ const PageFrame = styled.div`
 
 const CanvasContent = styled.main`
   position: relative;
-  width: 1400px;
-  height: 1100px;
+  width: 1600px;
+  height: 1300px;
   overflow: hidden;
   background: radial-gradient(ellipse at 50% 0%, rgba(42, 157, 143, 0.08), transparent 36%);
 
