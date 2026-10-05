@@ -15,6 +15,7 @@ export interface CardData {
   category: CardCategory;
   description: string;
   image: string;
+  externalUrl?: string;
   presentation: CardPresentation;
   position: CardPosition;
 }

@@ -137,7 +137,7 @@ export const cards: CardData[] = [
     description: 'A wandering study that connects fragments without forcing an answer.',
     image: artwork(15),
     presentation: 'image',
-    position: { x: 525, y: 555, width: 122, height: 164, rotation: -1.4 },
+    position: { x: 480, y: 555, width: 122, height: 164, rotation: -1.4 },
   },
   {
     id: 16,
@@ -159,12 +159,13 @@ export const cards: CardData[] = [
   },
   {
     id: 18,
-    title: 'Open Circle',
+    title: 'Anna Art Creator',
     category: 'artwork',
-    description: 'An unclosed loop that leaves space for whatever comes next.',
+    description: 'Open the Anna Art Creator Telegram profile.',
     image: artwork(18),
+    externalUrl: 'https://t.me/AnnaArtCreator',
     presentation: 'framed',
-    position: { x: 1190, y: 630, width: 140, height: 140, rotation: -1.1 },
+    position: { x: 630, y: 480, width: 140, height: 140, rotation: 0 },
   },
   {
     id: 19,

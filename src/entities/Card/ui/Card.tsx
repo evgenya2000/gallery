@@ -6,6 +6,7 @@ interface CardProps {
   card: CardData;
   onSelect: (card: CardData) => void;
   onRevealComplete?: () => void;
+  isFeatured?: boolean;
 }
 
 const cardVariants: Variants = {
@@ -16,7 +17,7 @@ const cardVariants: Variants = {
   },
 };
 
-const CardButton = styled(motion.button)<{ $card: CardData; $category: CardCategory }>`
+const CardButton = styled(motion.button)<{ $card: CardData; $category: CardCategory; $featured: boolean }>`
   position: absolute;
   top: ${({ $card }) => `${$card.position.y}px`};
   left: ${({ $card }) => `${$card.position.x}px`};
@@ -46,15 +47,25 @@ const CardButton = styled(motion.button)<{ $card: CardData; $category: CardCateg
     height: auto;
     aspect-ratio: ${({ $card }) =>
       $card.presentation === 'framed' ? '1 / 1' : `${$card.position.width} / ${$card.position.height}`};
-    grid-column: ${({ $card }) =>
-      $card.presentation === 'image' && $card.position.width / $card.position.height > 1.25 ? 'span 2' : 'span 1'};
+    grid-column: ${({ $featured, $card }) =>
+      $featured
+        ? '1 / -1'
+        : $card.presentation === 'image' && $card.position.width / $card.position.height > 1.25
+          ? 'span 2'
+          : 'span 1'};
+    justify-self: ${({ $featured }) => ($featured ? 'center' : 'stretch')};
+    width: ${({ $featured }) => ($featured ? 'min(100%, 220px)' : '100%')};
     padding: ${({ $card }) => ($card.presentation === 'framed' ? '7px' : '0')};
     rotate: 0deg;
   }
 
   @media (max-width: 560px) {
-    grid-column: ${({ $card }) =>
-      $card.presentation === 'image' && $card.position.width / $card.position.height > 1.25 ? 'span 2' : 'span 1'};
+    grid-column: ${({ $featured, $card }) =>
+      $featured
+        ? '1 / -1'
+        : $card.presentation === 'image' && $card.position.width / $card.position.height > 1.25
+          ? 'span 2'
+          : 'span 1'};
     padding: ${({ $card }) => ($card.presentation === 'framed' ? '6px' : '0')};
   }
 
@@ -82,20 +93,28 @@ const CardButton = styled(motion.button)<{ $card: CardData; $category: CardCateg
   }
 `;
 
-export function Card({ card, onSelect, onRevealComplete }: CardProps) {
+export function Card({ card, onSelect, onRevealComplete, isFeatured = false }: CardProps) {
   return (
     <CardButton
       $card={card}
       $category={card.category}
+      $featured={isFeatured}
       type="button"
-      aria-label={`Open ${card.title}`}
+      aria-label={card.externalUrl ? 'Open Telegram profile in a new tab' : `Open ${card.title}`}
       variants={cardVariants}
       onAnimationComplete={(definition) => {
         if (definition === 'visible') onRevealComplete?.();
       }}
       whileHover={{ y: -7, scale: 1.045, transition: { duration: 0.24, ease: [0.4, 0, 0.2, 1] } }}
       whileTap={{ scale: 0.985, transition: { duration: 0.16, ease: [0.4, 0, 0.2, 1] } }}
-      onClick={() => onSelect(card)}
+      onClick={() => {
+        if (card.externalUrl) {
+          window.open(card.externalUrl, '_blank', 'noopener,noreferrer');
+          return;
+        }
+
+        onSelect(card);
+      }}
     >
       <img src={card.image} alt={card.title} draggable={false} />
     </CardButton>

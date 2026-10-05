@@ -35,6 +35,11 @@ const revealOrder = [12, 3, 18, 6, 14, 1, 9, 20, 5, 16, 2, 11, 7, 19, 4, 13, 8, 
 const cardsInRevealOrder = [...cards].sort(
   (first, second) => revealOrder.indexOf(first.id) - revealOrder.indexOf(second.id),
 );
+const featuredCardId = 18;
+const compactCardsInRevealOrder = [
+  ...cardsInRevealOrder.filter((card) => card.id === featuredCardId),
+  ...cardsInRevealOrder.filter((card) => card.id !== featuredCardId),
+];
 
 const gridVariants: Variants = {
   hidden: {},
@@ -65,16 +70,18 @@ export function InteractiveGrid({ onRevealComplete }: InteractiveGridProps) {
     return () => mediaQuery.removeEventListener('change', updateLayout);
   }, []);
 
+  const visibleOrder = isCompact ? compactCardsInRevealOrder : cardsInRevealOrder;
   const menuTriggerIndex = isCompact ? 3 : cardsInRevealOrder.length - 1;
 
   return (
     <>
       <Grid variants={gridVariants} initial="hidden" animate="visible" aria-label="Gallery cards">
-        {cardsInRevealOrder.map((card, index) => (
+        {visibleOrder.map((card, index) => (
           <Card
             key={card.id}
             card={card}
             onSelect={setSelectedCard}
+            isFeatured={card.id === featuredCardId}
             onRevealComplete={index === menuTriggerIndex ? onRevealComplete : undefined}
           />
         ))}
