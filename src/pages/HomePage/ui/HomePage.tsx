@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import { InteractiveGrid } from '../../../widgets/InteractiveGrid';
 import { PanZoomCanvas } from '../../../features/PanZoomCanvas';
@@ -16,7 +17,7 @@ const PageFrame = styled.div<{ $dimmed: boolean }>`
   width: 100%;
   height: 100%;
   --house-art-width: min(100dvh, 75vw);
-  --roof-anchor-x: 43vw; 
+  --roof-anchor-x: 43vw;
   --house-art-left: calc(var(--roof-anchor-x) - 12.07dvh);
   --roof-anchor-y: 39dvh;
   --face-anchor-x: calc(var(--house-art-left) + 23dvh);
@@ -37,7 +38,7 @@ const PageFrame = styled.div<{ $dimmed: boolean }>`
     opacity: ${({ $dimmed }) => ($dimmed ? 0.2 : 1)};
     transition: opacity 900ms ease;
     pointer-events: none;
-  } 
+  }
 
   @media (max-width: 1199px) {
     --header-height: 72px;
@@ -106,6 +107,12 @@ const CanvasContent = styled.main`
       display: none;
     }
   }
+`;
+
+const GridReveal = styled(motion.div)`
+  position: relative;
+  width: 100%;
+  height: 100%;
 `;
 
 const IntroLayer = styled.div<{ $isAbout: boolean; $clickable: boolean }>`
@@ -404,7 +411,7 @@ const IntroDescription = styled(motion.div)`
 
   @media (max-width: 375px) {
     font-size: 12px;
-    max-width: 100%;  
+    max-width: 100%;
     width: 275px;
   }
 `;
@@ -578,7 +585,7 @@ const PageHeading = styled(motion.header)`
     padding-right: 1.9vw;
     padding-left: 1.9vw;
   }
-  
+
   @media (min-width: 1200px) {
     padding-top: 38px;
     padding-right: 5.3vw;
@@ -605,8 +612,6 @@ const PageHeading = styled(motion.header)`
 const HeadingNav = styled.nav`
   display: flex;
   gap: 7.65vw;
-  /* display: flex;
-  gap: clamp(14px, 3vw, 46px); */
 
   @media (min-width: 1600px) {
     gap: clamp(80px, 7.5vw, 200px);
@@ -625,13 +630,13 @@ const HeadingNav = styled.nav`
   }
 `;
 
-const HeadingLink = styled.button`
+const HeadingLink = styled.button<{ $hidden?: boolean }>`
   padding: 0;
   border: 0;
   background: transparent;
   color: ${({ theme }) => theme.colors.text};
-  /* font-size: clamp(13px, 1.67vw, 24px); */
   cursor: pointer;
+  visibility: ${({ $hidden }) => ($hidden ? 'hidden' : 'visible')};
 
   @media (min-width: 1200px) and (max-width: 1727px) {
     font-size: 24px;
@@ -658,10 +663,24 @@ const HeadingLink = styled.button`
   }
 `;
 
+const SharpLinkLabel = styled(motion.span)`
+  position: fixed;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: ${({ theme }) => theme.colors.text};
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  text-align: right;
+  pointer-events: none;
+`;
+
 const Title = styled.h1`
   margin: 0;
   color: ${({ theme }) => theme.colors.text};
-  /* font-size: clamp(13px, 1.67vw, 24px); */
   font-weight: 400;
 
   span {
@@ -692,10 +711,22 @@ const Title = styled.h1`
 export function HomePage() {
   const [introStage, setIntroStage] = useState<'title' | 'about' | 'content'>('title');
   const [mainContentVisible, setMainContentVisible] = useState(false);
+  const [gridRevealed, setGridRevealed] = useState(false);
   const [activeInfo, setActiveInfo] = useState<InfoModalSection | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [descriptionOffset, setDescriptionOffset] = useState<number | null>(null);
+  const [sharpLink, setSharpLink] = useState<{
+    text: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    fontSize: string;
+  } | null>(null);
+
   const secondSpanRef = useRef<HTMLSpanElement>(null);
+  const guideLinkRef = useRef<HTMLButtonElement>(null);
+  const contactsLinkRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 768px)');
@@ -704,6 +735,18 @@ export function HomePage() {
     mq.addEventListener('change', update);
     return () => mq.removeEventListener('change', update);
   }, []);
+
+  // Карточки начинают появляться через 0.5 с после того,
+  // как mainContentVisible = true (то есть после старта
+  // анимации opacity у фона PageFrame::before).
+  useEffect(() => {
+    if (!mainContentVisible) {
+      setGridRevealed(false);
+      return undefined;
+    }
+    const timeout = window.setTimeout(() => setGridRevealed(true), 500);
+    return () => window.clearTimeout(timeout);
+  }, [mainContentVisible]);
 
   // Измеряем смещение буквы "Д" относительно SplashContent
   useLayoutEffect(() => {
@@ -715,22 +758,51 @@ export function HomePage() {
     if (!span) return;
 
     const updateOffset = () => {
-      // offsetLeft относительно offsetParent (IntroTitle),
-      // а IntroTitle находится на левом краю SplashContent,
-      // поэтому offsetLeft == смещение от левого края SplashContent.
       setDescriptionOffset(span.offsetLeft);
     };
 
     updateOffset();
 
     window.addEventListener('resize', updateOffset);
-    // Пересчёт после загрузки шрифтов
     if (document.fonts) {
       document.fonts.ready.then(updateOffset);
     }
 
     return () => window.removeEventListener('resize', updateOffset);
   }, [isMobile, introStage]);
+
+  // Синхронизируем позицию "острого" дубликата активной ссылки в хедере.
+  // На мобиле (< 768px) фича отключена — работает обычное блюр-затемнение.
+  useLayoutEffect(() => {
+    if (isMobile || !activeInfo) {
+      setSharpLink(null);
+      return;
+    }
+
+    const el = activeInfo === 'guide' ? guideLinkRef.current : contactsLinkRef.current;
+    if (!el) return;
+
+    const update = () => {
+      const rect = el.getBoundingClientRect();
+      const cs = window.getComputedStyle(el);
+      setSharpLink({
+        text: (el.textContent ?? '').trim(),
+        x: rect.left,
+        y: rect.top,
+        width: rect.width,
+        height: rect.height,
+        fontSize: cs.fontSize,
+      });
+    };
+
+    update();
+    window.addEventListener('resize', update);
+    window.addEventListener('scroll', update, true);
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('scroll', update, true);
+    };
+  }, [activeInfo, isMobile]);
 
   const isIntroTitleClickable = isMobile && introStage === 'title';
 
@@ -742,25 +814,27 @@ export function HomePage() {
   return (
     <PageFrame $dimmed={mainContentVisible}>
       <IntroImagesOverlay aria-hidden="true" $dimmed={mainContentVisible}>
-        <IntroImageLeft
-          src={introLeft}
-          alt=""
-          draggable={false}
-        />
-        <IntroImageRight
-          src={introRight}
-          alt=""
-          draggable={false}
-        />
+        <IntroImageLeft src={introLeft} alt="" draggable={false} />
+        <IntroImageRight src={introRight} alt="" draggable={false} />
       </IntroImagesOverlay>
 
       <PageHeading>
         <Title>[что такое дом?]</Title>
         <HeadingNav aria-label="Информация о проекте">
-          <HeadingLink type="button" onClick={() => setActiveInfo('guide')}>
+          <HeadingLink
+            ref={guideLinkRef}
+            type="button"
+            $hidden={!isMobile && activeInfo === 'guide'}
+            onClick={() => setActiveInfo('guide')}
+          >
             [руководство]
           </HeadingLink>
-          <HeadingLink type="button" onClick={() => setActiveInfo('contacts')}>
+          <HeadingLink
+            ref={contactsLinkRef}
+            type="button"
+            $hidden={!isMobile && activeInfo === 'contacts'}
+            onClick={() => setActiveInfo('contacts')}
+          >
             [контакты]
           </HeadingLink>
         </HeadingNav>
@@ -876,13 +950,47 @@ export function HomePage() {
           </AnimatePresence>
         </IntroLayer>
       ) : (
-          <PanZoomCanvas>
-            <CanvasContent>
+        <PanZoomCanvas>
+          <CanvasContent>
+            <GridReveal
+              initial={{ opacity: 0 }}
+              animate={{ opacity: gridRevealed ? 1 : 0 }}
+              transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
+            >
               <InteractiveGrid />
-            </CanvasContent>
-          </PanZoomCanvas>
+            </GridReveal>
+          </CanvasContent>
+        </PanZoomCanvas>
       )}
+
       <InfoModal section={activeInfo} onClose={() => setActiveInfo(null)} />
+
+      {!isMobile &&
+        createPortal(
+          <AnimatePresence>
+            {sharpLink && (
+              <SharpLinkLabel
+                key="sharp-active-link"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: 1,
+                  transition: { duration: 0.35, delay: 0.12, ease: [0.16, 1, 0.3, 1] },
+                }}
+                exit={{ opacity: 0, transition: { duration: 0.28, ease: [0.4, 0, 0.2, 1] } }}
+                style={{
+                  top: sharpLink.y,
+                  left: sharpLink.x,
+                  width: sharpLink.width,
+                  height: sharpLink.height,
+                  fontSize: sharpLink.fontSize,
+                }}
+              >
+                {sharpLink.text}
+              </SharpLinkLabel>
+            )}
+          </AnimatePresence>,
+          document.body,
+        )}
     </PageFrame>
   );
 }

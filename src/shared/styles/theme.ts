@@ -12,6 +12,13 @@ export const theme: AppTheme = {
       sketch: '#57CC99',
       symbol: '#E9C46A',
     },
+    guide: {
+      badge: {
+        projects: '#8B2E3D',
+        stories: '#6E7D8B',
+        photos: '#2A2A2A',
+      },
+    },
   },
   radii: {
     card: '16px',
