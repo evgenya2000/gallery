@@ -51,11 +51,7 @@ const gridVariants: Variants = {
   },
 };
 
-interface InteractiveGridProps {
-  onRevealComplete: () => void;
-}
-
-export function InteractiveGrid({ onRevealComplete }: InteractiveGridProps) {
+export function InteractiveGrid() {
   const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
   const [isCompact, setIsCompact] = useState(() =>
     typeof window !== 'undefined' && window.matchMedia('(max-width: 1199px)').matches,
@@ -71,18 +67,16 @@ export function InteractiveGrid({ onRevealComplete }: InteractiveGridProps) {
   }, []);
 
   const visibleOrder = isCompact ? compactCardsInRevealOrder : cardsInRevealOrder;
-  const menuTriggerIndex = isCompact ? 3 : cardsInRevealOrder.length - 1;
 
   return (
     <>
       <Grid variants={gridVariants} initial="hidden" animate="visible" aria-label="Gallery cards">
-        {visibleOrder.map((card, index) => (
+        {visibleOrder.map((card) => (
           <Card
             key={card.id}
             card={card}
             onSelect={setSelectedCard}
             isFeatured={card.id === featuredCardId}
-            onRevealComplete={index === menuTriggerIndex ? onRevealComplete : undefined}
           />
         ))}
       </Grid>

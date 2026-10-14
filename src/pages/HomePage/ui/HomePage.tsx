@@ -1,34 +1,79 @@
-import { useState } from 'react';
+import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
 import { InteractiveGrid } from '../../../widgets/InteractiveGrid';
 import { PanZoomCanvas } from '../../../features/PanZoomCanvas';
 import { InfoModal, type InfoModalSection } from '../../../features/InfoModal';
-import galleryBackdrop from '../../../shared/assets/nasa-2.jpg';
+import galleryBackdrop from '../../../shared/assets/background.png';
+import introLeft from '../../../shared/assets/intro-left.png';
+import introRight from '../../../shared/assets/intro-right.png';
 
-const PageFrame = styled.div`
+const PageFrame = styled.div<{ $dimmed: boolean }>`
   position: relative;
   isolation: isolate;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
-  grid-template-rows: 140px minmax(0, 1fr);
+  --house-art-width: min(100dvh, 75vw);
+  --roof-anchor-x: 43vw; 
+  --house-art-left: calc(var(--roof-anchor-x) - 12.07dvh);
+  --roof-anchor-y: 39dvh;
+  --face-anchor-x: calc(var(--house-art-left) + 23dvh);
+  --description-left-x: 23.6vw;
+  --header-height: clamp(90px, 13.67dvh, 140px);
   overflow: hidden;
-  background-color: ${({ theme }) => theme.colors.bg};
-  background-image:
-    linear-gradient(rgba(5, 7, 9, 0.76), rgba(5, 7, 9, 0.97)),
-    url(${galleryBackdrop});
-  background-position: center;
-  background-size: cover;
+  background-color: #f7f7f7;
+
+  &::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background-image: url(${galleryBackdrop});
+    background-position: 40vw calc(var(--roof-anchor-y) - 31.4dvh);
+    background-repeat: no-repeat;
+    background-size: var(--house-art-width);
+    content: '';
+    opacity: ${({ $dimmed }) => ($dimmed ? 0.2 : 1)};
+    transition: opacity 900ms ease;
+    pointer-events: none;
+  } 
 
   @media (max-width: 1199px) {
+    --header-height: 72px;
+    --house-art-width: min(100dvh, 70vw);
+    --house-art-left: calc(100vw - var(--house-art-width) + 17vw);
+    --roof-anchor-x: calc(var(--house-art-left) + min(8.45vw, 12.07dvh));
+    --roof-anchor-y: 44dvh;
+    --face-anchor-x: calc(var(--house-art-left) + min(14.35vw, 20.5dvh));
+    --description-left-x: 28.5vw;
     display: flex;
-    min-height: 100vh;
     min-height: 100dvh;
     height: auto;
     flex-direction: column;
     overflow: visible;
-    background-attachment: fixed;
+    background-color: #f7f7f7;
+
+    &::before {
+      background-position: var(--house-art-left) calc(var(--roof-anchor-y) - 32vh);
+      background-attachment: fixed;
+    }
+  }
+
+  @media (min-width: 1200px) and (max-width: 1599px) {
+    --roof-anchor-x: 50vw;
+    --house-art-left: calc(var(--roof-anchor-x) - 12.07dvh);
+    --face-anchor-x: calc(var(--house-art-left) + 21.5dvh);
+    --description-left-x: 25vw;
+  }
+
+  @media (max-width: 768px) {
+    --header-height: 48px;
+
+    &::before {
+      background-image: none;
+      background-attachment: scroll;
+    }
   }
 `;
 
@@ -37,7 +82,6 @@ const CanvasContent = styled.main`
   width: 1600px;
   height: 1300px;
   overflow: hidden;
-  background: radial-gradient(ellipse at 50% 0%, rgba(42, 157, 143, 0.08), transparent 36%);
 
   &::before {
     position: absolute;
@@ -64,224 +108,670 @@ const CanvasContent = styled.main`
   }
 `;
 
-const IntroLayer = styled.div`
-  position: fixed;
+const IntroLayer = styled.div<{ $isAbout: boolean; $clickable: boolean }>`
+  position: absolute;
   z-index: 8;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 24px;
+  inset: var(--header-height) 0 0;
+  --intro-pad: clamp(20px, 1.5vw, 40px);
+  display: flex;
+  align-items: center;
+  justify-content: ${({ $isAbout }) => ($isAbout ? 'center' : 'flex-start')};
+  padding: 0 var(--intro-pad);
+  cursor: ${({ $clickable }) => ($clickable ? 'pointer' : 'auto')};
+  -webkit-tap-highlight-color: transparent;
+
+  @media (max-width: 1199px) {
+    --intro-pad: clamp(16px, 4vw, 48px);
+    position: relative;
+    inset: auto;
+    flex: 1 0 auto;
+    flex-direction: column;
+    min-height: calc(100dvh - var(--header-height));
+    align-items: ${({ $isAbout }) => ($isAbout ? 'center' : 'flex-start')};
+    justify-content: ${({ $isAbout }) => ($isAbout ? 'center' : 'flex-start')};
+    padding: ${({ $isAbout }) =>
+    $isAbout
+      ? '0 var(--intro-pad)'
+      : 'calc(var(--roof-anchor-y) - var(--header-height)) var(--intro-pad) clamp(28px, 7vh, 78px)'};
+  }
+
+  @media (max-width: 768px) {
+    --intro-pad: 16px;
+    padding: 67px var(--intro-pad) 36px;
+    min-height: calc(100dvh - 48px);
+    justify-content: flex-start;
+    align-items: flex-start;
+    line-height: 13px;
+  }
+
+  @media (max-width: 375px) {
+    padding-top: 35px;
+    padding-bottom: 10px;
+    padding: 35px 22px 10px;
+  }
+`;
+
+const IntroImagesOverlay = styled.div<{ $dimmed: boolean }>`
+  display: none;
+
+  opacity: ${({ $dimmed }) => ($dimmed ? 0.2 : 1)};
+  transition: opacity 900ms ease;
+
+  @media (max-width: 768px) {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+`;
+
+const IntroImageRight = styled(motion.img)`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 30svh;
+    height: auto;
+    max-height: 60svh;
+    object-fit: contain;
+    object-position: bottom right;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (max-width: 375px) {
+    max-height: 48svh;
+  }
+`;
+
+const IntroImageLeft = styled(motion.img)`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 18svh;
+    height: auto;
+    max-height: 60svh;
+    object-fit: contain;
+    object-position: bottom left;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (max-width: 375px) {
+    max-height: 60svh;
+  }
+`;
+
+const SplashContent = styled(motion.section)`
+  position: absolute;
+  top: calc(var(--roof-anchor-y) - var(--header-height) - 20px);
+  left: var(--intro-pad);
+  width: calc(var(--roof-anchor-x) - var(--intro-pad));
+
+  @media (max-width: 1600px) {
+    width: calc(48vw - var(--intro-pad));
+  }
+
+  @media (max-width: 1199px) {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: calc(var(--roof-anchor-x) - var(--intro-pad));
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
 `;
 
 const IntroTitle = styled(motion.button)`
-  padding: 14px 18px;
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0;
   border: 0;
   background: transparent;
   color: ${({ theme }) => theme.colors.text};
-  font-size: clamp(42px, 8vw, 88px);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.07em;
   line-height: 1;
   cursor: pointer;
-  text-align: center;
-  text-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
+  text-align: right;
+  font-size: clamp(48px, calc(6.4vw + 45px), 194px);
 
-  &:focus-visible {
-    border-radius: 8px;
-    outline: 2px solid ${({ theme }) => theme.colors.categories.artwork};
-    outline-offset: 6px;
+  .continue-hint {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    color: ${({ theme }) => theme.colors.text};
+    font-size: clamp(10px, 0.75vw, 12px);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    text-align: right;
+    transform: translateY(-4px);
+    transition: opacity 220ms ease, transform 220ms ease;
+    pointer-events: none;
+  }
+
+  &:hover .continue-hint,
+  &:focus-visible .continue-hint {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 1199px) {
+    font-size: 93px;
+  }
+
+  @media (min-width: 1200px) and (max-width: 1727px) {
+    font-size: calc(4.01vw + 66.9px);
+  }
+
+  @media (min-width: 1728px) {
+    font-size: calc(4.69vw + 55px);
+  }
+
+  @media (max-height: 680px) and (max-width: 850px) {
+    font-size: clamp(20px, 6.4vw, 54px);
+  }
+
+  @media (max-height: 480px) and (max-width: 850px) {
+    font-size: clamp(18px, 5.8vw, 38px);
+  }
+
+  span:nth-child(2) {
+    font-weight: 352;
+    @media (max-width: 1199px) {
+      font-size: 120px;
+    }
+
+    @media (min-width: 1200px) and (max-width: 1727px) {
+      font-size: calc(4.93vw + 86.8px);
+    }
+
+    @media (min-width: 1728px) {
+      font-size: calc(6.01vw + 68.15px);
+    }
+
+    @media (max-height: 680px) and (max-width: 850px) {
+      font-size: clamp(50px, 6.4vw, 84px);
+    }
+
+    @media (max-height: 480px) and (max-width: 850px) {
+      font-size: clamp(48px, 5.8vw, 68px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    align-items: flex-end;
+    text-align: left;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+
+    .continue-hint {
+      display: none;
+    }
+
+    span:nth-child(1) {
+      font-size: 66px;
+    }
+
+    span:nth-child(2) {
+      font-size: 84px;
+      font-weight: 340;
+      line-height: 92.18px;
+    }
+  }
+
+  @media (max-width: 375px) {
+    span:nth-child(1) {
+      font-size: 54px;
+    }
+
+    span:nth-child(2) {
+      font-size: 74px;
+      line-height: 81px;
+    }
+  }
+`;
+
+const IntroDescription = styled(motion.div)`
+  width: calc(var(--face-anchor-x) - var(--description-left-x));
+  margin: clamp(28px, 4.5dvh, 52px) 0 0 calc(var(--description-left-x) - var(--intro-pad));
+  color: ${({ theme }) => theme.colors.text};
+  font-size: clamp(20px, 1.5vw, 28px);
+  line-height: 1.28;
+  hyphens: auto;
+
+  p {
+    margin: 0;
+  }
+
+  p + p {
+    margin-top: 18px;
+  }
+
+  @media (max-width: 1600px) {
+    max-width: 32.5vw;
+    margin: clamp(28px, 4.5dvh, 52px) 0 0 calc(23vw - var(--intro-pad));
+    font-size: 21.5px;
+    line-height: 22.5px;
+  }
+
+  @media (max-width: 1200px) {
+    margin: clamp(28px, 4.5dvh, 52px) 0 0 calc(29vw - var(--intro-pad));
+    font-size: 16px;
+    line-height: 16.5px;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 275px;
+    margin: auto auto 0;
+    font-size: 14px;
+    line-height: 1.25;
+
+    p:first-child {
+      width: 100%;
+    }
+
+    p + p {
+      margin-top: 12px;
+    }
+  }
+
+  @media (max-width: 375px) {
+    font-size: 12px;
+    max-width: 100%;  
+    width: 275px;
   }
 `;
 
 const AboutCard = styled(motion.section)`
-  width: min(580px, 100%);
-  padding: 48px;
-  border: 1px solid rgba(42, 157, 143, 0.42);
-  border-radius: ${({ theme }) => theme.radii.modal};
-  background:
-    radial-gradient(circle at 100% 0%, rgba(42, 157, 143, 0.12), transparent 48%),
-    rgba(20, 20, 20, 0.94);
-  box-shadow: ${({ theme }) => theme.shadows.modal};
+  position: relative;
+  width: 960px;
+  height: 682px;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100dvh - var(--header-height) - 48px);
+  overflow-y: auto;
+  padding: 56px 64px 52px;
+  border-radius: 30px;
+
+  background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: ${({ theme }) => theme.colors.text};
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  @media (max-width: 1000px), (max-height: 840px) {
+    position: fixed;
+    z-index: 15;
+    top: var(--header-height);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    max-width: none;
+    max-height: none;
+    border: none;
+    border-radius: 0;
+    padding: clamp(24px, 5vw, 48px) clamp(20px, 5vw, 40px) 40px;
+  }
 
   @media (max-width: 560px) {
-    padding: 32px 24px;
-    border-radius: 20px;
+    padding: 54px 22px 40px;
   }
 `;
 
-const AboutEyebrow = styled.p`
-  margin: 0 0 16px;
-  color: ${({ theme }) => theme.colors.categories.artwork};
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-`;
-
 const AboutTitle = styled.h2`
-  margin: 0;
+  margin: 0 0 40px;
   color: ${({ theme }) => theme.colors.text};
-  font-size: 42px;
-  font-weight: 500;
-  letter-spacing: -0.055em;
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
   line-height: 1.05;
+  text-align: center;
+  text-transform: uppercase;
+
+  @media (max-width: 900px) {
+    font-size: clamp(28px, 6vw, 40px);
+    margin-bottom: 28px;
+  }
 
   @media (max-width: 560px) {
-    font-size: 34px;
+    font-size: 32px;
+  }
+`;
+
+const AboutSubtitle = styled.h3`
+  margin: 40px 0 20px;
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: uppercase;
+
+  @media (max-width: 900px) {
+    font-size: clamp(22px, 4.5vw, 30px);
+    margin: 28px 0 16px;
+  }
+
+  @media (max-width: 560px) {
+    font-size: 32px;
   }
 `;
 
 const AboutCopy = styled.p`
-  margin: 20px 0 0;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 15px;
-  line-height: 1.75;
-`;
-
-const ContinueButton = styled.button`
-  margin-top: 32px;
-  padding: 14px 18px;
-  border: 1px solid rgba(42, 157, 143, 0.64);
-  border-radius: 999px;
-  background: rgba(42, 157, 143, 0.12);
+  margin: 0 0 18px;
   color: ${({ theme }) => theme.colors.text};
-  font-size: 14px;
-  cursor: pointer;
-  transition: ${({ theme }) => theme.transitions.card};
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
 
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.categories.artwork};
-    background: rgba(42, 157, 143, 0.2);
-    box-shadow: 0 0 26px rgba(42, 157, 143, 0.16);
+  &:last-of-type {
+    margin-bottom: 0;
   }
 
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.categories.artwork};
-    outline-offset: 4px;
-  }
-`;
-
-const PageHeading = styled(motion.header)<{ $visible: boolean }>`
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 clamp(24px, 5vw, 72px);
-  pointer-events: ${({ $visible }) => ($visible ? 'auto' : 'none')};
-
-  @media (max-width: 1199px) {
-    min-height: 96px;
-    padding: 18px 22px;
-    gap: 16px;
+  @media (max-width: 900px) {
+    font-size: 17px;
   }
 
   @media (max-width: 560px) {
-    padding: 16px;
-    gap: 10px;
+    font-size: 14px;
+    line-height: 16px;
+  }
+`;
+
+const ContinueButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 44px 0 0;
+  padding: 0 0 6px;
+  border: 0;
+  border-bottom: 1px solid rgba(20, 20, 20, 0.7);
+  background: transparent;
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: opacity 200ms ease, border-color 200ms ease;
+
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+  svg {
+    position: relative;
+    top: 3px;
+    width: 0.5em;
+    height: 0.5em;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  svg path {
+    stroke: currentColor;
+  }
+
+  &:hover {
+    opacity: 0.7;
+    border-color: rgba(20, 20, 20, 0.4);
+  }
+
+  @media (max-width: 900px) {
+    font-size: 20px;
+    margin-top: 32px;
+  }
+
+  @media (max-width: 560px) {
+    font-size: 18px;
+  }
+`;
+
+const PageHeading = styled(motion.header)`
+  position: relative;
+  z-index: 9;
+  display: flex;
+  justify-content: space-between;
+
+  @media (min-width: 768px) {
+    padding-top: 27px;
+    padding-right: 1.9vw;
+    padding-left: 1.9vw;
+  }
+  
+  @media (min-width: 1200px) {
+    padding-top: 38px;
+    padding-right: 5.3vw;
+    padding-left: 3.2vw;
+  }
+
+  @media (min-width: 1728px) {
+    padding-top: 43px;
+    padding-right: 8.62vw;
+    padding-left: 8.62vw;
+  }
+
+  @media (min-width: 2400px) {
+    padding-top: 54px;
+    padding-left: 10vw;
+    padding-right: 10vw;
+  }
+
+  @media (max-width: 768px) {
+    padding: 29px 22px 0;
   }
 `;
 
 const HeadingNav = styled.nav`
   display: flex;
-  align-items: center;
-  gap: clamp(20px, 3vw, 46px);
+  gap: 7.65vw;
+  /* display: flex;
+  gap: clamp(14px, 3vw, 46px); */
 
-  @media (max-width: 560px) {
+  @media (min-width: 1600px) {
+    gap: clamp(80px, 7.5vw, 200px);
+  }
+
+  @media (min-width: 1200px) and (max-width: 1599px) {
+    gap: clamp(48px, 10vw, 150px);
+  }
+
+  @media (max-width: 1199px) {
+    gap: 105px;
+  }
+
+  @media (max-width: 768px) {
     gap: 12px;
   }
 `;
 
 const HeadingLink = styled.button`
-  padding: 10px 0;
+  padding: 0;
   border: 0;
   background: transparent;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 14px;
-  letter-spacing: 0.01em;
+  color: ${({ theme }) => theme.colors.text};
+  /* font-size: clamp(13px, 1.67vw, 24px); */
   cursor: pointer;
-  transition: ${({ theme }) => theme.transitions.card};
 
-  &:hover {
-    color: ${({ theme }) => theme.colors.text};
+  @media (min-width: 1200px) and (max-width: 1727px) {
+    font-size: 24px;
   }
 
-  &:focus-visible {
-    border-radius: 4px;
-    outline: 2px solid ${({ theme }) => theme.colors.categories.artwork};
-    outline-offset: 5px;
+  @media (min-width: 1728px) and (max-width: 2559px) {
+    font-size: 26px;
   }
 
-  @media (max-width: 560px) {
-    font-size: 11px;
+  @media (min-width: 2560px) {
+    font-size: 34px;
   }
-`;
-
-const ImageCredit = styled.div`
-  position: absolute;
-  z-index: 3;
-  right: 18px;
-  bottom: 12px;
-  color: rgba(244, 241, 236, 0.56);
-  font-size: 10px;
-  letter-spacing: 0.015em;
 
   @media (max-width: 1199px) {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    align-self: flex-end;
-    max-width: calc(100% - 32px);
-    margin: 0 16px 14px;
-    line-height: 1.6;
-    text-align: right;
+    font-size: clamp(10px, 1.8vw, 16px);
   }
 
-  a {
-    color: inherit;
-    text-decoration-color: rgba(244, 241, 236, 0.32);
-    text-underline-offset: 2px;
-    transition: color 180ms ease;
+  @media (max-width: 420px) {
+    font-size: 9px;
   }
 
-  a:hover {
-    color: ${({ theme }) => theme.colors.text};
+  @media (max-width: 768px) {
+    font-size: 11px;
   }
 `;
 
 const Title = styled.h1`
   margin: 0;
   color: ${({ theme }) => theme.colors.text};
-  font-size: 48px;
-  font-weight: 500;
-  letter-spacing: -0.065em;
-  line-height: 1;
-
-  @media (max-width: 1199px) {
-    font-size: clamp(24px, 4.5vw, 38px);
-    letter-spacing: -0.055em;
-  }
-
-  @media (max-width: 560px) {
-    font-size: clamp(20px, 5.4vw, 29px);
-    white-space: nowrap;
-  }
+  /* font-size: clamp(13px, 1.67vw, 24px); */
+  font-weight: 400;
 
   span {
     color: ${({ theme }) => theme.colors.categories.artwork};
+  }
+
+  @media (min-width: 1200px) and (max-width: 1727px) {
+    font-size: 24px;
+  }
+
+  @media (min-width: 1728px) and (max-width: 2559px) {
+    font-size: 26px;
+  }
+
+  @media (min-width: 2560px) {
+    font-size: 34px;
+  }
+
+  @media (max-width: 1199px) {
+    font-size: clamp(10px, 1.8vw, 16px);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 11px;
   }
 `;
 
 export function HomePage() {
   const [introStage, setIntroStage] = useState<'title' | 'about' | 'content'>('title');
   const [mainContentVisible, setMainContentVisible] = useState(false);
-  const [menuVisible, setMenuVisible] = useState(false);
   const [activeInfo, setActiveInfo] = useState<InfoModalSection | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [descriptionOffset, setDescriptionOffset] = useState<number | null>(null);
+  const secondSpanRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  // Измеряем смещение буквы "Д" относительно SplashContent
+  useLayoutEffect(() => {
+    if (isMobile || introStage !== 'title') {
+      setDescriptionOffset(null);
+      return;
+    }
+    const span = secondSpanRef.current;
+    if (!span) return;
+
+    const updateOffset = () => {
+      // offsetLeft относительно offsetParent (IntroTitle),
+      // а IntroTitle находится на левом краю SplashContent,
+      // поэтому offsetLeft == смещение от левого края SplashContent.
+      setDescriptionOffset(span.offsetLeft);
+    };
+
+    updateOffset();
+
+    window.addEventListener('resize', updateOffset);
+    // Пересчёт после загрузки шрифтов
+    if (document.fonts) {
+      document.fonts.ready.then(updateOffset);
+    }
+
+    return () => window.removeEventListener('resize', updateOffset);
+  }, [isMobile, introStage]);
+
+  const isIntroTitleClickable = isMobile && introStage === 'title';
+
+  const handleIntroClick = () => {
+    if (!isIntroTitleClickable) return;
+    setIntroStage('about');
+  };
 
   return (
-    <PageFrame>
+    <PageFrame $dimmed={mainContentVisible}>
+      <IntroImagesOverlay aria-hidden="true" $dimmed={mainContentVisible}>
+        <IntroImageLeft
+          src={introLeft}
+          alt=""
+          draggable={false}
+        />
+        <IntroImageRight
+          src={introRight}
+          alt=""
+          draggable={false}
+        />
+      </IntroImagesOverlay>
+
+      <PageHeading>
+        <Title>[что такое дом?]</Title>
+        <HeadingNav aria-label="Информация о проекте">
+          <HeadingLink type="button" onClick={() => setActiveInfo('guide')}>
+            [руководство]
+          </HeadingLink>
+          <HeadingLink type="button" onClick={() => setActiveInfo('contacts')}>
+            [контакты]
+          </HeadingLink>
+        </HeadingNav>
+      </PageHeading>
+
       {!mainContentVisible ? (
-        <IntroLayer>
+        <IntroLayer
+          $isAbout={introStage === 'about'}
+          $clickable={isIntroTitleClickable}
+          onClick={handleIntroClick}
+        >
           <AnimatePresence
             mode="wait"
             onExitComplete={() => {
@@ -289,16 +779,48 @@ export function HomePage() {
             }}
           >
             {introStage === 'title' && (
-              <IntroTitle
+              <SplashContent
                 key="intro-title"
-                type="button"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { duration: 1.4, ease: [0.4, 0, 0.2, 1] } }}
+                initial={false}
+                animate={{ opacity: 1 }}
                 exit={{ opacity: 0, transition: { duration: 0.95, ease: [0.4, 0, 0.2, 1] } }}
-                onClick={() => setIntroStage('about')}
               >
-                Что такое дом?
-              </IntroTitle>
+                <IntroTitle
+                  type="button"
+                  aria-describedby="intro-continue-hint"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, y: 0, transition: { duration: 1.25, ease: [0.4, 0, 0.2, 1] } }}
+                  onClick={() => setIntroStage('about')}
+                >
+                  <span>ЧТО ТАКОЕ</span>
+                  <span ref={secondSpanRef}>ДОМ?</span>
+                  <span id="intro-continue-hint" className="continue-hint">
+                    [нажмите, чтобы продолжить]
+                  </span>
+                </IntroTitle>
+                <IntroDescription
+                  style={
+                    !isMobile && descriptionOffset != null
+                      ? { marginLeft: descriptionOffset + 4 }
+                      : undefined
+                  }
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: 1,
+                    transition: {
+                      delay: isMobile ? 0.35 : 1.35,
+                      duration: isMobile ? 0.7 : 1.1,
+                      ease: [0.4, 0, 0.2, 1],
+                    },
+                  }}
+                >
+                  <p>Исследование разных представлений о доме.</p>
+                  <p>
+                    Через художественные образы и личные истории предлагаем взглянуть на привычное
+                    понятие с разных сторон и задуматься, что делает пространство домом.
+                  </p>
+                </IntroDescription>
+              </SplashContent>
             )}
             {introStage === 'about' && (
               <AboutCard
@@ -308,52 +830,59 @@ export function HomePage() {
                 exit={{ opacity: 0, transition: { duration: 0.9, ease: [0.4, 0, 0.2, 1] } }}
                 aria-labelledby="about-title"
               >
-                <AboutEyebrow>Коллекция образов</AboutEyebrow>
                 <AboutTitle id="about-title">О проекте</AboutTitle>
+
                 <AboutCopy>
-                  Дом — это не только место, но и чувство, память и привычные детали. Эта коллекция
-                  собирает визуальные фрагменты, из которых складывается личное ощущение дома.
-                  Рассматривайте карточки как части одного открытого разговора.
+                  «Что такое дом?» — исследование того, как разные люди понимают и ощущают дом.
                 </AboutCopy>
+                <AboutCopy>
+                  Для одних дом — это конкретное место, для других — близкие люди, воспоминания,
+                  природа или чувство принадлежности.
+                </AboutCopy>
+                <AboutCopy>
+                  Проект объединяет работы художников и фотографов с личными историями участников.
+                  Вместе они формируют интерактивный архив представлений о доме, выраженных через
+                  изображения и тексты.
+                </AboutCopy>
+
+                <AboutSubtitle>Принять участие</AboutSubtitle>
+
+                <AboutCopy>
+                  Каждый может стать частью исследования: ответить на вопрос «Что для тебя дом?»
+                  словами, фотографией или рисунком.
+                </AboutCopy>
+                <AboutCopy>
+                  Собранные материалы станут основой будущей выставки, а сайт продолжит пополняться
+                  новыми историями и интерпретациями.
+                </AboutCopy>
+
                 <ContinueButton type="button" onClick={() => setIntroStage('content')}>
-                  Перейти к содержимому
+                  перейти к карте
+                  <svg
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M0.5 11.5L11.5 0.5M11.5 10.4V0.5H1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </ContinueButton>
               </AboutCard>
             )}
           </AnimatePresence>
         </IntroLayer>
       ) : (
-        <>
-          <PageHeading
-            $visible={menuVisible}
-            aria-hidden={!menuVisible}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: menuVisible ? 1 : 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <Title>Что такое дом?</Title>
-            <HeadingNav aria-label="Информация о проекте">
-              <HeadingLink type="button" tabIndex={menuVisible ? 0 : -1} disabled={!menuVisible} onClick={() => setActiveInfo('guide')}>
-                Руководство
-              </HeadingLink>
-              <HeadingLink type="button" tabIndex={menuVisible ? 0 : -1} disabled={!menuVisible} onClick={() => setActiveInfo('contacts')}>
-                Контакты
-              </HeadingLink>
-            </HeadingNav>
-          </PageHeading>
           <PanZoomCanvas>
             <CanvasContent>
-              <InteractiveGrid onRevealComplete={() => setMenuVisible(true)} />
+              <InteractiveGrid />
             </CanvasContent>
           </PanZoomCanvas>
-          <ImageCredit>
-            Image: <a href="https://www.esa.int/ESA_Multimedia/Images/2022/09/Galactic_overlap" target="_blank" rel="noreferrer">ESA/Hubble &amp; NASA, W. Keel</a>
-            {' · '}
-            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>
-          </ImageCredit>
-          <InfoModal section={activeInfo} onClose={() => setActiveInfo(null)} />
-        </>
       )}
+      <InfoModal section={activeInfo} onClose={() => setActiveInfo(null)} />
     </PageFrame>
   );
 }

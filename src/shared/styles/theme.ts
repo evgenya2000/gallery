@@ -2,9 +2,9 @@ import type { AppTheme } from './types';
 
 export const theme: AppTheme = {
   colors: {
-    bg: '#0a0a0a',
+    bg: '#F7F7F7',
     surface: '#141414',
-    text: '#f4f1ec',
+    text: '#000',
     textMuted: '#8b8985',
     categories: {
       text: '#E63946',

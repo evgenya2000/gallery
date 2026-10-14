@@ -1,10 +1,29 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
+  @font-face {
+    font-family: 'Roboto Mono';
+    src: url('${import.meta.env.BASE_URL}fonts/RobotoMono-VariableFont_wght.woff2')
+      format('woff2-variations');
+    font-weight: 100 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Roboto Mono';
+    src: url('${import.meta.env.BASE_URL}fonts/RobotoMono-Italic-VariableFont_wght.woff2')
+      format('woff2-variations');
+    font-weight: 100 700;
+    font-style: italic;
+    font-display: swap;
+  }
+
   *,
   *::before,
   *::after {
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
   }
 
   html,
@@ -34,7 +53,8 @@ export const GlobalStyles = createGlobalStyle`
   body {
     background: ${({ theme }) => theme.colors.bg};
     color: ${({ theme }) => theme.colors.text};
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo,
+      Consolas, 'Liberation Mono', monospace;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -43,6 +63,19 @@ export const GlobalStyles = createGlobalStyle`
   button {
     color: inherit;
     font: inherit;
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    button:active,
+    a:active {
+      opacity: 0.68;
+      transition: opacity 140ms ease;
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
   }
 
   ::selection {

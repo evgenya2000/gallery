@@ -81,10 +81,6 @@ const CloseButton = styled.button`
     color: ${({ theme }) => theme.colors.text};
   }
 
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.text};
-    outline-offset: 3px;
-  }
 `;
 
 const Badge = styled.span<{ $category: CardCategory }>`

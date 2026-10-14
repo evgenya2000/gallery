@@ -5,7 +5,6 @@ import type { CardData, CardCategory } from '../model/types';
 interface CardProps {
   card: CardData;
   onSelect: (card: CardData) => void;
-  onRevealComplete?: () => void;
   isFeatured?: boolean;
 }
 
@@ -78,22 +77,15 @@ const CardButton = styled(motion.button)<{ $card: CardData; $category: CardCateg
     -webkit-user-drag: none;
   }
 
-  &:hover,
-  &:focus-visible {
+  &:hover {
     z-index: 1000;
     border-color: ${({ theme, $category }) => theme.colors.categories[$category]};
     box-shadow: 0 0 30px ${({ theme, $category }) => theme.colors.categories[$category]}42,
       0 18px 44px rgba(0, 0, 0, 0.45);
-    outline: none;
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${({ theme, $category }) => theme.colors.categories[$category]};
-    outline-offset: 5px;
   }
 `;
 
-export function Card({ card, onSelect, onRevealComplete, isFeatured = false }: CardProps) {
+export function Card({ card, onSelect, isFeatured = false }: CardProps) {
   return (
     <CardButton
       $card={card}
@@ -102,9 +94,6 @@ export function Card({ card, onSelect, onRevealComplete, isFeatured = false }: C
       type="button"
       aria-label={card.externalUrl ? 'Open Telegram profile in a new tab' : `Open ${card.title}`}
       variants={cardVariants}
-      onAnimationComplete={(definition) => {
-        if (definition === 'visible') onRevealComplete?.();
-      }}
       whileHover={{ y: -7, scale: 1.045, transition: { duration: 0.24, ease: [0.4, 0, 0.2, 1] } }}
       whileTap={{ scale: 0.985, transition: { duration: 0.16, ease: [0.4, 0, 0.2, 1] } }}
       onClick={() => {

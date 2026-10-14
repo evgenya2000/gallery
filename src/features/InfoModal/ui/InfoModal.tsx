@@ -84,10 +84,6 @@ const CloseButton = styled.button`
     color: ${({ theme }) => theme.colors.text};
   }
 
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.categories.artwork};
-    outline-offset: 3px;
-  }
 `;
 
 const Eyebrow = styled.p`
