@@ -1,11 +1,11 @@
 import { motion, type Variants } from 'framer-motion';
 import styled from 'styled-components';
-import type { CardData } from '../model/types';
+import type { CardData, CardModalContent } from '../model/types';
 import { mediaBreakpointDown } from '../../../shared/styles/mixins';
 
 interface CardProps {
   card: CardData;
-  onSelect: (card: CardData) => void;
+  onSelect: (content: CardModalContent) => void;
   revealDelay: number;
   onRevealComplete?: () => void;
 }
@@ -18,7 +18,7 @@ const cardVariants: Variants = {
   }),
 };
 
-const CardButton = styled(motion.button)<{ $card: CardData }>`
+const CardButton = styled(motion.button) <{ $card: CardData }>`
   position: absolute;
   top: ${({ $card }) => `${$card.position.y}px`};
   left: ${({ $card }) => `${$card.position.x}px`};
@@ -27,7 +27,7 @@ const CardButton = styled(motion.button)<{ $card: CardData }>`
   width: ${({ $card }) => `${$card.position.width}px`};
   height: ${({ $card }) => `${$card.position.height}px`};
   padding: ${({ $card }) =>
-  $card.presentation === 'quote' ? '0 7.54px 0 8.22px' : '0'};
+    $card.presentation === 'quote' ? '0 7.54px 0 8.22px' : '0'};
   overflow: hidden;
   border: ${({ $card }) =>
     $card.presentation === 'quote' ? '0' : `2.42px solid ${$card.id % 3 === 0 ? '#2F2F2F' : '#2F2F2F'}`};
@@ -52,7 +52,7 @@ const CardButton = styled(motion.button)<{ $card: CardData }>`
     height: ${({ $card }) => `${($card.mobilePosition ?? $card.position).height}px`};
     rotate: ${({ $card }) => `${($card.mobilePosition ?? $card.position).rotation}deg`};
     padding: ${({ $card }) =>
-  $card.presentation === 'quote' ? '0 5.71px 0 6.23px' : '0'};
+    $card.presentation === 'quote' ? '0 5.71px 0 6.23px' : '0'};
   }
 
   img {
@@ -74,7 +74,6 @@ const CardButton = styled(motion.button)<{ $card: CardData }>`
       transparent 48%,
       rgba(42, 39, 35, 0.08)
     );
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
   }
 
   .quote-text {
@@ -87,6 +86,7 @@ const CardButton = styled(motion.button)<{ $card: CardData }>`
     line-height: 11px;
     text-align: center;
     text-wrap: pretty;
+    transition: transform 0.24s cubic-bezier(0.4, 0, 0.2, 1);
 
     ${mediaBreakpointDown('tablet', true)} {
       font-size: 7.27px;
@@ -94,8 +94,12 @@ const CardButton = styled(motion.button)<{ $card: CardData }>`
     }
   }
 
-  &:hover {
-    z-index: 1000;
+  &:hover .quote-text {
+    transform: translateY(-8px);
+
+    ${mediaBreakpointDown('tablet', true)} {
+      transform: translateY(-5px);
+    }
   }
 `;
 
@@ -109,7 +113,11 @@ export function Card({ card, onSelect, revealDelay, onRevealComplete }: CardProp
       custom={revealDelay}
       variants={cardVariants}
       onAnimationComplete={onRevealComplete}
-      whileHover={{ y: -7, scale: 1.045, transition: { duration: 0.24, ease: [0.4, 0, 0.2, 1] } }}
+      whileHover={
+        card.presentation === 'quote'
+          ? { transition: { duration: 0.24, ease: [0.4, 0, 0.2, 1] } }
+          : { y: -8, transition: { duration: 0.24, ease: [0.4, 0, 0.2, 1] } }
+      }
       whileTap={{ scale: 0.985, transition: { duration: 0.16, ease: [0.4, 0, 0.2, 1] } }}
       onClick={() => {
         if (card.externalUrl) {
@@ -117,7 +125,7 @@ export function Card({ card, onSelect, revealDelay, onRevealComplete }: CardProp
           return;
         }
 
-        onSelect(card);
+        onSelect(card.modalContent);
       }}
     >
       {card.presentation === 'quote' ? (

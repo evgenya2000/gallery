@@ -1,3 +1,15 @@
 export { Card } from './ui/Card';
 export { cards, centralCard } from './model/cards';
-export type { CardCategory, CardData, CardPosition, CardPresentation } from './model/types';
+export type {
+  ArtistWorkModalContent,
+  CardCategory,
+  CardData,
+  CardModalContent,
+  CardModalType,
+  CardPosition,
+  CardPresentation,
+  CentralCardData,
+  ParticipationModalContent,
+  PersonalStoryModalContent,
+  PhotoStoryModalContent,
+} from './model/types';

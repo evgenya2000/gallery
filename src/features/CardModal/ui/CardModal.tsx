@@ -2,145 +2,652 @@ import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
-import type { CardCategory, CardData } from '../../../entities/Card';
+import type { CardModalContent, CardModalType } from '../../../entities/Card';
 import { mediaBreakpointDown } from '../../../shared/styles/mixins';
 
 interface CardModalProps {
-  card: CardData | null;
+  content: CardModalContent | null;
   onClose: () => void;
 }
 
-const categoryLabels: Record<CardCategory, string> = {
-  text: 'Фраза',
-  artwork: 'Фотография',
-  sketch: 'Рисунок',
-  symbol: 'Знак',
+const colors: Record<CardModalType, string> = {
+  'photo-story': '#2f2f2f',
+  'portrait-photo-story': '#2f2f2f',
+  'artist-work': '#812926',
+  'personal-story': '#607984',
+  participation: '#fff',
 };
 
 const Overlay = styled(motion.div)`
   position: fixed;
-  z-index: 10;
+  z-index: 1000;
   inset: 0;
   display: grid;
   place-items: center;
-  padding: 32px;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  padding: 48px;
+  background: rgba(250, 250, 250, 0.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 
-  ${mediaBreakpointDown('phone', true)} {
-    padding: 16px;
+  ${mediaBreakpointDown('tablet', true)} {
+    padding: 0;
   }
 `;
 
-const Dialog = styled(motion.section)<{ $category: CardCategory }>`
+const Dialog = styled(motion.section)<{ $type: CardModalType }>`
   position: relative;
-  width: min(560px, 100%);
-  min-height: 330px;
-  padding: 40px;
-  border: 1px solid ${({ theme, $category }) => theme.colors.categories[$category]}66;
-  border-radius: ${({ theme }) => theme.radii.modal};
-  background:
-    radial-gradient(circle at 100% 0%, ${({ theme, $category }) => theme.colors.categories[$category]}16, transparent 48%),
-    ${({ theme }) => theme.colors.surface};
-  box-shadow: ${({ theme }) => theme.shadows.modal};
+  width: min(1260px, calc(100vw - 112px));
+  height: min(895px, calc(100dvh - 96px));
+  padding: clamp(32px, 3.6vw, 52px);
+  overflow: visible;
+  border-radius: 40px;
+  background: ${({ $type }) => colors[$type]};
+  color: ${({ $type }) => ($type === 'participation' ? '#111' : '#f7f7f7')};
+  box-shadow: 0 18px 80px rgba(25, 25, 25, 0.16);
+  font-family: inherit;
 
-  ${mediaBreakpointDown('phone', true)} {
-    min-height: 0;
-    padding: 28px 22px;
-    border-radius: 20px;
+  ${mediaBreakpointDown('tablet', true)} {
+    width: 100%;
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: none;
+    padding: 22px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 0;
   }
 `;
 
-const CloseButton = styled.button`
+const CloseButton = styled.button<{ $light: boolean }>`
   position: absolute;
-  top: 22px;
-  right: 22px;
+  z-index: 2;
+  top: calc(-1 * min(72px, max(0px, (100dvh - 895px) / 2 - 24px)));
+  right: calc(-1 * min(180px, max(0px, (100vw - 1260px) / 2 - 24px)));
   display: grid;
-  width: 38px;
-  height: 38px;
+  width: 56px;
+  height: 56px;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0;
+  border: 2px solid ${({ $light }) => ($light ? '#262626' : '#fff')};
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.04);
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 23px;
+  background: transparent;
+  color: ${({ $light }) => ($light ? '#262626' : '#fff')};
+  font: inherit;
+  font-size: 38px;
   line-height: 1;
   cursor: pointer;
-  transition: ${({ theme }) => theme.transitions.card};
-
-  ${mediaBreakpointDown('phone', true)} {
-    top: 16px;
-    right: 16px;
-    width: 34px;
-    height: 34px;
-    font-size: 21px;
-  }
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 160ms ease, transform 160ms ease;
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.28);
-    color: ${({ theme }) => theme.colors.text};
+    transform: scale(1.05);
   }
 
-`;
+  &:active {
+    opacity: 0.62;
+  }
 
-const Badge = styled.span<{ $category: CardCategory }>`
-  display: inline-flex;
-  padding: 8px 11px;
-  border: 1px solid ${({ theme, $category }) => theme.colors.categories[$category]}66;
-  border-radius: 999px;
-  color: ${({ theme, $category }) => theme.colors.categories[$category]};
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-`;
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
 
-const Heading = styled.h2<{ $category: CardCategory }>`
-  max-width: 420px;
-  margin: 34px 0 16px;
-  color: ${({ theme, $category }) => theme.colors.categories[$category]};
-  font-size: 42px;
-  font-weight: 500;
-  letter-spacing: -0.055em;
-  line-height: 1.04;
-
-  ${mediaBreakpointDown('phone', true)} {
-    margin: 28px 0 14px;
-    font-size: clamp(30px, 9vw, 38px);
+  ${mediaBreakpointDown('tablet', true)} {
+    top: 22px;
+    right: 22px;
+    width: 30px;
+    height: 30px;
+    border-width: 1.5px;
+    font-size: 22px;
   }
 `;
 
-const Description = styled.p`
-  max-width: 430px;
+const SectionTitle = styled.h2<{ $center?: boolean }>`
+  grid-area: section;
+  align-self: start;
   margin: 0;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 16px;
-  line-height: 1.7;
+  padding-right: 54px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: ${({ $center }) => ($center ? 'center' : 'left')};
+  text-transform: uppercase;
+  white-space: pre-line;
 
-  ${mediaBreakpointDown('phone', true)} {
+  ${mediaBreakpointDown('tablet', true)} {
+    padding-right: 42px;
+    font-size: 18px;
+    line-height: 1.2;
+    text-align: left;
+  }
+`;
+
+const ImageFrame = styled.div<{ $portrait?: boolean }>`
+  grid-area: visual;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .image-placeholder {
+    display: block;
+    width: 100%;
+    height: ${({ $portrait }) => ($portrait ? 'min(68vh, 650px)' : 'min(55vh, 460px)')};
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0.08));
+  }
+
+  ${mediaBreakpointDown('tablet', true)} {
+    min-height: 0;
+    max-height: ${({ $portrait }) => ($portrait ? '47dvh' : '34dvh')};
+    margin: 18px 0 25px;
+
+    img {
+      width: 100%;
+      max-height: ${({ $portrait }) => ($portrait ? '47dvh' : '34dvh')};
+    }
+
+    .image-placeholder {
+      width: ${({ $portrait }) => ($portrait ? '72%' : '100%')};
+      height: ${({ $portrait }) => ($portrait ? '47dvh' : 'auto')};
+      aspect-ratio: ${({ $portrait }) => ($portrait ? '0.68' : '1.5')};
+    }
+  }
+`;
+
+const Copy = styled.div`
+  grid-area: body;
+  min-width: 0;
+  min-height: 0;
+  align-self: center;
+  overflow-y: auto;
+  font-size: clamp(16px, 1.45vw, 25px);
+  line-height: 1.22;
+  white-space: pre-wrap;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  p {
+    margin: 0 0 22px;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  ${mediaBreakpointDown('tablet', true)} {
+    align-self: start;
+    font-size: 14px;
+    line-height: 1.22;
+
+    p {
+      margin-bottom: 18px;
+    }
+  }
+`;
+
+const Footer = styled.div`
+  grid-area: footer;
+  align-self: end;
+  min-height: 1em;
+  padding-top: 24px;
+  font-size: clamp(16px, 1.45vw, 24px);
+  line-height: 1.25;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ${mediaBreakpointDown('tablet', true)} {
+    padding-top: 28px;
+    font-size: 18px;
+  }
+`;
+
+const StoryLayout = styled.div<{ $portrait?: boolean }>`
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'visual section'
+    'visual body'
+    'visual footer';
+  column-gap: clamp(36px, 3vw, 54px);
+
+  ${ImageFrame} {
+    padding: 0 ${({ $portrait }) => ($portrait ? '8%' : '0')} 0 0;
+  }
+
+  ${mediaBreakpointDown('tablet', true)} {
+    display: grid;
+    height: auto;
+    min-height: calc(100dvh - 44px);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr auto;
+    grid-template-areas:
+      'section'
+      'visual'
+      'body'
+      '. '
+      'footer';
+    column-gap: 0;
+    align-content: start;
+
+    ${ImageFrame} {
+      padding: 0;
+    }
+  }
+`;
+
+const ArtworkLayout = styled.div`
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'visual section'
+    'visual body'
+    'visual footer';
+  column-gap: clamp(36px, 3vw, 54px);
+
+  ${mediaBreakpointDown('tablet', true)} {
+    display: grid;
+    height: auto;
+    min-height: calc(100dvh - 44px);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr auto;
+    grid-template-areas:
+      'section'
+      'visual'
+      'body'
+      '. '
+      'footer';
+    column-gap: 0;
+    align-content: start;
+  }
+`;
+
+const ArtworkTitle = styled.h3`
+  margin: 0 0 26px;
+  font-size: clamp(30px, 3vw, 48px);
+  font-weight: 400;
+  line-height: 1.12;
+
+  ${mediaBreakpointDown('tablet', true)} {
+    margin-bottom: 20px;
+    font-size: 24px;
+    line-height: 1.12;
+  }
+`;
+
+const StoryTitle = styled.h3`
+  margin: 0 0 20px;
+  font-size: clamp(20px, 2vw, 30px);
+  font-weight: 400;
+  line-height: 1.15;
+
+  ${mediaBreakpointDown('tablet', true)} {
+    margin-bottom: 16px;
+    font-size: 18px;
+  }
+`;
+
+const PersonalLayout = styled.div`
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'section section'
+    'quote body'
+    'footer body';
+  column-gap: clamp(42px, 4vw, 72px);
+
+  ${mediaBreakpointDown('tablet', true)} {
+    display: grid;
+    height: auto;
+    min-height: calc(100dvh - 44px);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr auto;
+    grid-template-areas:
+      'section'
+      'quote'
+      'body'
+      '. '
+      'footer';
+    column-gap: 0;
+    align-content: start;
+  }
+`;
+
+const Quote = styled.blockquote`
+  grid-area: quote;
+  align-self: center;
+  margin: 0;
+  padding: 0 8px;
+  font-size: clamp(34px, 3.4vw, 56px);
+  font-weight: 400;
+  line-height: 1.16;
+  text-align: center;
+  white-space: pre-wrap;
+
+  ${mediaBreakpointDown('tablet', true)} {
+    margin: 58px 0 52px;
+    padding: 0 8px;
+    font-size: clamp(30px, 9vw, 42px);
+    line-height: 1.16;
+  }
+`;
+
+const ParticipationLayout = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  padding: 10px 40px 6px;
+
+  ${SectionTitle} {
+    padding: 0;
+    font-size: clamp(34px, 3.6vw, 56px);
+    line-height: 1.1;
+  }
+
+  ${mediaBreakpointDown('tablet', true)} {
+    height: auto;
+    min-height: calc(100dvh - 44px);
+    padding: 34px 0 12px;
+
+    ${SectionTitle} {
+      padding-right: 32px;
+      font-size: 30px;
+      text-align: center;
+    }
+  }
+`;
+
+const Intro = styled.p`
+  margin: 34px 0 42px;
+  font-size: clamp(16px, 1.45vw, 24px);
+  line-height: 1.3;
+
+  ${mediaBreakpointDown('tablet', true)} {
+    margin: 28px 0 30px;
     font-size: 15px;
-    line-height: 1.6;
+  }
+`;
+
+const ActionList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 5vw, 90px);
+  margin-bottom: 36px;
+
+  ${mediaBreakpointDown('tablet', true)} {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    margin-bottom: 26px;
+  }
+`;
+
+const ActionCard = styled.article<{ $red: boolean }>`
+  display: flex;
+  min-height: 250px;
+  flex-direction: column;
+  padding: 28px 30px 24px;
+  border-radius: 40px;
+  background: ${({ $red }) => ($red ? '#812926' : '#607984')};
+  color: #fff;
+
+  ${mediaBreakpointDown('tablet', true)} {
+    min-height: 0;
+    padding: 22px;
+    border-radius: 28px;
+  }
+`;
+
+const Audience = styled.span`
+  margin-bottom: 28px;
+  font-size: 16px;
+  line-height: 1.2;
+
+  ${mediaBreakpointDown('tablet', true)} {
+    margin-bottom: 18px;
+    font-size: 14px;
+  }
+`;
+
+const ActionTitle = styled.h3`
+  margin: 0 0 12px;
+  font-size: clamp(24px, 2.3vw, 38px);
+  font-weight: 400;
+  line-height: 1.12;
+
+  ${mediaBreakpointDown('tablet', true)} {
+    font-size: 24px;
+  }
+`;
+
+const ActionDescription = styled.p`
+  margin: 0 0 22px;
+  font-size: clamp(14px, 1.2vw, 20px);
+  line-height: 1.25;
+
+  ${mediaBreakpointDown('tablet', true)} {
+    font-size: 14px;
+  }
+`;
+
+const ActionLink = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-bottom: 1px solid currentColor;
+  color: inherit;
+  font-size: 16px;
+  line-height: 1.4;
+  text-decoration: none;
+
+  span:last-child {
+    font-size: 24px;
+    line-height: 1;
+  }
+`;
+
+const ActionLabel = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-bottom: 1px solid currentColor;
+  font-size: 16px;
+  line-height: 1.4;
+
+  span:last-child {
+    font-size: 24px;
+    line-height: 1;
+  }
+`;
+
+const ParticipationFooter = styled.p`
+  margin: auto 0 0;
+  font-size: clamp(16px, 1.45vw, 24px);
+  line-height: 1.3;
+
+  ${mediaBreakpointDown('tablet', true)} {
+    margin-top: 6px;
+    font-size: 14px;
   }
 `;
 
 const modalEase = [0.16, 1, 0.3, 1] as const;
 
-export function CardModal({ card, onClose }: CardModalProps) {
+function ImageContent({ image, imageAlt, portrait }: {
+  image?: string;
+  imageAlt?: string;
+  portrait?: boolean;
+}) {
+  return (
+    <ImageFrame $portrait={portrait}>
+      {image ? (
+        <img src={image} alt={imageAlt ?? ''} draggable={false} />
+      ) : (
+        <span className="image-placeholder" aria-hidden="true" />
+      )}
+    </ImageFrame>
+  );
+}
+
+function Paragraphs({ paragraphs }: { paragraphs: string[] }) {
+  return (
+    <Copy>
+      {paragraphs.map((paragraph, index) => <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>)}
+    </Copy>
+  );
+}
+
+function PhotoStory({ content }: { content: Extract<CardModalContent, { type: 'photo-story' | 'portrait-photo-story' }> }) {
+  const portrait = content.type === 'portrait-photo-story';
+
+  return (
+    <StoryLayout $portrait={portrait}>
+      <ImageContent image={content.image} imageAlt={content.imageAlt} portrait={portrait} />
+      <SectionTitle id="card-modal-title">{content.sectionTitle}</SectionTitle>
+      <Copy>
+        {content.title && <StoryTitle>{content.title}</StoryTitle>}
+        {content.paragraphs.map((paragraph, index) => (
+          <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>
+        ))}
+      </Copy>
+      <Footer>{content.author}</Footer>
+    </StoryLayout>
+  );
+}
+
+function ArtistWork({ content }: { content: Extract<CardModalContent, { type: 'artist-work' }> }) {
+  const sectionLabel = content.year
+    ? `${content.sectionTitle}\n${content.year}`
+    : content.sectionTitle;
+
+  return (
+    <ArtworkLayout>
+      <ImageContent image={content.image} imageAlt={content.imageAlt} />
+      <SectionTitle id="card-modal-title">{sectionLabel}</SectionTitle>
+      <Copy>
+        {content.title && <ArtworkTitle>{content.title}</ArtworkTitle>}
+        {content.paragraphs.map((paragraph, index) => (
+          <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>
+        ))}
+      </Copy>
+      <Footer>
+        {content.source?.href
+          ? <a href={content.source.href} target="_blank" rel="noreferrer">{content.source.label}</a>
+          : content.source?.label}
+      </Footer>
+    </ArtworkLayout>
+  );
+}
+
+function PersonalStory({ content }: { content: Extract<CardModalContent, { type: 'personal-story' }> }) {
+  return (
+    <PersonalLayout>
+      <SectionTitle id="card-modal-title">{content.sectionTitle}</SectionTitle>
+      <Quote>{content.quote}</Quote>
+      <Paragraphs paragraphs={content.paragraphs} />
+      <Footer>{content.author}</Footer>
+    </PersonalLayout>
+  );
+}
+
+function Participation({ content }: { content: Extract<CardModalContent, { type: 'participation' }> }) {
+  return (
+    <ParticipationLayout>
+      <SectionTitle id="card-modal-title" $center>{content.sectionTitle}</SectionTitle>
+      <Intro>{content.intro}</Intro>
+      <ActionList>
+        {content.actions.map((action, index) => {
+          const children = (
+            <>
+              <Audience>{action.audience}</Audience>
+              <ActionTitle>{action.title}</ActionTitle>
+              <ActionDescription>{action.description}</ActionDescription>
+              {action.href ? (
+                <ActionLink href={action.href} target="_blank" rel="noreferrer">
+                  <span>{action.linkLabel}</span><span aria-hidden="true">↗</span>
+                </ActionLink>
+              ) : (
+                <ActionLabel><span>{action.linkLabel}</span><span aria-hidden="true">↗</span></ActionLabel>
+              )}
+            </>
+          );
+
+          return <ActionCard key={`${action.title}-${index}`} $red={index % 2 === 1}>{children}</ActionCard>;
+        })}
+      </ActionList>
+      <ParticipationFooter>{content.footer}</ParticipationFooter>
+    </ParticipationLayout>
+  );
+}
+
+function ModalContent({ content }: { content: CardModalContent }) {
+  switch (content.type) {
+    case 'photo-story':
+    case 'portrait-photo-story':
+      return <PhotoStory content={content} />;
+    case 'artist-work':
+      return <ArtistWork content={content} />;
+    case 'personal-story':
+      return <PersonalStory content={content} />;
+    case 'participation':
+      return <Participation content={content} />;
+  }
+}
+
+export function CardModal({ content, onClose }: CardModalProps) {
   useEffect(() => {
-    if (!card) return undefined;
+    if (!content) return undefined;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [card, onClose]);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [content, onClose]);
 
   return createPortal(
     <AnimatePresence>
-      {card && (
+      {content && (
         <Overlay
           key="card-modal-overlay"
           initial={{ opacity: 0 }}
@@ -151,22 +658,23 @@ export function CardModal({ card, onClose }: CardModalProps) {
           }}
         >
           <Dialog
-            $category={card.category}
+            $type={content.type}
             role="dialog"
             aria-modal="true"
-            aria-labelledby={`card-title-${card.id}`}
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1, transition: { duration: 0.75, ease: modalEase } }}
-            exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.55, ease: modalEase } }}
+            aria-labelledby="card-modal-title"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1, transition: { duration: 0.6, ease: modalEase } }}
+            exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.4, ease: modalEase } }}
           >
-            <CloseButton type="button" aria-label="Закрыть" onClick={onClose}>
+            <CloseButton
+              $light={content.type === 'participation'}
+              type="button"
+              aria-label="Закрыть"
+              onClick={onClose}
+            >
               ×
             </CloseButton>
-            <Badge $category={card.category}>{categoryLabels[card.category]}</Badge>
-            <Heading id={`card-title-${card.id}`} $category={card.category}>
-              {card.title}
-            </Heading>
-            {card.description && <Description>{card.description}</Description>}
+            <ModalContent content={content} />
           </Dialog>
         </Overlay>
       )}

@@ -1,4 +1,10 @@
-import type { CardData, CardPosition, CardPresentation } from './types';
+import type {
+  CardData,
+  CardModalContent,
+  CardPosition,
+  CardPresentation,
+  CentralCardData,
+} from './types';
 
 interface CardPlacement {
   presentation: CardPresentation;
@@ -9,11 +15,31 @@ interface CardPlacement {
   externalUrl?: string;
 }
 
-export const centralCard = {
+export const centralCard: CentralCardData = {
   title: 'дом — это...',
   description: 'Продолжи фразу. Словами, фотографией или рисунком.',
   position: { x: 614, y: 364, width: 212, height: 150, rotation: 0 },
   mobilePosition: { x: 443.97, y: 311.11, width: 160.67, height: 113.68, rotation: 0 },
+  modalContent: {
+    type: 'participation',
+    sectionTitle: 'ПРИНЯТЬ УЧАСТИЕ',
+    intro: 'У каждого свое представление о доме. Поделитесь своей историей, фотографией или художественной работой и станьте частью общего визуального архива.',
+    actions: [
+      {
+        audience: 'ДЛЯ ВСЕХ',
+        title: 'ЛИЧНАЯ ИСТОРИЯ',
+        description: 'Расскажите, что для вас означает дом, через слова, фотографию или рисунок.',
+        linkLabel: 'поделиться',
+      },
+      {
+        audience: 'ДЛЯ АВТОРОВ',
+        title: 'АВТОРСКИЙ ПРОЕКТ',
+        description: 'Предложите художественную работу или фотопроект, раскрывающий тему дома.',
+        linkLabel: 'предложить проект',
+      },
+    ],
+    footer: 'Все материалы проходят предварительный просмотр перед публикацией в архиве.',
+  },
 };
 
 const quote = (text: string, x: number, y: number, width: number, height: number): CardPlacement => ({
@@ -129,10 +155,47 @@ placements.forEach((placement, index) => {
   };
 });
 
+// Контент модалок хранится по номеру карточки. Добавь запись с нужным id,
+// чтобы задать шаблон и заполнить только нужные поля. Для остальных карточек
+// автоматически выбирается фоторассказ или личная история по виду карточки.
+const modalContentByCardId: Partial<Record<number, CardModalContent>> = {
+  2: {
+    type: 'artist-work',
+    sectionTitle: 'РАБОТЫ ХУДОЖНИКОВ',
+    year: '2022',
+    title: 'Memory Building — Annette LeMay Burke',
+    paragraphs: [
+      'Автор проецирует фотографии из семейного архива на стены дома своего детства, соединяя прошлое и настоящее.',
+      'В этой работе дом становится хранилищем воспоминаний. Архивные изображения, наложенные на современные интерьеры, показывают, как личная история сохраняется в пространстве.',
+    ],
+    source: { label: 'Источник: Сайт автора' },
+  },
+  18: {
+    type: 'portrait-photo-story',
+    sectionTitle: 'ФОТОИСТОРИИ',
+    paragraphs: [],
+  },
+};
+
 export const cards: CardData[] = placements.map((placement, index) => {
   const id = index + 1;
   const isQuote = placement.presentation === 'quote';
   const title = placement.quote ?? `Фотография о доме ${id}`;
+  const modalContent = modalContentByCardId[id] ?? (isQuote
+    ? {
+        type: 'personal-story' as const,
+        sectionTitle: 'ЛИЧНЫЕ ИСТОРИИ',
+        quote: placement.quote ?? title,
+        paragraphs: [],
+        author: 'Анонимно',
+      }
+    : {
+        type: 'photo-story' as const,
+        sectionTitle: 'ФОТОИСТОРИИ',
+        image: placement.image,
+        imageAlt: title,
+        paragraphs: [],
+      });
 
   return {
     id,
@@ -144,5 +207,14 @@ export const cards: CardData[] = placements.map((placement, index) => {
     ...(placement.image ? { image: placement.image } : {}),
     ...(placement.quote ? { quote: placement.quote } : {}),
     ...(placement.externalUrl ? { externalUrl: placement.externalUrl } : {}),
+    modalContent: {
+      ...modalContent,
+      ...(('image' in modalContent && !modalContent.image && placement.image)
+        ? { image: placement.image }
+        : {}),
+      ...(('imageAlt' in modalContent && !modalContent.imageAlt)
+        ? { imageAlt: title }
+        : {}),
+    },
   };
 });

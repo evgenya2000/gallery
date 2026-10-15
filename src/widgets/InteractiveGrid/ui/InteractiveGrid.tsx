@@ -1,7 +1,13 @@
 import { useMemo, useState } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import styled from 'styled-components';
-import { Card, cards, centralCard, type CardData, type CardPosition } from '../../../entities/Card';
+import {
+  Card,
+  cards,
+  centralCard,
+  type CardModalContent,
+  type CardPosition,
+} from '../../../entities/Card';
 import { CardModal } from '../../../features/CardModal';
 import {
   mediaBreakpointDown,
@@ -18,7 +24,7 @@ const Grid = styled(motion.div)`
   }
 `;
 
-const CentralPrompt = styled.section<{ $position: CardPosition; $mobilePosition: CardPosition }>`
+const CentralPrompt = styled.button<{ $position: CardPosition; $mobilePosition: CardPosition }>`
   position: absolute;
   z-index: 100;
   top: ${({ $position }) => `${$position.y}px`};
@@ -34,6 +40,18 @@ const CentralPrompt = styled.section<{ $position: CardPosition; $mobilePosition:
   border-radius: 8px;
   background: rgba(250, 250, 250, 0.97);
   color: #111;
+  text-align: left;
+  cursor: pointer;
+  transition: opacity 180ms ease;
+
+  &:active {
+    opacity: 0.72;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #2f2f2f;
+    outline-offset: 4px;
+  }
 
   h2 {
     margin: 0 auto 13px;
@@ -82,7 +100,7 @@ interface InteractiveGridProps {
 }
 
 export function InteractiveGrid({ onAllCardsRevealed }: InteractiveGridProps) {
-  const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
+  const [selectedContent, setSelectedContent] = useState<CardModalContent | null>(null);
   const { revealDelays, lastRevealCardId } = useMemo(() => {
     const randomizedCards = [...cards];
 
@@ -104,8 +122,11 @@ export function InteractiveGrid({ onAllCardsRevealed }: InteractiveGridProps) {
     <>
       <Grid variants={gridVariants} initial="hidden" animate="visible" aria-label="Галерея о доме">
         <CentralPrompt
+          type="button"
           $position={centralCard.position}
           $mobilePosition={centralCard.mobilePosition}
+          aria-label="Принять участие в проекте"
+          onClick={() => setSelectedContent(centralCard.modalContent)}
         >
           <h2>{centralCard.title}</h2>
           <p>{centralCard.description}</p>
@@ -114,13 +135,13 @@ export function InteractiveGrid({ onAllCardsRevealed }: InteractiveGridProps) {
           <Card
             key={card.id}
             card={card}
-            onSelect={setSelectedCard}
+            onSelect={setSelectedContent}
             revealDelay={revealDelays.get(card.id) ?? 0}
             onRevealComplete={card.id === lastRevealCardId ? onAllCardsRevealed : undefined}
           />
         ))}
       </Grid>
-      <CardModal card={selectedCard} onClose={() => setSelectedCard(null)} />
+      <CardModal content={selectedContent} onClose={() => setSelectedContent(null)} />
     </>
   );
 }
