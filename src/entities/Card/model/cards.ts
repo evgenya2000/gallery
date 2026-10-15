@@ -1,188 +1,93 @@
-import type { CardData } from './types';
+import type { CardData, CardPosition, CardPresentation } from './types';
 
-const artwork = (number: number) =>
-  `${import.meta.env.BASE_URL}artworks/artwork-${String(number).padStart(2, '0')}.svg`;
+interface CardPlacement {
+  presentation: CardPresentation;
+  position: CardPosition;
+  image?: string;
+  quote?: string;
+  externalUrl?: string;
+}
 
-export const cards: CardData[] = [
-  {
-    id: 1,
-    title: 'Quiet Signal',
-    category: 'text',
-    description: 'A small phrase that gives a noisy day room to breathe.',
-    image: artwork(1),
-    presentation: 'framed',
-    position: { x: 67, y: 112, width: 152, height: 152, rotation: 0 },
-  },
-  {
-    id: 2,
-    title: 'Field Notes',
-    category: 'artwork',
-    description: 'Observations gathered slowly, with attention to what usually passes by.',
-    image: artwork(2),
-    presentation: 'image',
-    position: { x: 274, y: 49, width: 191, height: 145, rotation: -2.5 },
-  },
-  {
-    id: 3,
-    title: 'Soft Focus',
-    category: 'sketch',
-    description: 'A reminder that not every detail needs to be sharp to be remembered.',
-    image: artwork(3),
-    presentation: 'framed',
-    position: { x: 556, y: 149, width: 138, height: 138, rotation: 1.8 },
-  },
-  {
-    id: 4,
-    title: 'Open Window',
-    category: 'symbol',
-    description: 'A line between the familiar room and the wider world outside.',
-    image: artwork(4),
-    presentation: 'image',
-    position: { x: 820, y: 84, width: 136, height: 178, rotation: 2.2 },
-  },
-  {
-    id: 5,
-    title: 'Still Here',
-    category: 'text',
-    description: 'A note on presence: simple, quiet, and enough for now.',
-    image: artwork(5),
-    presentation: 'framed',
-    position: { x: 1108, y: 147, width: 168, height: 168, rotation: -1.5 },
-  },
-  {
-    id: 6,
-    title: 'Blue Hour',
-    category: 'artwork',
-    description: 'The last cool light resting on rooftops just before evening settles in.',
-    image: artwork(6),
-    presentation: 'image',
-    position: { x: 1344, y: 80, width: 172, height: 129, rotation: 1.1 },
-  },
-  {
-    id: 7,
-    title: 'After Rain',
-    category: 'sketch',
-    description: 'Reflections turn an ordinary street into a second, brighter landscape.',
-    image: artwork(7),
-    presentation: 'framed',
-    position: { x: 102, y: 371, width: 159, height: 159, rotation: -1.3 },
-  },
-  {
-    id: 8,
-    title: 'Tidal Memory',
-    category: 'symbol',
-    description: 'An abstract study of the marks water leaves behind as it recedes.',
-    image: artwork(8),
-    presentation: 'image',
-    position: { x: 366, y: 342, width: 141, height: 191, rotation: 1.4 },
-  },
-  {
-    id: 9,
-    title: 'Warm Distance',
-    category: 'text',
-    description: 'Layered tones hold the feeling of a faraway place in late sunlight.',
-    image: artwork(9),
-    presentation: 'framed',
-    position: { x: 590, y: 377, width: 136, height: 136, rotation: 0.8 },
-  },
-  {
-    id: 10,
-    title: 'Small Orbit',
-    category: 'artwork',
-    description: 'A composition about the little worlds that form around everyday rituals.',
-    image: artwork(10),
-    presentation: 'image',
-    position: { x: 832, y: 322, width: 209, height: 156, rotation: -1.8 },
-  },
-  {
-    id: 11,
-    title: 'First Pass',
-    category: 'sketch',
-    description: 'The first loose marks that make a new idea feel possible.',
-    image: artwork(11),
-    presentation: 'framed',
-    position: { x: 1090, y: 400, width: 147, height: 147, rotation: 1.7 },
-  },
-  {
-    id: 12,
-    title: 'Found Shape',
-    category: 'symbol',
-    description: 'A quick outline traced from a shape noticed in the landscape.',
-    image: artwork(12),
-    presentation: 'image',
-    position: { x: 1315, y: 345, width: 166, height: 191, rotation: 1.2 },
-  },
-  {
-    id: 13,
-    title: 'Contour Walk',
-    category: 'text',
-    description: 'One continuous line follows a path through an imagined hillside.',
-    image: artwork(13),
-    presentation: 'image',
-    position: { x: 44, y: 659, width: 195, height: 150, rotation: -2.1 },
-  },
-  {
-    id: 14,
-    title: 'Paper Garden',
-    category: 'artwork',
-    description: 'A collection of botanical gestures, left open and unfinished.',
-    image: artwork(14),
-    presentation: 'framed',
-    position: { x: 320, y: 688, width: 152, height: 152, rotation: 0.5 },
-  },
-  {
-    id: 15,
-    title: 'Loose Thread',
-    category: 'sketch',
-    description: 'A wandering study that connects fragments without forcing an answer.',
-    image: artwork(15),
-    presentation: 'image',
-    position: { x: 527, y: 636, width: 140, height: 189, rotation: -1.4 },
-  },
-  {
-    id: 16,
-    title: 'North Mark',
-    category: 'symbol',
-    description: 'A simple mark for finding direction when the map is incomplete.',
-    image: artwork(16),
-    presentation: 'framed',
-    position: { x: 832, y: 722, width: 133, height: 133, rotation: 1.6 },
-  },
-  {
-    id: 17,
-    title: 'Common Ground',
-    category: 'text',
-    description: 'Two forms meet at the center, making a place they can both share.',
-    image: artwork(17),
-    presentation: 'image',
-    position: { x: 1068, y: 653, width: 207, height: 159, rotation: 1.5 },
-  },
-  {
-    id: 18,
-    title: 'Anna Art Creator',
-    category: 'artwork',
-    description: 'Open the Anna Art Creator Telegram profile.',
-    image: artwork(18),
-    externalUrl: 'https://t.me/AnnaArtCreator',
-    presentation: 'framed',
-    position: { x: 700, y: 550, width: 161, height: 161, rotation: 0 },
-  },
-  {
-    id: 19,
-    title: 'Day Marker',
-    category: 'sketch',
-    description: 'A quiet emblem for the small rituals that shape a day.',
-    image: artwork(19),
-    presentation: 'framed',
-    position: { x: 274, y: 981, width: 143, height: 143, rotation: -1.8 },
-  },
-  {
-    id: 20,
-    title: 'New Growth',
-    category: 'symbol',
-    description: 'A sign of renewal drawn from the first green appearing after winter.',
-    image: artwork(20),
-    presentation: 'image',
-    position: { x: 1010, y: 986, width: 202, height: 152, rotation: 1.3 },
-  },
+export const centralCard = {
+  title: 'дом — это...',
+  description: 'Продолжи фразу. Словами, фотографией или рисунком.',
+  position: { x: 614, y: 364, width: 212, height: 150, rotation: 0 },
+};
+
+const quote = (text: string, x: number, y: number, width: number, height: number): CardPlacement => ({
+  presentation: 'quote',
+  quote: text,
+  position: { x, y, width, height, rotation: 0 },
+});
+
+const image = (
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  rotation = 0,
+  imagePath?: string,
+  externalUrl?: string,
+): CardPlacement => ({
+  presentation: 'image',
+  position: { x, y, width, height, rotation },
+  ...(imagePath ? { image: imagePath } : {}),
+  ...(externalUrl ? { externalUrl } : {}),
+});
+
+// Image paths can be added to these image placements when the photographs are ready.
+const placements: CardPlacement[] = [
+  /* 1  */ image(119, 49, 128.1, 97.95),
+  /* 2  */ image(287, 80, 128.1, 91.11),
+  /* 3  */ quote('«Его сложно предугадать, но я всегда его узнаю»', 444, 34, 128.1, 91.11),
+  /* 4  */ image(616, 114, 134.27, 89.51),
+  /* 5  */ quote('«Запах домашней еды»', 784, 43, 128.1, 91.11),
+  /* 6  */ image(979, 112, 129.07, 104.22),
+  /* 7  */ image(1179, 35, 137.02, 91.35),
+  /* 8  */ quote('«Дома я убираю с себя всю улицу»', 58, 186, 147.17, 104.67),
+  /* 9  */ image(248, 282, 117.09, 78.06),
+  /* 10 */ image(416, 204, 138.24, 92.13),
+  /* 11 */ quote('«Отражение меня в пространстве»', 650, 238, 128.1, 91.11),
+  /* 12 */ image(812, 198, 128.1, 91.11),
+  /* 13 */ quote('«И речь не про деньги»', 1031, 256, 128.1, 91.11),
+  /* 14 */ image(1196, 204, 128.1, 91.11),
+  /* 15 */ image(63, 386, 158.68, 105.74),
+  /* 16 */ image(272, 485, 127.1, 84.7),
+  /* 17 */ image(407, 345, 156.06, 111.33),
+  /* 18 */ image(873, 332, 117.87, 157.17),
+  /* 19 */ image(1041, 406, 143.13, 98.26),
+  /* 20 */ quote('«Именно в эти моменты я физически чувствую: мы дома»', 1252, 341, 128.1, 91.11),
+  /* 21 */ image(48, 541, 116.49, 77.66),
+  /* 22 */ quote('«Если ты один дома, то это совсем другое чувство»', 141, 664, 128.1, 91.11),
+  /* 23 */ image(294, 619, 158.28, 105.47),
+  /* 24 */ image(488, 541, 161.76, 91.35),
+  /* 25 */ image(693, 596, 170.33, 121.8),
+  /* 26 */ quote('«Дом там, где я хозяйка»', 879, 514, 128.1, 91.11),
+  /* 27 */ image(1070, 550, 128.1, 91.11),
+  /* 28 */ image(1229, 485, 76.56, 113.74),
+  /* 29 */ image(93, 794, 142, 95),
+  /* 30 */ quote('«Дом — это свое убежище от всех проблем»', 357, 795, 128.1, 91.11),
+  /* 31 */ image(525, 714, 116.49, 77.66),
+  /* 32 */ quote('«Маленькие повседневные ритуалы»', 672, 789, 128.1, 91.11),
+  /* 33 */ image(862, 772, 162.75, 108.46),
+  /* 34 */ image(1095, 710, 117.87, 157.17),
+  /* 35 */ quote('«Место, где можешь быть собой»', 1248, 666, 128.1, 91.11),
+  /* 36 */ image(917, 649, 127.1, 84.7),
 ];
+
+export const cards: CardData[] = placements.map((placement, index) => {
+  const id = index + 1;
+  const isQuote = placement.presentation === 'quote';
+  const title = placement.quote ?? `Фотография о доме ${id}`;
+
+  return {
+    id,
+    title,
+    category: isQuote ? 'text' : 'artwork',
+    presentation: placement.presentation,
+    position: placement.position,
+    ...(placement.image ? { image: placement.image } : {}),
+    ...(placement.quote ? { quote: placement.quote } : {}),
+    ...(placement.externalUrl ? { externalUrl: placement.externalUrl } : {}),
+  };
+});

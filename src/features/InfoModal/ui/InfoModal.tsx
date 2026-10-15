@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import styled, { css } from 'styled-components';
 import type { ThemeGuideBadge } from '../../../shared/styles/types';
+import { mediaBreakpointDown, mediaBreakpointUp } from '../../../shared/styles/mixins';
 
 export type InfoModalSection = 'guide' | 'contacts';
 
@@ -138,7 +139,7 @@ const Overlay = styled(motion.div)`
   backdrop-filter: blur(20px) saturate(140%);
   -webkit-backdrop-filter: blur(20px) saturate(140%);
 
-  @media (max-width: 767px) {
+  ${mediaBreakpointDown('tablet')} {
     padding: 12px;
   }
 `;
@@ -163,12 +164,12 @@ const Dialog = styled(motion.section)`
     width: 0;
   }
 
-  @media (max-width: 900px) {
+  ${mediaBreakpointDown('smallDesktop', true)} {
     padding: 48px 40px 40px;
     border-radius: 24px;
   }
 
-  @media (max-width: 767px) {
+  ${mediaBreakpointDown('tablet')} {
     padding: 60px 22px 32px;
     border-radius: 20px;
     max-height: calc(100dvh - 24px);
@@ -208,7 +209,7 @@ const DesktopCloseButton = styled(motion.button)`
   height: 48px;
   display: none;
 
-  @media (min-width: 768px) {
+  ${mediaBreakpointUp('tablet')} {
     display: grid;
   }
 `;
@@ -230,7 +231,7 @@ const MobileCloseButton = styled(motion.button)`
     height: 15px;
   }
 
-  @media (min-width: 768px) {
+  ${mediaBreakpointUp('tablet')} {
     display: none;
   }
 `;
@@ -247,12 +248,12 @@ const Title = styled.h2`
   text-align: center;
   text-transform: uppercase;
 
-  @media (max-width: 900px) {
+  ${mediaBreakpointDown('smallDesktop', true)} {
     font-size: 32px;
     margin-bottom: 28px;
   }
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 26px;
     margin-bottom: 24px;
   }
@@ -271,7 +272,7 @@ const Paragraph = styled.p`
     margin-bottom: 0;
   }
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 14px;
   }
 `;
@@ -285,12 +286,12 @@ const Lead = styled.p`
   letter-spacing: -0.015em;
   hyphens: auto;
 
-  @media (max-width: 900px) {
+  ${mediaBreakpointDown('smallDesktop', true)} {
     font-size: 20px;
     margin-bottom: 12px;
   }
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 17px;
   }
 `;
@@ -302,7 +303,7 @@ const Note = styled.p`
   line-height: 1.5;
   letter-spacing: -0.005em;
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 13px;
   }
 `;
@@ -315,12 +316,12 @@ const SectionTitle = styled.h3`
   letter-spacing: -0.01em;
   line-height: 1.15;
 
-  @media (max-width: 900px) {
+  ${mediaBreakpointDown('smallDesktop', true)} {
     font-size: 22px;
     margin: 32px 0 16px;
   }
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 18px;
     margin: 28px 0 14px;
   }
@@ -347,7 +348,7 @@ const Step = styled.div`
     letter-spacing: -0.005em;
   }
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     grid-template-columns: 26px 1fr;
     gap: 10px;
 
@@ -371,7 +372,7 @@ const StepIcon = styled.span`
     height: auto;
   }
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     width: 26px;
     height: 20px;
   }
@@ -383,11 +384,11 @@ const Types = styled.div`
   gap: 28px;
   margin-top: 4px;
 
-  @media (max-width: 900px) {
+  ${mediaBreakpointDown('smallDesktop', true)} {
     gap: 20px;
   }
 
-  @media (max-width: 700px) {
+  ${mediaBreakpointDown('smallTablet', true)} {
     grid-template-columns: 1fr;
     gap: 20px;
   }
@@ -409,7 +410,7 @@ const TypeBadge = styled.span<{ $badge: ThemeGuideBadge }>`
   line-height: 1.4;
   letter-spacing: -0.005em;
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 13px;
     padding: 5px 12px;
   }
@@ -422,7 +423,7 @@ const TypeText = styled.p`
   line-height: 1.5;
   letter-spacing: -0.005em;
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 12.5px;
   }
 `;
@@ -436,7 +437,7 @@ const ContactsGrid = styled.div`
   align-items: start;
   margin-top: 4px;
 
-  @media (max-width: 700px) {
+  ${mediaBreakpointDown('smallTablet', true)} {
     grid-template-columns: 1fr;
     gap: 24px;
   }
@@ -456,11 +457,11 @@ const ContactsHeading = styled.h3`
   letter-spacing: -0.015em;
   line-height: 1.2;
 
-  @media (max-width: 900px) {
+  ${mediaBreakpointDown('smallDesktop', true)} {
     font-size: 22px;
   }
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 18px;
   }
 `;
@@ -480,7 +481,7 @@ const ContactLink = styled.a`
     text-underline-offset: 3px;
   }
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 13.5px;
   }
 `;
@@ -504,7 +505,7 @@ const AuthorName = styled.p`
   line-height: 1.4;
   letter-spacing: -0.005em;
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 14px;
   }
 `;
@@ -517,7 +518,7 @@ const AuthorNote = styled.p`
   letter-spacing: -0.005em;
   hyphens: auto;
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 13px;
     margin-top: 14px;
   }

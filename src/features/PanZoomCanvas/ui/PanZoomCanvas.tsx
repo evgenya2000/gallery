@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
 import { TransformComponent, TransformWrapper, type ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
 import styled from 'styled-components';
+import { mediaBreakpointDown } from '../../../shared/styles/mixins';
 
-const CANVAS_WIDTH = 1600;
-const CANVAS_HEIGHT = 1300;
-const MIN_SCALE = 0.5;
+const CANVAS_WIDTH = 1440;
+const CANVAS_HEIGHT = 935;
+// After the reveal, center the camera on this much of the canvas.
+const VIEW_WIDTH = 1440;
+const VIEW_HEIGHT = 935;
+const MIN_SCALE = 0.25;
 
 interface ViewportSize {
   width: number;
@@ -14,8 +18,8 @@ interface ViewportSize {
 const fitScale = ({ width, height }: ViewportSize) =>
   Math.max(MIN_SCALE, Math.min(1, width / CANVAS_WIDTH, height / CANVAS_HEIGHT));
 
-const initialScale = ({ width, height }: ViewportSize) =>
-  Math.min(3, fitScale({ width, height }) * 1.15);
+const loadedScale = ({ width, height }: ViewportSize) =>
+  Math.min(3, width / VIEW_WIDTH, height / VIEW_HEIGHT);
 
 const CanvasViewport = styled.div`
   width: 100%;
@@ -23,13 +27,17 @@ const CanvasViewport = styled.div`
   overflow: hidden;
   background: transparent;
 
-  @media (max-width: 1199px) {
+  ${mediaBreakpointDown('compact')} {
     height: auto;
     overflow: visible;
   }
 `;
 
-export function PanZoomCanvas({ children }: PropsWithChildren) {
+interface PanZoomCanvasProps extends PropsWithChildren {
+  zoomAfterLoad: boolean;
+}
+
+export function PanZoomCanvas({ children, zoomAfterLoad }: PanZoomCanvasProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
   const [viewportSize, setViewportSize] = useState<ViewportSize>({ width: 0, height: 0 });
@@ -68,13 +76,18 @@ export function PanZoomCanvas({ children }: PropsWithChildren) {
   useEffect(() => {
     if (isCompact || !transformRef.current || !viewportSize.width || !viewportSize.height) return;
 
+    if (zoomAfterLoad) {
+      void transformRef.current.centerView(loadedScale(viewportSize), 1200, 'easeOut');
+      return;
+    }
+
     void transformRef.current.fitToView({
       mode: 'contain',
       minScale: MIN_SCALE,
       maxScale: 1,
       animationTime: 0,
     });
-  }, [isCompact, viewportSize]);
+  }, [isCompact, viewportSize, zoomAfterLoad]);
 
   if (isCompact) {
     return (
@@ -91,7 +104,7 @@ export function PanZoomCanvas({ children }: PropsWithChildren) {
           onInit={(instance) => {
             transformRef.current = instance;
           }}
-          initialScale={initialScale(viewportSize)}
+          initialScale={fitScale(viewportSize)}
           minScale={MIN_SCALE}
           maxScale={3}
           centerOnInit

@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { mediaBreakpointDown } from '../../shared/styles/mixins';
 
 export const GlobalStyles = createGlobalStyle`
   @font-face {
@@ -35,7 +36,7 @@ export const GlobalStyles = createGlobalStyle`
     overflow: hidden;
   }
 
-  @media (max-width: 1199px) {
+  ${mediaBreakpointDown('compact')} {
     html,
     body,
     #root {

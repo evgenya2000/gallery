@@ -8,6 +8,13 @@ import { InfoModal, type InfoModalSection } from '../../../features/InfoModal';
 import galleryBackdrop from '../../../shared/assets/background.png';
 import introLeft from '../../../shared/assets/intro-left.png';
 import introRight from '../../../shared/assets/intro-right.png';
+import {
+  mediaBreakpointBetween,
+  mediaBreakpointDown,
+  mediaBreakpointUp,
+  smoothValue,
+  vw,
+} from '../../../shared/styles/mixins';
 
 const PageFrame = styled.div<{ $dimmed: boolean }>`
   position: relative;
@@ -40,7 +47,7 @@ const PageFrame = styled.div<{ $dimmed: boolean }>`
     pointer-events: none;
   }
 
-  @media (max-width: 1199px) {
+  ${mediaBreakpointDown('compact')} {
     --header-height: 72px;
     --house-art-width: min(100dvh, 70vw);
     --house-art-left: calc(100vw - var(--house-art-width) + 17vw);
@@ -61,14 +68,21 @@ const PageFrame = styled.div<{ $dimmed: boolean }>`
     }
   }
 
-  @media (min-width: 1200px) and (max-width: 1599px) {
+  ${mediaBreakpointBetween('compact', 'desktop')} {
     --roof-anchor-x: 50vw;
     --house-art-left: calc(var(--roof-anchor-x) - 12.07dvh);
     --face-anchor-x: calc(var(--house-art-left) + 21.5dvh);
     --description-left-x: 25vw;
   }
 
-  @media (max-width: 768px) {
+  ${mediaBreakpointDown('compact', true)} {
+    &::before {
+      background-position: 42vw 56vh;
+      background-attachment: fixed;
+    }
+  }
+
+  ${mediaBreakpointDown('tablet', true)} {
     --header-height: 48px;
 
     &::before {
@@ -80,8 +94,8 @@ const PageFrame = styled.div<{ $dimmed: boolean }>`
 
 const CanvasContent = styled.main`
   position: relative;
-  width: 1600px;
-  height: 1300px;
+  width: 1440px;
+  height: 935px;
   overflow: hidden;
 
   &::before {
@@ -96,7 +110,7 @@ const CanvasContent = styled.main`
     pointer-events: none;
   }
 
-  @media (max-width: 1199px) {
+  ${mediaBreakpointDown('compact')} {
     width: 100%;
     height: auto;
     min-height: 0;
@@ -127,7 +141,7 @@ const IntroLayer = styled.div<{ $isAbout: boolean; $clickable: boolean }>`
   cursor: ${({ $clickable }) => ($clickable ? 'pointer' : 'auto')};
   -webkit-tap-highlight-color: transparent;
 
-  @media (max-width: 1199px) {
+  ${mediaBreakpointDown('compact')} {
     --intro-pad: clamp(16px, 4vw, 48px);
     position: relative;
     inset: auto;
@@ -142,19 +156,33 @@ const IntroLayer = styled.div<{ $isAbout: boolean; $clickable: boolean }>`
       : 'calc(var(--roof-anchor-y) - var(--header-height)) var(--intro-pad) clamp(28px, 7vh, 78px)'};
   }
 
-  @media (max-width: 768px) {
+  ${mediaBreakpointDown('tablet', true)} {
     --intro-pad: 16px;
     padding: 67px var(--intro-pad) 36px;
     min-height: calc(100dvh - 48px);
     justify-content: flex-start;
     align-items: flex-start;
     line-height: 13px;
+
+    @media (max-height: 800px) {
+      padding-top: 20px;
+    }
+
+    @media (min-height: 700px) {
+      padding-bottom: 5.14svh;
+    }
+
+    @media (max-height: 750px) {
+      padding-bottom: 10px;
+    }
   }
 
-  @media (max-width: 375px) {
-    padding-top: 35px;
-    padding-bottom: 10px;
-    padding: 35px 22px 10px;
+  ${mediaBreakpointDown('phoneSmall', true)} {
+    padding: 35px 22px 20px;
+
+    @media (min-height: 700px) {
+      padding-bottom: 36px;
+    }
   }
 `;
 
@@ -164,7 +192,7 @@ const IntroImagesOverlay = styled.div<{ $dimmed: boolean }>`
   opacity: ${({ $dimmed }) => ($dimmed ? 0.2 : 1)};
   transition: opacity 900ms ease;
 
-  @media (max-width: 768px) {
+  ${mediaBreakpointDown('tablet', true)} {
     display: block;
     position: fixed;
     top: 0;
@@ -180,29 +208,34 @@ const IntroImagesOverlay = styled.div<{ $dimmed: boolean }>`
 const IntroImageRight = styled(motion.img)`
   display: none;
 
-  @media (max-width: 768px) {
+  ${mediaBreakpointDown('tablet', true)} {
     display: block;
     position: absolute;
     right: 0;
     top: 30svh;
     height: auto;
-    max-height: 60svh;
+    max-height: 48svh;
     object-fit: contain;
     object-position: bottom right;
     z-index: 0;
     pointer-events: none;
     user-select: none;
+
+    @media (min-height: 1000px) {
+      height: 100vh;
+    }
   }
 
-  @media (max-width: 375px) {
+  ${mediaBreakpointDown('phoneSmall', true)} {
     max-height: 48svh;
+
   }
 `;
 
 const IntroImageLeft = styled(motion.img)`
   display: none;
 
-  @media (max-width: 768px) {
+  ${mediaBreakpointDown('tablet', true)} {
     display: block;
     position: absolute;
     left: 0;
@@ -214,10 +247,10 @@ const IntroImageLeft = styled(motion.img)`
     z-index: 0;
     pointer-events: none;
     user-select: none;
-  }
 
-  @media (max-width: 375px) {
-    max-height: 60svh;
+    @media (min-height: 1000px) {
+      height: 100vh;
+    }
   }
 `;
 
@@ -227,18 +260,18 @@ const SplashContent = styled(motion.section)`
   left: var(--intro-pad);
   width: calc(var(--roof-anchor-x) - var(--intro-pad));
 
-  @media (max-width: 1600px) {
+  ${mediaBreakpointDown('desktop', true)} {
     width: calc(48vw - var(--intro-pad));
   }
 
-  @media (max-width: 1199px) {
+  ${mediaBreakpointDown('compact')} {
     position: relative;
     top: auto;
     left: auto;
     width: calc(var(--roof-anchor-x) - var(--intro-pad));
   }
 
-  @media (max-width: 768px) {
+  ${mediaBreakpointDown('tablet', true)} {
     width: 100%;
     position: relative;
     z-index: 1;
@@ -288,16 +321,16 @@ const IntroTitle = styled(motion.button)`
     transform: translateY(0);
   }
 
-  @media (max-width: 1199px) {
+  ${mediaBreakpointDown('compact')} {
     font-size: 93px;
   }
 
-  @media (min-width: 1200px) and (max-width: 1727px) {
-    font-size: calc(4.01vw + 66.9px);
+  ${mediaBreakpointBetween('compact', 'wide')} {
+    font-size: ${smoothValue(115.02, 136.13, 1200, 1728)};
   }
 
-  @media (min-width: 1728px) {
-    font-size: calc(4.69vw + 55px);
+  ${mediaBreakpointUp('wide')} {
+    font-size: calc(${vw(90, 1920)} + 55px);
   }
 
   @media (max-height: 680px) and (max-width: 850px) {
@@ -310,16 +343,16 @@ const IntroTitle = styled(motion.button)`
 
   span:nth-child(2) {
     font-weight: 352;
-    @media (max-width: 1199px) {
+    ${mediaBreakpointDown('compact')} {
       font-size: 120px;
     }
 
-    @media (min-width: 1200px) and (max-width: 1727px) {
-      font-size: calc(4.93vw + 86.8px);
+    ${mediaBreakpointBetween('compact', 'wide')} {
+      font-size: ${smoothValue(145.96, 171.93, 1200, 1728)};
     }
 
-    @media (min-width: 1728px) {
-      font-size: calc(6.01vw + 68.15px);
+    ${mediaBreakpointUp('wide')} {
+      font-size: calc(${vw(115.392, 1920)} + 68.15px);
     }
 
     @media (max-height: 680px) and (max-width: 850px) {
@@ -331,7 +364,7 @@ const IntroTitle = styled(motion.button)`
     }
   }
 
-  @media (max-width: 768px) {
+  ${mediaBreakpointDown('tablet', true)} {
     align-items: flex-end;
     text-align: left;
     letter-spacing: -0.04em;
@@ -349,10 +382,20 @@ const IntroTitle = styled(motion.button)`
       font-size: 84px;
       font-weight: 340;
       line-height: 92.18px;
+    } 
+
+    @media (max-height: 750px) {
+      span:nth-child(1) {
+        font-size: 56px;
+      }
+
+      span:nth-child(2) {
+        font-size: 74px;
+      }
     }
   }
 
-  @media (max-width: 375px) {
+  ${mediaBreakpointDown('phoneSmall', true)} {
     span:nth-child(1) {
       font-size: 54px;
     }
@@ -380,20 +423,20 @@ const IntroDescription = styled(motion.div)`
     margin-top: 18px;
   }
 
-  @media (max-width: 1600px) {
+  ${mediaBreakpointDown('desktop', true)} {
     max-width: 32.5vw;
     margin: clamp(28px, 4.5dvh, 52px) 0 0 calc(23vw - var(--intro-pad));
     font-size: 21.5px;
     line-height: 22.5px;
   }
 
-  @media (max-width: 1200px) {
+  ${mediaBreakpointDown('compact', true)} {
     margin: clamp(28px, 4.5dvh, 52px) 0 0 calc(29vw - var(--intro-pad));
     font-size: 16px;
     line-height: 16.5px;
   }
 
-  @media (max-width: 768px) {
+  ${mediaBreakpointDown('tablet', true)} {
     width: 100%;
     max-width: 275px;
     margin: auto auto 0;
@@ -409,11 +452,12 @@ const IntroDescription = styled(motion.div)`
     }
   }
 
-  @media (max-width: 375px) {
+  ${mediaBreakpointDown('phoneSmall', true)} {
     font-size: 12px;
     max-width: 100%;
     width: 275px;
   }
+
 `;
 
 const AboutCard = styled(motion.section)`
@@ -458,7 +502,7 @@ const AboutCard = styled(motion.section)`
     padding: clamp(24px, 5vw, 48px) clamp(20px, 5vw, 40px) 40px;
   }
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     padding: 54px 22px 40px;
   }
 `;
@@ -473,12 +517,12 @@ const AboutTitle = styled.h2`
   text-align: center;
   text-transform: uppercase;
 
-  @media (max-width: 900px) {
+  ${mediaBreakpointDown('smallDesktop', true)} {
     font-size: clamp(28px, 6vw, 40px);
     margin-bottom: 28px;
   }
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 32px;
   }
 `;
@@ -493,12 +537,12 @@ const AboutSubtitle = styled.h3`
   text-align: center;
   text-transform: uppercase;
 
-  @media (max-width: 900px) {
+  ${mediaBreakpointDown('smallDesktop', true)} {
     font-size: clamp(22px, 4.5vw, 30px);
     margin: 28px 0 16px;
   }
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 32px;
   }
 `;
@@ -515,11 +559,11 @@ const AboutCopy = styled.p`
     margin-bottom: 0;
   }
 
-  @media (max-width: 900px) {
+  ${mediaBreakpointDown('smallDesktop', true)} {
     font-size: 17px;
   }
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 14px;
     line-height: 16px;
   }
@@ -564,12 +608,12 @@ const ContinueButton = styled.button`
     border-color: rgba(20, 20, 20, 0.4);
   }
 
-  @media (max-width: 900px) {
+  ${mediaBreakpointDown('smallDesktop', true)} {
     font-size: 20px;
     margin-top: 32px;
   }
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 18px;
   }
 `;
@@ -580,31 +624,31 @@ const PageHeading = styled(motion.header)`
   display: flex;
   justify-content: space-between;
 
-  @media (min-width: 768px) {
+  ${mediaBreakpointUp('tablet')} {
     padding-top: 27px;
     padding-right: 1.9vw;
     padding-left: 1.9vw;
   }
 
-  @media (min-width: 1200px) {
+  ${mediaBreakpointUp('compact')} {
     padding-top: 38px;
     padding-right: 5.3vw;
     padding-left: 3.2vw;
   }
 
-  @media (min-width: 1728px) {
+  ${mediaBreakpointUp('wide')} {
     padding-top: 43px;
     padding-right: 8.62vw;
     padding-left: 8.62vw;
   }
 
-  @media (min-width: 2400px) {
+  ${mediaBreakpointUp('qhd')} {
     padding-top: 54px;
     padding-left: 10vw;
     padding-right: 10vw;
   }
 
-  @media (max-width: 768px) {
+  ${mediaBreakpointDown('tablet', true)} {
     padding: 29px 22px 0;
   }
 `;
@@ -613,19 +657,19 @@ const HeadingNav = styled.nav`
   display: flex;
   gap: 7.65vw;
 
-  @media (min-width: 1600px) {
+  ${mediaBreakpointUp('desktop')} {
     gap: clamp(80px, 7.5vw, 200px);
   }
 
-  @media (min-width: 1200px) and (max-width: 1599px) {
+  ${mediaBreakpointBetween('compact', 'desktop')} {
     gap: clamp(48px, 10vw, 150px);
   }
 
-  @media (max-width: 1199px) {
+  ${mediaBreakpointDown('compact')} {
     gap: 105px;
   }
 
-  @media (max-width: 768px) {
+  ${mediaBreakpointDown('tablet', true)} {
     gap: 12px;
   }
 `;
@@ -638,27 +682,27 @@ const HeadingLink = styled.button<{ $hidden?: boolean }>`
   cursor: pointer;
   visibility: ${({ $hidden }) => ($hidden ? 'hidden' : 'visible')};
 
-  @media (min-width: 1200px) and (max-width: 1727px) {
+  ${mediaBreakpointBetween('compact', 'wide')} {
     font-size: 24px;
   }
 
-  @media (min-width: 1728px) and (max-width: 2559px) {
+  ${mediaBreakpointBetween('wide', 'uhd')} {
     font-size: 26px;
   }
 
-  @media (min-width: 2560px) {
+  ${mediaBreakpointUp('uhd')} {
     font-size: 34px;
   }
 
-  @media (max-width: 1199px) {
+  ${mediaBreakpointDown('compact')} {
     font-size: clamp(10px, 1.8vw, 16px);
   }
 
-  @media (max-width: 420px) {
+  ${mediaBreakpointDown('narrowPhone', true)} {
     font-size: 9px;
   }
 
-  @media (max-width: 768px) {
+  ${mediaBreakpointDown('tablet', true)} {
     font-size: 11px;
   }
 `;
@@ -687,23 +731,23 @@ const Title = styled.h1`
     color: ${({ theme }) => theme.colors.categories.artwork};
   }
 
-  @media (min-width: 1200px) and (max-width: 1727px) {
+  ${mediaBreakpointBetween('compact', 'wide')} {
     font-size: 24px;
   }
 
-  @media (min-width: 1728px) and (max-width: 2559px) {
+  ${mediaBreakpointBetween('wide', 'uhd')} {
     font-size: 26px;
   }
 
-  @media (min-width: 2560px) {
+  ${mediaBreakpointUp('uhd')} {
     font-size: 34px;
   }
 
-  @media (max-width: 1199px) {
+  ${mediaBreakpointDown('compact')} {
     font-size: clamp(10px, 1.8vw, 16px);
   }
 
-  @media (max-width: 768px) {
+  ${mediaBreakpointDown('tablet', true)} {
     font-size: 11px;
   }
 `;
@@ -712,6 +756,7 @@ export function HomePage() {
   const [introStage, setIntroStage] = useState<'title' | 'about' | 'content'>('title');
   const [mainContentVisible, setMainContentVisible] = useState(false);
   const [gridRevealed, setGridRevealed] = useState(false);
+  const [allCardsRevealed, setAllCardsRevealed] = useState(false);
   const [activeInfo, setActiveInfo] = useState<InfoModalSection | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [descriptionOffset, setDescriptionOffset] = useState<number | null>(null);
@@ -950,14 +995,14 @@ export function HomePage() {
           </AnimatePresence>
         </IntroLayer>
       ) : (
-        <PanZoomCanvas>
+        <PanZoomCanvas zoomAfterLoad={allCardsRevealed}>
           <CanvasContent>
             <GridReveal
               initial={{ opacity: 0 }}
               animate={{ opacity: gridRevealed ? 1 : 0 }}
               transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
             >
-              <InteractiveGrid />
+              <InteractiveGrid onAllCardsRevealed={() => setAllCardsRevealed(true)} />
             </GridReveal>
           </CanvasContent>
         </PanZoomCanvas>

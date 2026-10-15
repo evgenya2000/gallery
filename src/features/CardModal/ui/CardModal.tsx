@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import type { CardCategory, CardData } from '../../../entities/Card';
+import { mediaBreakpointDown } from '../../../shared/styles/mixins';
 
 interface CardModalProps {
   card: CardData | null;
@@ -10,10 +11,10 @@ interface CardModalProps {
 }
 
 const categoryLabels: Record<CardCategory, string> = {
-  text: 'Text',
-  artwork: 'Artwork',
-  sketch: 'Sketch',
-  symbol: 'Symbol',
+  text: 'Фраза',
+  artwork: 'Фотография',
+  sketch: 'Рисунок',
+  symbol: 'Знак',
 };
 
 const Overlay = styled(motion.div)`
@@ -27,7 +28,7 @@ const Overlay = styled(motion.div)`
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     padding: 16px;
   }
 `;
@@ -44,7 +45,7 @@ const Dialog = styled(motion.section)<{ $category: CardCategory }>`
     ${({ theme }) => theme.colors.surface};
   box-shadow: ${({ theme }) => theme.shadows.modal};
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     min-height: 0;
     padding: 28px 22px;
     border-radius: 20px;
@@ -68,7 +69,7 @@ const CloseButton = styled.button`
   cursor: pointer;
   transition: ${({ theme }) => theme.transitions.card};
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     top: 16px;
     right: 16px;
     width: 34px;
@@ -104,7 +105,7 @@ const Heading = styled.h2<{ $category: CardCategory }>`
   letter-spacing: -0.055em;
   line-height: 1.04;
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     margin: 28px 0 14px;
     font-size: clamp(30px, 9vw, 38px);
   }
@@ -117,7 +118,7 @@ const Description = styled.p`
   font-size: 16px;
   line-height: 1.7;
 
-  @media (max-width: 560px) {
+  ${mediaBreakpointDown('phone', true)} {
     font-size: 15px;
     line-height: 1.6;
   }
@@ -158,14 +159,14 @@ export function CardModal({ card, onClose }: CardModalProps) {
             animate={{ opacity: 1, scale: 1, transition: { duration: 0.75, ease: modalEase } }}
             exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.55, ease: modalEase } }}
           >
-            <CloseButton type="button" aria-label="Close dialog" onClick={onClose}>
+            <CloseButton type="button" aria-label="Закрыть" onClick={onClose}>
               ×
             </CloseButton>
             <Badge $category={card.category}>{categoryLabels[card.category]}</Badge>
             <Heading id={`card-title-${card.id}`} $category={card.category}>
               {card.title}
             </Heading>
-            <Description>{card.description}</Description>
+            {card.description && <Description>{card.description}</Description>}
           </Dialog>
         </Overlay>
       )}

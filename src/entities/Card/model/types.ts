@@ -1,5 +1,5 @@
 export type CardCategory = 'text' | 'artwork' | 'sketch' | 'symbol';
-export type CardPresentation = 'framed' | 'image';
+export type CardPresentation = 'image' | 'quote';
 
 export interface CardPosition {
   x: number;
@@ -13,8 +13,9 @@ export interface CardData {
   id: number;
   title: string;
   category: CardCategory;
-  description: string;
-  image: string;
+  description?: string;
+  image?: string;
+  quote?: string;
   externalUrl?: string;
   presentation: CardPresentation;
   position: CardPosition;
