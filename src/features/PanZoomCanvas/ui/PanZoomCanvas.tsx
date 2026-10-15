@@ -5,10 +5,7 @@ import { mediaBreakpointDown } from '../../../shared/styles/mixins';
 
 const CANVAS_WIDTH = 1440;
 const CANVAS_HEIGHT = 935;
-// After the reveal, center the camera on this much of the canvas.
-const VIEW_WIDTH = 1440;
-const VIEW_HEIGHT = 935;
-const MIN_SCALE = 0.25;
+const MIN_SCALE = 0.1;
 
 interface ViewportSize {
   width: number;
@@ -18,18 +15,29 @@ interface ViewportSize {
 const fitScale = ({ width, height }: ViewportSize) =>
   Math.max(MIN_SCALE, Math.min(1, width / CANVAS_WIDTH, height / CANVAS_HEIGHT));
 
-const loadedScale = ({ width, height }: ViewportSize) =>
-  Math.min(3, width / VIEW_WIDTH, height / VIEW_HEIGHT);
+const loadedScale = (size: ViewportSize) =>
+  Math.min(
+    3,
+    Math.max(
+      fitScale(size) * 1.2,
+      size.width / CANVAS_WIDTH,
+      size.height / CANVAS_HEIGHT,
+    ),
+  );
 
 const CanvasViewport = styled.div`
+  flex: 1 1 auto;
+  min-height: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
   background: transparent;
+  touch-action: none;
+  overscroll-behavior: contain;
 
   ${mediaBreakpointDown('compact')} {
-    height: auto;
-    overflow: visible;
+    height: calc(100dvh - var(--header-height));
+    flex: 0 0 auto;
   }
 `;
 
@@ -41,21 +49,9 @@ export function PanZoomCanvas({ children, zoomAfterLoad }: PanZoomCanvasProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
   const [viewportSize, setViewportSize] = useState<ViewportSize>({ width: 0, height: 0 });
-  const [isCompact, setIsCompact] = useState(() =>
-    typeof window !== 'undefined' && window.matchMedia('(max-width: 1199px)').matches,
-  );
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 1199px)');
-    const updateLayout = (event: MediaQueryListEvent) => setIsCompact(event.matches);
-
-    setIsCompact(mediaQuery.matches);
-    mediaQuery.addEventListener('change', updateLayout);
-    return () => mediaQuery.removeEventListener('change', updateLayout);
-  }, []);
-
-  useEffect(() => {
-    if (isCompact || !viewportRef.current) return undefined;
+    if (!viewportRef.current) return undefined;
 
     const viewport = viewportRef.current;
     const measureViewport = () => {
@@ -71,10 +67,10 @@ export function PanZoomCanvas({ children, zoomAfterLoad }: PanZoomCanvasProps) {
     const observer = new ResizeObserver(measureViewport);
     observer.observe(viewport);
     return () => observer.disconnect();
-  }, [isCompact]);
+  }, []);
 
   useEffect(() => {
-    if (isCompact || !transformRef.current || !viewportSize.width || !viewportSize.height) return;
+    if (!transformRef.current || !viewportSize.width || !viewportSize.height) return;
 
     if (zoomAfterLoad) {
       void transformRef.current.centerView(loadedScale(viewportSize), 1200, 'easeOut');
@@ -87,15 +83,7 @@ export function PanZoomCanvas({ children, zoomAfterLoad }: PanZoomCanvasProps) {
       maxScale: 1,
       animationTime: 0,
     });
-  }, [isCompact, viewportSize, zoomAfterLoad]);
-
-  if (isCompact) {
-    return (
-      <CanvasViewport ref={viewportRef}>
-        {children}
-      </CanvasViewport>
-    );
-  }
+  }, [viewportSize, zoomAfterLoad]);
 
   return (
     <CanvasViewport ref={viewportRef}>
@@ -110,12 +98,18 @@ export function PanZoomCanvas({ children, zoomAfterLoad }: PanZoomCanvasProps) {
           centerOnInit
           limitToBounds
           panning={{ velocityDisabled: true }}
-          wheel={{ step: 0.0008 }}
-          pinch={{ disabled: true }}
+          wheel={{ step: 0.1 }}
+          pinch={{ disabled: false }}
           doubleClick={{ disabled: true }}
         >
           <TransformComponent
-            wrapperStyle={{ width: '100%', height: '100%', overflow: 'hidden' }}
+            wrapperStyle={{
+              width: '100%',
+              height: '100%',
+              overflow: 'hidden',
+              touchAction: 'none',
+              overscrollBehavior: 'contain',
+            }}
             contentStyle={{ width: `${CANVAS_WIDTH}px`, height: `${CANVAS_HEIGHT}px` }}
           >
             {children}

@@ -111,10 +111,6 @@ const CanvasContent = styled.main`
   }
 
   ${mediaBreakpointDown('compact')} {
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    overflow: visible;
     background: transparent;
 
     &::before {

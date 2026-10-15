@@ -3,33 +3,11 @@ import { motion, type Variants } from 'framer-motion';
 import styled from 'styled-components';
 import { Card, cards, centralCard, type CardData, type CardPosition } from '../../../entities/Card';
 import { CardModal } from '../../../features/CardModal';
-import { mediaBreakpointDown } from '../../../shared/styles/mixins';
 
 const Grid = styled(motion.div)`
   position: relative;
   width: 1440px;
   height: 935px;
-
-  ${mediaBreakpointDown('compact')} {
-    display: grid;
-    width: 100%;
-    height: auto;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 22px;
-    padding: 16px 32px 42px;
-  }
-
-  ${mediaBreakpointDown('tabletWide', true)} {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
-    padding: 12px 24px 36px;
-  }
-
-  ${mediaBreakpointDown('phone', true)} {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    padding: 6px 18px 32px;
-  }
 `;
 
 const CentralPrompt = styled.section<{ $position: CardPosition }>`
@@ -63,18 +41,6 @@ const CentralPrompt = styled.section<{ $position: CardPosition }>`
     line-height: 1.45;
   }
 
-  ${mediaBreakpointDown('compact')} {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: min(280px, 100%);
-    height: auto;
-    min-height: 150px;
-    grid-column: 1 / -1;
-    justify-self: center;
-    margin: 14px auto 8px;
-    transform: none;
-  }
 `;
 
 const gridVariants: Variants = {

@@ -44,31 +44,6 @@ const CardButton = styled(motion.button)<{ $card: CardData }>`
   transition: ${({ theme }) => theme.transitions.card};
   will-change: transform;
 
-  ${mediaBreakpointDown('compact')} {
-    position: relative;
-    top: auto;
-    left: auto;
-    z-index: auto;
-    width: 100%;
-    height: auto;
-    aspect-ratio: ${({ $card }) => `${$card.position.width} / ${$card.position.height}`};
-    grid-column: ${({ $card }) =>
-      $card.presentation === 'image' && $card.position.width / $card.position.height > 1.35
-        ? 'span 2'
-        : 'span 1'};
-    justify-self: stretch;
-    padding: ${({ $card }) => ($card.presentation === 'quote' ? '12px' : '0')};
-    rotate: 0deg;
-  }
-
-  ${mediaBreakpointDown('phone', true)} {
-    grid-column: ${({ $card }) =>
-      $card.presentation === 'image' && $card.position.width / $card.position.height > 1.35
-        ? 'span 2'
-        : 'span 1'};
-    padding: ${({ $card }) => ($card.presentation === 'quote' ? '10px' : '0')};
-  }
-
   img {
     display: block;
     width: 100%;
