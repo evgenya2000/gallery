@@ -26,23 +26,34 @@ const CardButton = styled(motion.button)<{ $card: CardData }>`
   display: block;
   width: ${({ $card }) => `${$card.position.width}px`};
   height: ${({ $card }) => `${$card.position.height}px`};
-  padding: ${({ $card }) => ($card.presentation === 'quote' ? '16px' : '0')};
+  padding: ${({ $card }) =>
+  $card.presentation === 'quote' ? '0 7.54px 0 8.22px' : '0'};
   overflow: hidden;
   border: ${({ $card }) =>
-    $card.presentation === 'quote' ? '0' : `3px solid ${$card.id % 3 === 0 ? '#30302e' : '#842e2b'}`};
-  border-radius: ${({ $card }) => ($card.presentation === 'quote' ? '8px' : '10px')};
+    $card.presentation === 'quote' ? '0' : `2.42px solid ${$card.id % 3 === 0 ? '#2F2F2F' : '#2F2F2F'}`};
+  border-radius: ${({ $card }) => ($card.presentation === 'quote' ? '5.19px' : '6.06px')};
   background: ${({ $card, theme }) =>
     $card.presentation === 'quote'
       ? '#627984'
       : $card.image
         ? theme.colors.surface
         : 'linear-gradient(145deg, #dedbd5, #c5c2bb)'};
-  box-shadow: ${({ $card }) => ($card.presentation === 'quote' ? 'none' : '0 2px 5px rgba(0, 0, 0, 0.18)')};
   color: ${({ $card, theme }) => ($card.presentation === 'quote' ? '#fff' : theme.colors.text)};
   cursor: pointer;
   rotate: ${({ $card }) => `${$card.position.rotation}deg`};
   transition: ${({ theme }) => theme.transitions.card};
   will-change: transform;
+
+  // Мобильный канвас 1040×800
+  ${mediaBreakpointDown('tablet', true)} {
+    top: ${({ $card }) => `${($card.mobilePosition ?? $card.position).y}px`};
+    left: ${({ $card }) => `${($card.mobilePosition ?? $card.position).x}px`};
+    width: ${({ $card }) => `${($card.mobilePosition ?? $card.position).width}px`};
+    height: ${({ $card }) => `${($card.mobilePosition ?? $card.position).height}px`};
+    rotate: ${({ $card }) => `${($card.mobilePosition ?? $card.position).rotation}deg`};
+    padding: ${({ $card }) =>
+  $card.presentation === 'quote' ? '0 5.71px 0 6.23px' : '0'};
+  }
 
   img {
     display: block;
@@ -71,26 +82,23 @@ const CardButton = styled(motion.button)<{ $card: CardData }>`
     width: 100%;
     height: 100%;
     place-items: center;
-    font-size: clamp(10px, 0.7vw, 12px);
+    font-size: 9.59px;
     font-weight: 400;
-    line-height: 1.18;
+    line-height: 11px;
     text-align: center;
     text-wrap: pretty;
 
-    ${mediaBreakpointDown('phone', true)} {
-      font-size: 10px;
+    ${mediaBreakpointDown('tablet', true)} {
+      font-size: 7.27px;
+      line-height: 8.3px;
     }
   }
 
   &:hover {
     z-index: 1000;
-    border-color: ${({ $card }) => ($card.presentation === 'quote' ? 'transparent' : '#30302e')};
-    box-shadow: ${({ $card }) =>
-      $card.presentation === 'quote'
-        ? '0 8px 18px rgba(0, 0, 0, 0.12)'
-        : '0 12px 28px rgba(0, 0, 0, 0.25)'};
   }
 `;
+
 
 export function Card({ card, onSelect, revealDelay, onRevealComplete }: CardProps) {
   return (

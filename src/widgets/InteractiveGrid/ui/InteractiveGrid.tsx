@@ -3,14 +3,22 @@ import { motion, type Variants } from 'framer-motion';
 import styled from 'styled-components';
 import { Card, cards, centralCard, type CardData, type CardPosition } from '../../../entities/Card';
 import { CardModal } from '../../../features/CardModal';
+import {
+  mediaBreakpointDown,
+} from '../../../shared/styles/mixins';
 
 const Grid = styled(motion.div)`
   position: relative;
   width: 1440px;
   height: 935px;
+
+  ${mediaBreakpointDown('tablet', true)} {
+    width: 1040px;
+    height: 800px;
+  }
 `;
 
-const CentralPrompt = styled.section<{ $position: CardPosition }>`
+const CentralPrompt = styled.section<{ $position: CardPosition; $mobilePosition: CardPosition }>`
   position: absolute;
   z-index: 100;
   top: ${({ $position }) => `${$position.y}px`};
@@ -20,7 +28,7 @@ const CentralPrompt = styled.section<{ $position: CardPosition }>`
   height: ${({ $position }) => `${$position.height}px`};
   flex-direction: column;
   justify-content: center;
-  padding: 20px 22px;
+  padding: 45px 0 36px;
   rotate: ${({ $position }) => `${$position.rotation}deg`};
   border: 3px solid #c4c4c4;
   border-radius: 8px;
@@ -28,17 +36,38 @@ const CentralPrompt = styled.section<{ $position: CardPosition }>`
   color: #111;
 
   h2 {
-    margin: 0 0 12px;
-    font-size: 26px;
+    margin: 0 auto 13px;
+    font-size: 22px;
     font-weight: 400;
-    letter-spacing: -0.04em;
-    line-height: 1;
+    line-height: 27px;
+    text-transform: uppercase;
   }
 
   p {
-    margin: 0;
-    font-size: 11px;
-    line-height: 1.45;
+    margin: 0 auto;
+    width: 158px;
+    font-size: 10.08px;
+    line-height: 14px;
+  }
+
+  ${mediaBreakpointDown('tablet', true)} {
+    top: ${({ $mobilePosition }) => `${$mobilePosition.y}px`};
+    left: ${({ $mobilePosition }) => `${$mobilePosition.x}px`};
+    width: ${({ $mobilePosition }) => `${$mobilePosition.width}px`};
+    height: ${({ $mobilePosition }) => `${$mobilePosition.height}px`};
+    padding: 34.11px 0 25px;
+
+    h2 {
+      margin: 0 auto 9.32px;
+      font-size: 16.67px;
+      line-height:20.5px; 
+    }
+
+    p {
+      font-size: 7.64px;
+      line-height: 10.06px;
+      width: 119.75px;
+    }
   }
 
 `;
@@ -74,7 +103,10 @@ export function InteractiveGrid({ onAllCardsRevealed }: InteractiveGridProps) {
   return (
     <>
       <Grid variants={gridVariants} initial="hidden" animate="visible" aria-label="Галерея о доме">
-        <CentralPrompt $position={centralCard.position}>
+        <CentralPrompt
+          $position={centralCard.position}
+          $mobilePosition={centralCard.mobilePosition}
+        >
           <h2>{centralCard.title}</h2>
           <p>{centralCard.description}</p>
         </CentralPrompt>

@@ -3,6 +3,7 @@ import type { CardData, CardPosition, CardPresentation } from './types';
 interface CardPlacement {
   presentation: CardPresentation;
   position: CardPosition;
+  mobilePosition?: CardPosition;
   image?: string;
   quote?: string;
   externalUrl?: string;
@@ -12,6 +13,7 @@ export const centralCard = {
   title: 'дом — это...',
   description: 'Продолжи фразу. Словами, фотографией или рисунком.',
   position: { x: 614, y: 364, width: 212, height: 150, rotation: 0 },
+  mobilePosition: { x: 443.97, y: 311.11, width: 160.67, height: 113.68, rotation: 0 },
 };
 
 const quote = (text: string, x: number, y: number, width: number, height: number): CardPlacement => ({
@@ -35,7 +37,47 @@ const image = (
   ...(externalUrl ? { externalUrl } : {}),
 });
 
-// Image paths can be added to these image placements when the photographs are ready.
+// Мобильные позиции для канваса 1040×800 (viewport < 768px).
+// Ключ — id карточки (1..36). Порядок совпадает с placements ниже.
+const mobilePositions: Record<number, { x: number; y: number; width: number; height: number }> = {
+  1:  { x: 68.81,  y: 72.37,  width: 97.08,  height: 74.23 },
+  2:  { x: 196.14, y: 95.86,  width: 97.09,  height: 69.05 },
+  3:  { x: 337,    y: 27,     width: 97.09,  height: 69.05 },
+  4:  { x: 450,    y: 96,     width: 101.76, height: 67.84 },
+  5:  { x: 568,    y: 26,     width: 97.09,  height: 69.05 },
+  6:  { x: 687,    y: 91,     width: 97.82,  height: 78.99 },
+  7:  { x: 872.18, y: 61.76,  width: 103.85, height: 69.23 },
+  8:  { x: 22.58,  y: 176.2,  width: 111.54, height: 79.33 },
+  9:  { x: 166.58, y: 248.96, width: 88.74,  height: 59.16 },
+  10: { x: 293.91, y: 189.84, width: 104.77, height: 69.82 },
+  11: { x: 445,    y: 210,    width: 97.09,  height: 69.05 },
+  12: { x: 568,    y: 147,    width: 97.09,  height: 69.05 },
+  13: { x: 760.01, y: 229.25, width: 97.09,  height: 69.05 },
+  14: { x: 885.06, y: 189.84, width: 97.09,  height: 69.05 },
+  15: { x: 26.37,  y: 327.78, width: 120.26, height: 80.14 },
+  16: { x: 184.77, y: 402.81, width: 96.33,  height: 64.2  },
+  17: { x: 287.08, y: 296.7,  width: 118.27, height: 84.38 },
+  18: { x: 625,    y: 237,    width: 89.34,  height: 119.11 },
+  19: { x: 767.59, y: 342.94, width: 108.48, height: 74.47 },
+  20: { x: 927.51, y: 293.67, width: 97.09,  height: 69.05 },
+  21: { x: 15,     y: 445.25, width: 88.28,  height: 58.86 },
+  22: { x: 85.48,  y: 538.47, width: 97.09,  height: 69.05 },
+  23: { x: 201.44, y: 504.37, width: 119.96, height: 79.94 },
+  24: { x: 348.47, y: 445.25, width: 122.6,  height: 69.23 },
+  25: { x: 518,    y: 475,    width: 129.09, height: 92.31 },
+  26: { x: 647,    y: 394,    width: 97.09,  height: 69.05 },
+  27: { x: 789.57, y: 452.07, width: 97.09,  height: 69.05 },
+  28: { x: 910.07, y: 402.81, width: 58.02,  height: 86.2  },
+  29: { x: 167,    y: 637,    width: 107.84, height: 71.86 },
+  30: { x: 365,    y: 673,    width: 97.09,  height: 69.05 },
+  31: { x: 363,    y: 562,    width: 88.28,  height: 58.86 },
+  32: { x: 487,    y: 598,    width: 97.09,  height: 69.05 },
+  33: { x: 647,    y: 605,    width: 123.34, height: 82.2  },
+  34: { x: 808.52, y: 573.34, width: 89.34,  height: 119.11 },
+  35: { x: 924.47, y: 539.99, width: 97.09,  height: 69.05 },
+  36: { x: 520,    y: 710,    width: 96.33,  height: 64.2  },
+};
+
 const placements: CardPlacement[] = [
   /* 1  */ image(119, 49, 128.1, 97.95),
   /* 2  */ image(287, 80, 128.1, 91.11),
@@ -75,6 +117,18 @@ const placements: CardPlacement[] = [
   /* 36 */ image(917, 649, 127.1, 84.7),
 ];
 
+placements.forEach((placement, index) => {
+  const mobile = mobilePositions[index + 1];
+  if (!mobile) return;
+  placement.mobilePosition = {
+    x: mobile.x,
+    y: mobile.y,
+    width: mobile.width,
+    height: mobile.height,
+    rotation: placement.position.rotation,
+  };
+});
+
 export const cards: CardData[] = placements.map((placement, index) => {
   const id = index + 1;
   const isQuote = placement.presentation === 'quote';
@@ -86,6 +140,7 @@ export const cards: CardData[] = placements.map((placement, index) => {
     category: isQuote ? 'text' : 'artwork',
     presentation: placement.presentation,
     position: placement.position,
+    ...(placement.mobilePosition ? { mobilePosition: placement.mobilePosition } : {}),
     ...(placement.image ? { image: placement.image } : {}),
     ...(placement.quote ? { quote: placement.quote } : {}),
     ...(placement.externalUrl ? { externalUrl: placement.externalUrl } : {}),

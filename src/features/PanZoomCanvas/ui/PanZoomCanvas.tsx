@@ -2,26 +2,37 @@ import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
 import { TransformComponent, TransformWrapper, type ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
 import styled from 'styled-components';
 import { mediaBreakpointDown } from '../../../shared/styles/mixins';
+import { useMediaQuery } from '../../../shared/hooks';
 
-const CANVAS_WIDTH = 1440;
-const CANVAS_HEIGHT = 935;
+const DESKTOP_CANVAS_WIDTH = 1440;
+const DESKTOP_CANVAS_HEIGHT = 935;
+const MOBILE_CANVAS_WIDTH = 1040;
+const MOBILE_CANVAS_HEIGHT = 800;
 const MIN_SCALE = 0.1;
+const MOBILE_MEDIA_QUERY = '(max-width: 767px)';
 
 interface ViewportSize {
   width: number;
   height: number;
 }
 
-const fitScale = ({ width, height }: ViewportSize) =>
-  Math.max(MIN_SCALE, Math.min(1, width / CANVAS_WIDTH, height / CANVAS_HEIGHT));
+const fitScale = (
+  { width, height }: ViewportSize,
+  canvasWidth: number,
+  canvasHeight: number,
+) => Math.max(MIN_SCALE, Math.min(1, width / canvasWidth, height / canvasHeight));
 
-const loadedScale = (size: ViewportSize) =>
+const loadedScale = (
+  size: ViewportSize,
+  canvasWidth: number,
+  canvasHeight: number,
+) =>
   Math.min(
     3,
     Math.max(
-      fitScale(size) * 1.2,
-      size.width / CANVAS_WIDTH,
-      size.height / CANVAS_HEIGHT,
+      fitScale(size, canvasWidth, canvasHeight) * 1.2,
+      size.width / canvasWidth,
+      size.height / canvasHeight,
     ),
   );
 
@@ -50,6 +61,10 @@ export function PanZoomCanvas({ children, zoomAfterLoad }: PanZoomCanvasProps) {
   const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
   const [viewportSize, setViewportSize] = useState<ViewportSize>({ width: 0, height: 0 });
 
+  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
+  const canvasWidth = isMobile ? MOBILE_CANVAS_WIDTH : DESKTOP_CANVAS_WIDTH;
+  const canvasHeight = isMobile ? MOBILE_CANVAS_HEIGHT : DESKTOP_CANVAS_HEIGHT;
+
   useEffect(() => {
     if (!viewportRef.current) return undefined;
 
@@ -73,7 +88,11 @@ export function PanZoomCanvas({ children, zoomAfterLoad }: PanZoomCanvasProps) {
     if (!transformRef.current || !viewportSize.width || !viewportSize.height) return;
 
     if (zoomAfterLoad) {
-      void transformRef.current.centerView(loadedScale(viewportSize), 1200, 'easeOut');
+      void transformRef.current.centerView(
+        loadedScale(viewportSize, canvasWidth, canvasHeight),
+        1200,
+        'easeOut',
+      );
       return;
     }
 
@@ -83,16 +102,17 @@ export function PanZoomCanvas({ children, zoomAfterLoad }: PanZoomCanvasProps) {
       maxScale: 1,
       animationTime: 0,
     });
-  }, [viewportSize, zoomAfterLoad]);
+  }, [viewportSize, zoomAfterLoad, canvasWidth, canvasHeight]);
 
   return (
     <CanvasViewport ref={viewportRef}>
       {viewportSize.width > 0 && viewportSize.height > 0 && (
         <TransformWrapper
+          key={`${canvasWidth}x${canvasHeight}`}
           onInit={(instance) => {
             transformRef.current = instance;
           }}
-          initialScale={fitScale(viewportSize)}
+          initialScale={fitScale(viewportSize, canvasWidth, canvasHeight)}
           minScale={MIN_SCALE}
           maxScale={3}
           centerOnInit
@@ -110,7 +130,7 @@ export function PanZoomCanvas({ children, zoomAfterLoad }: PanZoomCanvasProps) {
               touchAction: 'none',
               overscrollBehavior: 'contain',
             }}
-            contentStyle={{ width: `${CANVAS_WIDTH}px`, height: `${CANVAS_HEIGHT}px` }}
+            contentStyle={{ width: `${canvasWidth}px`, height: `${canvasHeight}px` }}
           >
             {children}
           </TransformComponent>

@@ -98,6 +98,11 @@ const CanvasContent = styled.main`
   height: 935px;
   overflow: hidden;
 
+  ${mediaBreakpointDown('tablet')} {
+    width: 1040px;
+    height: 800px;
+  }
+
   &::before {
     position: absolute;
     z-index: 0;

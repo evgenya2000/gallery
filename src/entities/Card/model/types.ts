@@ -19,4 +19,5 @@ export interface CardData {
   externalUrl?: string;
   presentation: CardPresentation;
   position: CardPosition;
+  mobilePosition?: CardPosition;
 }
