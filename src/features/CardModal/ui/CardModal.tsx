@@ -107,9 +107,9 @@ const SectionTitle = styled.h2<{ $center?: boolean }>`
   align-self: start;
   margin: 0;
   padding-right: 54px;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 23px;
   text-align: ${({ $center }) => ($center ? 'center' : 'left')};
   text-transform: uppercase;
   white-space: pre-line;
@@ -170,8 +170,8 @@ const Copy = styled.div`
   min-height: 0;
   align-self: center;
   overflow-y: auto;
-  font-size: clamp(16px, 1.45vw, 25px);
-  line-height: 1.22;
+  font-size: 20px;
+  line-height: 23px;
   white-space: pre-wrap;
   scrollbar-width: none;
 
@@ -203,8 +203,8 @@ const Footer = styled.div`
   align-self: end;
   min-height: 1em;
   padding-top: 24px;
-  font-size: clamp(16px, 1.45vw, 24px);
-  line-height: 1.25;
+  font-size: 20px;
+  line-height: 23px;
 
   a {
     color: inherit;
@@ -287,9 +287,9 @@ const ArtworkLayout = styled.div`
 
 const ArtworkTitle = styled.h3`
   margin: 0 0 26px;
-  font-size: clamp(30px, 3vw, 48px);
+  font-size: 36px;
   font-weight: 400;
-  line-height: 1.12;
+  line-height: 40px;
 
   ${mediaBreakpointDown('tablet', true)} {
     margin-bottom: 20px;
@@ -525,7 +525,7 @@ function ImageContent({ image, imageAlt, portrait }: {
 function Paragraphs({ paragraphs }: { paragraphs: string[] }) {
   return (
     <Copy>
-      {paragraphs.map((paragraph, index) => <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>)}
+      {paragraphs.map((paragraph, index) => <p key={`${index}-${paragraph.slice(0, 24)}`} dangerouslySetInnerHTML={{__html: paragraph}}/>)}
     </Copy>
   );
 }
@@ -560,7 +560,7 @@ function ArtistWork({ content }: { content: Extract<CardModalContent, { type: 'a
       <Copy>
         {content.title && <ArtworkTitle>{content.title}</ArtworkTitle>}
         {content.paragraphs.map((paragraph, index) => (
-          <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>
+          <p key={`${index}-${paragraph.slice(0, 24)}`} dangerouslySetInnerHTML={{ __html: paragraph }}/>
         ))}
       </Copy>
       <Footer>
@@ -576,7 +576,7 @@ function PersonalStory({ content }: { content: Extract<CardModalContent, { type:
   return (
     <PersonalLayout>
       <SectionTitle id="card-modal-title">{content.sectionTitle}</SectionTitle>
-      <Quote>{content.quote}</Quote>
+      <Quote dangerouslySetInnerHTML={{__html: content.quote}}/>
       <Paragraphs paragraphs={content.paragraphs} />
       <Footer>{content.author}</Footer>
     </PersonalLayout>

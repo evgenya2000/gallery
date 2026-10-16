@@ -30,7 +30,9 @@ const CardButton = styled(motion.button) <{ $card: CardData }>`
     $card.presentation === 'quote' ? '0 7.54px 0 8.22px' : '0'};
   overflow: hidden;
   border: ${({ $card }) =>
-    $card.presentation === 'quote' ? '0' : `2.42px solid ${$card.id % 3 === 0 ? '#2F2F2F' : '#2F2F2F'}`};
+  $card.presentation === 'quote'
+    ? '0'
+    : `2.42px solid ${$card.modalContent.type === 'artist-work' ? '#7D2726' : '#2F2F2F'}`};
   border-radius: ${({ $card }) => ($card.presentation === 'quote' ? '5.19px' : '6.06px')};
   background: ${({ $card, theme }) =>
     $card.presentation === 'quote'
