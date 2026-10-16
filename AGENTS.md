@@ -2,7 +2,9 @@
 
 ## Project Overview
 
-`gallery` is a single-page React application that presents an interactive, pan-and-zoom art collection titled **"Что такое дом?"** ("What is a home?"). The UI is built around a large fixed canvas (`1400×1100 px`) where users can drag, zoom, and click cards to reveal artwork descriptions. On compact viewports the canvas becomes a scrollable grid instead.
+`gallery` is a single-page React application that presents an interactive art collection titled **"Что такое дом?"** ("What is a home?").
+
+On desktop, the experience is built around a fixed pan-and-zoom canvas (`1440×935 px`) rendered by `react-zoom-pan-pinch`. Users can drag, zoom, and click cards to reveal artwork descriptions, personal stories, and participation prompts. On compact viewports (`≤767 px`) the canvas switches to a scrollable mobile layout (`1040×800 px`).
 
 The project is deployed to GitHub Pages under the `/gallery/` base path.
 
@@ -38,19 +40,30 @@ src/
       ui/InteractiveGrid.tsx
       index.ts
   features/
-    CardModal/         # Detail modal for a selected card
-    InfoModal/         # Guide / contacts modal
-    PanZoomCanvas/     # Zoom/pan wrapper around the grid
+    CardModal/         # Modal for card content
+      ui/CardModal.tsx
+      index.ts
+    InfoModal/         # Information / about modal
+      ui/InfoModal.tsx
+      index.ts
+    PanZoomCanvas/     # Pan/zoom wrapper around the grid
+      ui/PanZoomCanvas.tsx
+      index.ts
   entities/
-    Card/              # Card data model, types, and card UI
+    Card/              # Card data, types, and card UI
       model/
+        cards.ts       # 36 cards + central participation card
+        types.ts
       ui/
+        Card.tsx
       index.ts
   shared/
-    assets/            # Background images
-    styles/            # Theme, theme types
+    assets/            # Background images (PNG)
+    hooks/             # useMediaQuery
+    styles/            # theme, mixins, types
 public/
-  artworks/            # 20 SVG artworks (artwork-01.svg … artwork-20.svg)
+  artworks/            # 20 SVG artwork files (artwork-01.svg … artwork-20.svg)
+  fonts/               # RobotoMono variable + italic WOFF2
 ```
 
 ## Development Commands
@@ -83,9 +96,9 @@ npm run deploy
 
 ## Theme & Styling
 
-- Background: `#0a0a0a`
+- Background: `#F7F7F7`
 - Surface: `#141414`
-- Primary text: `#f4f1ec`
+- Primary text: `#000000`
 - Muted text: `#8b8985`
 - Category colors:
   - `text`: `#E63946`
@@ -94,14 +107,36 @@ npm run deploy
   - `symbol`: `#E9C46A`
 - Card border radius: `16px`
 - Modal border radius: `24px`
-- Breakpoints:
-  - Compact / mobile layout: `< 1200px`
-  - Small modal adjustments: `< 560px`
+- Breakpoints (see `src/shared/styles/mixins.ts`):
+  - `phone`: `560px`
+  - `tablet`: `768px`
+  - `compact`: `1200px`
+  - `xxl`: `1440px`
+
+## Canvas & Layout
+
+- Desktop canvas size: `1440×935 px` (defined in `PanZoomCanvas.tsx` and `InteractiveGrid.tsx`).
+- Mobile canvas size: `1040×800 px`.
+- Mobile switch: `PanZoomCanvas.tsx` uses `(max-width: 767px)`; `InteractiveGrid.tsx` uses `mediaBreakpointDown('tablet', true)` → `(max-width: 768px)`.
+- On desktop, the page hides scrollbars and fills the viewport; on mobile it switches to a flowing, scrollable layout.
+
+## Cards & Modals
+
+- 36 numbered cards (`id` 1–36) plus one central participation card.
+- Each card has a `category` (`text`, `artwork`, `sketch`, `symbol`) and a `presentation` (`image`, `quote`).
+- Modal content types (`CardModalType`):
+  - `photo-story`
+  - `portrait-photo-story`
+  - `artist-work`
+  - `personal-story`
+  - `participation` (used by the central card)
+- Card data and positions are defined in `src/entities/Card/model/cards.ts`.
 
 ## Assets
 
-- Artworks are stored as individual SVG files in `public/artworks/` and referenced by filename in the card data.
+- Artworks are stored as individual SVG files in `public/artworks/` (20 files: `artwork-01.svg` … `artwork-20.svg`) and referenced by filename in the card data.
 - Background image assets live in `src/shared/assets/`.
+- Fonts are loaded from `public/fonts/` via `GlobalStyles.ts`.
 
 ## Deployment Notes
 
@@ -110,7 +145,7 @@ npm run deploy
 
 ## Notes for Agents
 
-- Prefer adding new artwork by placing an SVG in `public/artworks/` and registering it in `src/entities/Card/model/cards.ts` (or the equivalent card data source).
-- When editing the canvas layout, keep `CANVAS_WIDTH` / `CANVAS_HEIGHT` in sync with `src/features/PanZoomCanvas/ui/PanZoomCanvas.tsx` and the grid definitions in `InteractiveGrid`.
-- On desktop, the page hides scrollbars and fills the viewport; on mobile (`< 1200px`) it switches to a flowing, scrollable layout.
+- Prefer adding new artwork by placing an SVG in `public/artworks/` and registering it in `src/entities/Card/model/cards.ts`.
+- When editing the canvas layout, keep `DESKTOP_CANVAS_WIDTH` / `DESKTOP_CANVAS_HEIGHT` and `MOBILE_CANVAS_WIDTH` / `MOBILE_CANVAS_HEIGHT` in sync between `src/features/PanZoomCanvas/ui/PanZoomCanvas.tsx` and `src/widgets/InteractiveGrid/ui/InteractiveGrid.tsx`.
+- On desktop, the page hides scrollbars and fills the viewport; on mobile (`≤767 px`) it switches to a flowing, scrollable layout.
 - Avoid introducing new global CSS files; extend `GlobalStyles.ts` or use component-scoped styled-components.
