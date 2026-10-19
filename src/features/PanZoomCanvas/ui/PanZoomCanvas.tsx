@@ -30,7 +30,7 @@ const loadedScale = (
   Math.min(
     3,
     Math.max(
-      fitScale(size, canvasWidth, canvasHeight) * 1.2,
+      fitScale(size, canvasWidth, canvasHeight) * 2,
       size.width / canvasWidth,
       size.height / canvasHeight,
     ),

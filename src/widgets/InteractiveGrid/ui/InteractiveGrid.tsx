@@ -24,7 +24,7 @@ const Grid = styled(motion.div)`
   }
 `;
 
-const CentralPrompt = styled.button<{ $position: CardPosition; $mobilePosition: CardPosition }>`
+const CentralPrompt = styled(motion.button) <{ $position: CardPosition; $mobilePosition: CardPosition }>`
   position: absolute;
   z-index: 100;
   top: ${({ $position }) => `${$position.y}px`};
@@ -97,9 +97,10 @@ const gridVariants: Variants = {
 
 interface InteractiveGridProps {
   onAllCardsRevealed: () => void;
+  shouldReveal: boolean;
 }
 
-export function InteractiveGrid({ onAllCardsRevealed }: InteractiveGridProps) {
+export function InteractiveGrid({ onAllCardsRevealed, shouldReveal }: InteractiveGridProps) {
   const [selectedContent, setSelectedContent] = useState<CardModalContent | null>(null);
   const { revealDelays, lastRevealCardId } = useMemo(() => {
     const randomizedCards = [...cards];
@@ -113,20 +114,23 @@ export function InteractiveGrid({ onAllCardsRevealed }: InteractiveGridProps) {
     }
 
     return {
-      revealDelays: new Map(randomizedCards.map((card, index) => [card.id, index * 0.045])),
+      revealDelays: new Map(randomizedCards.map((card, index) => [card.id, index * 0.12])),
       lastRevealCardId: randomizedCards[randomizedCards.length - 1].id,
     };
   }, []);
 
   return (
     <>
-      <Grid variants={gridVariants} initial="hidden" animate="visible" aria-label="Галерея о доме">
+      <Grid variants={gridVariants} initial="hidden" animate={shouldReveal ? "visible" : 'hidden'} aria-label="Галерея о доме">
         <CentralPrompt
           type="button"
           $position={centralCard.position}
           $mobilePosition={centralCard.mobilePosition}
           aria-label="Принять участие в проекте"
           onClick={() => setSelectedContent(centralCard.modalContent)}
+          initial={{ opacity: 0 }}
+          animate={shouldReveal ? { opacity: 1 } : { opacity: 0 }}
+          transition={{duration: 0.85, delay: 0.25, ease: [0.16, 1, 0.3, 1]}}
         >
           <h2>{centralCard.title}</h2>
           <p>{centralCard.description}</p>

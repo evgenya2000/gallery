@@ -830,7 +830,7 @@ export function HomePage() {
   const [introStage, setIntroStage] = useState<'title' | 'about' | 'content'>('title');
   const [mainContentVisible, setMainContentVisible] = useState(false);
   const [gridRevealed, setGridRevealed] = useState(false);
-  const [allCardsRevealed, setAllCardsRevealed] = useState(false);
+  const [gridRevealComplete, setGridRevealComplete] = useState(false);
   const [activeInfo, setActiveInfo] = useState<InfoModalSection | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [descriptionOffset, setDescriptionOffset] = useState<number | null>(null);
@@ -861,6 +861,7 @@ export function HomePage() {
   useEffect(() => {
     if (!mainContentVisible) {
       setGridRevealed(false);
+      setGridRevealComplete(false);
       return undefined;
     }
     const timeout = window.setTimeout(() => setGridRevealed(true), 500);
@@ -1069,14 +1070,14 @@ export function HomePage() {
           </AnimatePresence>
         </IntroLayer>
       ) : (
-        <PanZoomCanvas zoomAfterLoad={allCardsRevealed}>
+        <PanZoomCanvas zoomAfterLoad={gridRevealComplete}>
           <CanvasContent>
             <GridReveal
               initial={{ opacity: 0 }}
               animate={{ opacity: gridRevealed ? 1 : 0 }}
               transition={{ duration: 1.75, ease: [0.4, 0, 0.2, 1] }}
             >
-              <InteractiveGrid onAllCardsRevealed={() => setAllCardsRevealed(true)} />
+              <InteractiveGrid onAllCardsRevealed={() => setGridRevealComplete(true)} shouldReveal={gridRevealed}/>
             </GridReveal>
           </CanvasContent>
         </PanZoomCanvas>
