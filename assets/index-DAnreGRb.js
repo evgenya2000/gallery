@@ -1029,7 +1029,14 @@ Error generating stack: `+e.message+`
     pointer-events: none;
   }
 
-  ${Y(`compact`)} {
+  ${Fp(`compact`,`desktop`)} {
+    --roof-anchor-x: 50vw;
+    --house-art-left: calc(var(--roof-anchor-x) - 12.07dvh);
+    --face-anchor-x: calc(var(--house-art-left) + 21.5dvh);
+    --description-left-x: 25vw;
+  }
+
+  ${Y(`compact`,!0)} {
     --header-height: 72px;
     --house-art-width: min(100dvh, 70vw);
     --house-art-left: calc(100vw - var(--house-art-width) + 17vw);
@@ -1045,21 +1052,8 @@ Error generating stack: `+e.message+`
     background-color: #f7f7f7;
 
     &::before {
-      background-position: var(--house-art-left) calc(var(--roof-anchor-y) - 32vh);
-      background-attachment: fixed;
-    }
-  }
-
-  ${Fp(`compact`,`desktop`)} {
-    --roof-anchor-x: 50vw;
-    --house-art-left: calc(var(--roof-anchor-x) - 12.07dvh);
-    --face-anchor-x: calc(var(--house-art-left) + 21.5dvh);
-    --description-left-x: 25vw;
-  }
-
-  ${Y(`compact`,!0)} {
-    &::before {
-      background-position: 42vw 56vh;
+      background-position: right -100px bottom -2svh;
+      background-size: auto 55svh;
       background-attachment: fixed;
     }
   }
@@ -1127,7 +1121,7 @@ Error generating stack: `+e.message+`
     min-height: calc(100dvh - var(--header-height));
     align-items: ${({$isAbout:e})=>e?`center`:`flex-start`};
     justify-content: ${({$isAbout:e})=>e?`center`:`flex-start`};
-    padding: ${({$isAbout:e})=>e?`0 var(--intro-pad)`:`calc(var(--roof-anchor-y) - var(--header-height)) var(--intro-pad) clamp(28px, 7vh, 78px)`};
+    padding: ${({$isAbout:e})=>e?`0 var(--intro-pad)`:`5vh var(--intro-pad) clamp(28px, 7vh, 78px)`};
   }
 
   ${Y(`tablet`,!0)} {
@@ -1164,7 +1158,7 @@ Error generating stack: `+e.message+`
   opacity: ${({$dimmed:e})=>e?.2:1};
   transition: opacity 900ms ease;
 
-  ${Y(`tablet`,!0)} {
+  ${Y(`compact`,!0)} {
     display: block;
     position: fixed;
     top: 0;
@@ -1203,11 +1197,11 @@ Error generating stack: `+e.message+`
 `,sv=J(Tu.img)`
   display: none;
 
-  ${Y(`tablet`,!0)} {
+  ${Y(`compact`,!0)} {
     display: block;
     position: absolute;
     left: 0;
-    top: 18svh;
+    top: 22svh;
     height: auto;
     max-height: 60svh;
     object-fit: contain;
@@ -1215,6 +1209,15 @@ Error generating stack: `+e.message+`
     z-index: 0;
     pointer-events: none;
     user-select: none;
+
+    @media (min-height: 1000px) {
+      height: 1000px;
+    }
+  }
+
+  ${Y(`tablet`,!0)} {
+    top: 18svh;
+    max-height: 60svh;
 
     @media (min-height: 1000px) {
       height: 100vh;
@@ -1235,6 +1238,11 @@ Error generating stack: `+e.message+`
     top: auto;
     left: auto;
     width: calc(var(--roof-anchor-x) - var(--intro-pad));
+  }
+
+  ${Fp(`tablet`,`compact`)} {
+    width: 100%;
+    max-width: 100%;
   }
 
   ${Y(`tablet`,!0)} {
@@ -1328,6 +1336,19 @@ Error generating stack: `+e.message+`
     }
   }
 
+  ${Fp(`tablet`,`compact`)} {
+    padding-right: 10vw;
+    span:nth-child(1) {
+      font-size: 97.46px;
+      line-height: 105.8px;
+    }
+
+    span:nth-child(2) {
+      font-size: 123.59px;
+      line-height: 150.3px;
+    }
+  }
+
   ${Y(`tablet`,!0)} {
     align-items: flex-end;
     text-align: left;
@@ -1396,6 +1417,14 @@ Error generating stack: `+e.message+`
     margin: clamp(28px, 4.5dvh, 52px) 0 0 calc(29vw - var(--intro-pad));
     font-size: 16px;
     line-height: 16.5px;
+  }
+
+  ${Fp(`tablet`,`compact`)} {
+    width: auto;
+    max-width: 100%;
+    margin: clamp(20px, 3dvh, 36px) 0 0;
+    font-size: 16.83px;
+    line-height: 17.59px;
   }
 
   ${Y(`tablet`,!0)} {
