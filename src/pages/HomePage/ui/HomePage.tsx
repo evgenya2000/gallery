@@ -47,6 +47,13 @@ const PageFrame = styled.div<{ $dimmed: boolean }>`
     pointer-events: none;
   }
 
+  ${mediaBreakpointBetween('compact', 'desktop')} {
+    --roof-anchor-x: 50vw;
+    --house-art-left: calc(var(--roof-anchor-x) - 12.07dvh);
+    --face-anchor-x: calc(var(--house-art-left) + 21.5dvh);
+    --description-left-x: 25vw;
+  }
+
   ${mediaBreakpointDown('compact')} {
     --header-height: 72px;
     --house-art-width: min(100dvh, 70vw);
@@ -63,21 +70,8 @@ const PageFrame = styled.div<{ $dimmed: boolean }>`
     background-color: #f7f7f7;
 
     &::before {
-      background-position: var(--house-art-left) calc(var(--roof-anchor-y) - 32vh);
-      background-attachment: fixed;
-    }
-  }
-
-  ${mediaBreakpointBetween('compact', 'desktop')} {
-    --roof-anchor-x: 50vw;
-    --house-art-left: calc(var(--roof-anchor-x) - 12.07dvh);
-    --face-anchor-x: calc(var(--house-art-left) + 21.5dvh);
-    --description-left-x: 25vw;
-  }
-
-  ${mediaBreakpointDown('compact', true)} {
-    &::before {
-      background-position: 42vw 56vh;
+      background-position: right -100px bottom -2svh;
+      background-size: auto 55svh;
       background-attachment: fixed;
     }
   }
@@ -154,7 +148,7 @@ const IntroLayer = styled.div<{ $isAbout: boolean; $clickable: boolean }>`
     padding: ${({ $isAbout }) =>
     $isAbout
       ? '0 var(--intro-pad)'
-      : 'calc(var(--roof-anchor-y) - var(--header-height)) var(--intro-pad) clamp(28px, 7vh, 78px)'};
+      : '5vh var(--intro-pad) clamp(28px, 7vh, 78px)'};
   }
 
   ${mediaBreakpointDown('tablet', true)} {
@@ -193,7 +187,7 @@ const IntroImagesOverlay = styled.div<{ $dimmed: boolean }>`
   opacity: ${({ $dimmed }) => ($dimmed ? 0.2 : 1)};
   transition: opacity 900ms ease;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointDown('compact', true)} {
     display: block;
     position: fixed;
     top: 0;
@@ -236,11 +230,11 @@ const IntroImageRight = styled(motion.img)`
 const IntroImageLeft = styled(motion.img)`
   display: none;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointDown('compact')} {
     display: block;
     position: absolute;
     left: 0;
-    top: 18svh;
+    top: 22svh;
     height: auto;
     max-height: 60svh;
     object-fit: contain;
@@ -248,6 +242,15 @@ const IntroImageLeft = styled(motion.img)`
     z-index: 0;
     pointer-events: none;
     user-select: none;
+
+    @media (min-height: 1000px) {
+      height: 1000px;
+    }
+  }
+
+  ${mediaBreakpointDown('tablet', true)} {
+    top: 18svh;
+    max-height: 60svh;
 
     @media (min-height: 1000px) {
       height: 100vh;
@@ -270,6 +273,11 @@ const SplashContent = styled(motion.section)`
     top: auto;
     left: auto;
     width: calc(var(--roof-anchor-x) - var(--intro-pad));
+  }
+
+  ${mediaBreakpointBetween('tablet', 'compact')} {
+    width: 100%;
+    max-width: 100%;
   }
 
   ${mediaBreakpointDown('tablet', true)} {
@@ -365,6 +373,19 @@ const IntroTitle = styled(motion.button)`
     }
   }
 
+  ${mediaBreakpointBetween('tablet', 'compact')} {
+    padding-right: 10vw;
+    span:nth-child(1) {
+      font-size: 97.46px;
+      line-height: 105.8px;
+    }
+
+    span:nth-child(2) {
+      font-size: 123.59px;
+      line-height: 150.3px;
+    }
+  }
+
   ${mediaBreakpointDown('tablet', true)} {
     align-items: flex-end;
     text-align: left;
@@ -435,6 +456,14 @@ const IntroDescription = styled(motion.div)`
     margin: clamp(28px, 4.5dvh, 52px) 0 0 calc(29vw - var(--intro-pad));
     font-size: 16px;
     line-height: 16.5px;
+  }
+
+  ${mediaBreakpointBetween('tablet', 'compact')} {
+    width: auto;
+    max-width: 100%;
+    margin: clamp(20px, 3dvh, 36px) 0 0;
+    font-size: 16.83px;
+    line-height: 17.59px;
   }
 
   ${mediaBreakpointDown('tablet', true)} {
