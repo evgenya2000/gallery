@@ -8,7 +8,7 @@ const DESKTOP_CANVAS_WIDTH = 1440;
 const DESKTOP_CANVAS_HEIGHT = 935;
 const MOBILE_CANVAS_WIDTH = 1040;
 const MOBILE_CANVAS_HEIGHT = 800;
-const MIN_SCALE = 0.1;
+const MIN_SCALE = 0.8;
 const MOBILE_MEDIA_QUERY = '(max-width: 767px)';
 
 interface ViewportSize {
@@ -118,7 +118,7 @@ export function PanZoomCanvas({ children, zoomAfterLoad }: PanZoomCanvasProps) {
           centerOnInit
           limitToBounds
           panning={{ velocityDisabled: true }}
-          wheel={{ step: 0.1 }}
+          wheel={{ step: 0.01 }}
           pinch={{ disabled: false }}
           doubleClick={{ disabled: true }}
         >

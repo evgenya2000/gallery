@@ -1074,7 +1074,7 @@ export function HomePage() {
             <GridReveal
               initial={{ opacity: 0 }}
               animate={{ opacity: gridRevealed ? 1 : 0 }}
-              transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
+              transition={{ duration: 1.75, ease: [0.4, 0, 0.2, 1] }}
             >
               <InteractiveGrid onAllCardsRevealed={() => setAllCardsRevealed(true)} />
             </GridReveal>
