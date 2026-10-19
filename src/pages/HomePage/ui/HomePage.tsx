@@ -535,8 +535,8 @@ const IntroDescription = styled(motion.div)`
 
 const AboutCard = styled(motion.section)`
   position: relative;
-  width: 960px;
-  height: 682px;
+  width: 980px;
+  height: auto;
   max-width: calc(100vw - 48px);
   max-height: calc(100dvh - var(--header-height) - 48px);
   overflow-y: auto;
@@ -559,7 +559,8 @@ const AboutCard = styled(motion.section)`
     height: 0;
   }
 
-  @media (max-width: 1000px), (max-height: 840px) {
+  ${mediaBreakpointDown('modal', true)} {
+    overflow-y: auto;
     position: fixed;
     z-index: 15;
     top: var(--header-height);
@@ -981,7 +982,7 @@ export function HomePage() {
                   type="button"
                   aria-describedby="intro-continue-hint"
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 1, y: 0, transition: { duration: 1.25, ease: [0.4, 0, 0.2, 1] } }}
+                  animate={{ opacity: 1, y: 0, transition: { duration: 2, ease: [0.4, 0, 0.2, 1] } }}
                   onClick={() => setIntroStage('about')}
                 >
                   <span>ЧТО ТАКОЕ</span>
@@ -1000,8 +1001,8 @@ export function HomePage() {
                   animate={{
                     opacity: 1,
                     transition: {
-                      delay: isMobile ? 0.35 : 1.35,
-                      duration: isMobile ? 0.7 : 1.1,
+                      delay: 1.35,
+                      duration: 1.5,
                       ease: [0.4, 0, 0.2, 1],
                     },
                   }}
