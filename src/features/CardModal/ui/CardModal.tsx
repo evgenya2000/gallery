@@ -540,7 +540,7 @@ function PhotoStory({ content }: { content: Extract<CardModalContent, { type: 'p
       <Copy>
         {content.title && <StoryTitle>{content.title}</StoryTitle>}
         {content.paragraphs.map((paragraph, index) => (
-          <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>
+          <p key={`${index}-${paragraph.slice(0, 24)}`} dangerouslySetInnerHTML={{__html: paragraph}}/>
         ))}
       </Copy>
       <Footer>{content.author}</Footer>

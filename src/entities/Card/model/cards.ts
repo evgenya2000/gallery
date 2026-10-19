@@ -281,9 +281,9 @@ const modalContentByCardId: Partial<Record<number, CardModalContent>> = {
     quote: '&laquo;Отражение меня в пространстве&raquo;',
     paragraphs: [
       'Дом это не обязательно квартира или здание, это пространство, облик и атмосферу которого формирую и выбираю я сам с близкими мне людьми. В сущности дом это отражение меня самого в пространственной форме. И он выполняет много функций  для поддержания моего темпа жизни.',
-      'Что заставляет тебя чувствовать себя дома? Знание места, людей вокруг. Предсказуемость окружающей среды. Все это дает чувство принадлежности, спокойствия, а это рождает ощущение «Я дома».',
+      'Что заставляет тебя чувствовать себя дома?<br>Знание места, людей вокруг. Предсказуемость окружающей среды. Все это дает чувство принадлежности, спокойствия, а это рождает ощущение «Я дома».',
     ],
-    author: 'Анонимно',
+    author: 'Аноним',
   },
   12: {
     type: 'photo-story',
@@ -292,7 +292,7 @@ const modalContentByCardId: Partial<Record<number, CardModalContent>> = {
     paragraphs: [
       'Дом — это люди, которые принимают тебя полностью. Которые знают твои плохие и хорошие стороны, не пытаясь тебя перекроить или упрекнуть. Люди, с которыми можно разделить и близость, и тишину, и пространство. Люди, для которых ты не шумная, странная, агрессивная или злая. Ты — просто ты, и это супер.',
     ],
-    author: 'Анонимно',
+    author: 'Аноним',
   },
   13: {
     type: 'personal-story',
@@ -422,9 +422,9 @@ const modalContentByCardId: Partial<Record<number, CardModalContent>> = {
     source: { label: 'Источник: https://santinaamato.com/Family-home-still-life', href: 'https://santinaamato.com/Family-home-still-life', },
   },
   24: {
-    type: 'personal-story',
-    sectionTitle: 'ЛИЧНЫЕ ИСТОРИИ',
-    quote: '&laquo; &raquo;',
+    type: 'photo-story',
+    sectionTitle: 'ФОТОИСТОРИИ',
+    image: asset('photos/24.jpg'),
     paragraphs: [
       'Мой дом&nbsp;&mdash; это моя Якутия, мое маленькое село Эльгяй.',
 
@@ -458,7 +458,7 @@ const modalContentByCardId: Partial<Record<number, CardModalContent>> = {
       'Я чувствую себя дома, когда я в уютной, удобной, подходящей настроению и задачам одежде.',
       'Когда я могу оставить все как есть, или наоборот, поменять обстановку, детали, привнести что-то новое или избавиться от надоевшего. Дом там, где я хозяйка.',
     ],
-    author: 'Анонимно',
+    author: 'Аноним',
   },
   27: {
     type: 'photo-story',
@@ -554,10 +554,9 @@ const modalContentByCardId: Partial<Record<number, CardModalContent>> = {
     paragraphs: [
       'Дом - место,где можешь быть полностью собой, без масок и напряжения',
 
-      'Что заставляет тебя чувствовать себя дома?',
-      'Чувство безопасности и безусловной любви',
+      'Что заставляет тебя чувствовать себя дома?<br>Чувство безопасности и безусловной любви',
     ],
-    author: 'Анонимно',
+    author: 'Аноним',
   },
   36: {
     type: 'artist-work',
@@ -583,7 +582,7 @@ export const cards: CardData[] = placements.map((placement, index) => {
       sectionTitle: 'ЛИЧНЫЕ ИСТОРИИ',
       quote: placement.quote ?? title,
       paragraphs: [],
-      author: 'Анонимно',
+      author: 'Аноним',
     }
     : {
       type: 'photo-story' as const,
