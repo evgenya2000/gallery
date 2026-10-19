@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import type { CardModalContent, CardModalType } from '../../../entities/Card';
 import { mediaBreakpointDown } from '../../../shared/styles/mixins';
+import { getResponsiveImageSources } from '../../../shared/lib/images';
 
 interface CardModalProps {
   content: CardModalContent | null;
@@ -514,7 +515,11 @@ function ImageContent({ image, imageAlt, portrait }: {
   return (
     <ImageFrame $portrait={portrait}>
       {image ? (
-        <img src={image} alt={imageAlt ?? ''} draggable={false} />
+        <picture>
+          <source media="(max-width: 768px)" srcSet={getResponsiveImageSources(image).mobile} type="image/webp" />
+          <source srcSet={getResponsiveImageSources(image).desktop} type="image/webp" />
+          <img src={getResponsiveImageSources(image).fallback} alt={imageAlt ?? ''} loading="lazy" decoding="async" draggable={false} />
+        </picture>
       ) : (
         <span className="image-placeholder" aria-hidden="true" />
       )}

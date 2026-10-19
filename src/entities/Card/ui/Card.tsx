@@ -2,6 +2,7 @@ import { motion, type Variants } from 'framer-motion';
 import styled from 'styled-components';
 import type { CardData, CardModalContent } from '../model/types';
 import { mediaBreakpointDown } from '../../../shared/styles/mixins';
+import { getResponsiveImageSources } from '../../../shared/lib/images';
 
 interface CardProps {
   card: CardData;
@@ -106,6 +107,17 @@ const CardButton = styled(motion.button) <{ $card: CardData }>`
 `;
 
 
+const CardImage = ({ image, alt }: { image: string; alt: string }) => {
+  const { mobile, desktop, fallback } = getResponsiveImageSources(image);
+  return (
+    <picture>
+      <source media="(max-width: 768px)" srcSet={mobile} type="image/webp" />
+      <source srcSet={desktop} type="image/webp" />
+      <img src={fallback} alt={alt} loading="lazy" decoding="async" draggable={false} />
+    </picture>
+  );
+};
+
 export function Card({ card, onSelect, revealDelay, onRevealComplete }: CardProps) {
   return (
     <CardButton
@@ -133,7 +145,7 @@ export function Card({ card, onSelect, revealDelay, onRevealComplete }: CardProp
       {card.presentation === 'quote' ? (
         <span className="quote-text">{card.quote}</span>
       ) : card.image ? (
-        <img src={card.image} alt={card.title} draggable={false} />
+        <CardImage image={card.image} alt={card.title} />
       ) : (
         <span className="image-placeholder" aria-hidden="true" />
       )}

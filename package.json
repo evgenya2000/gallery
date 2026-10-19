@@ -8,7 +8,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "npm run build && gh-pages -d dist",
+    "optimize-images": "node scripts/optimize-images.js",
+    "prebuild": "npm run optimize-images"
   },
   "dependencies": {
     "framer-motion": "^12.23.12",
@@ -22,6 +24,7 @@
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^6.0.3",
     "gh-pages": "^6.3.0",
+    "sharp": "^0.35.5",
     "typescript": "~5.8.3",
     "vite": "^8.1.4"
   }
