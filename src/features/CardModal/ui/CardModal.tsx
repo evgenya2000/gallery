@@ -26,7 +26,7 @@ const Overlay = styled(motion.div)`
   place-items: center;
   padding: 48px;
   background: rgba(250, 250, 250, 0.28);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(10px);
 
   ${mediaBreakpointDown('tablet', true)} {
