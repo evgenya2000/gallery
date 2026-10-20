@@ -118,7 +118,7 @@ export function PanZoomCanvas({ children, zoomAfterLoad }: PanZoomCanvasProps) {
           centerOnInit
           limitToBounds
           panning={{ velocityDisabled: true }}
-          wheel={{ step: 0.01 }}
+          wheel={{ step: 0.001 }}
           pinch={{ disabled: false }}
           doubleClick={{ disabled: true }}
         >
