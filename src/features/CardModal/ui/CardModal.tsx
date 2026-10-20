@@ -35,10 +35,10 @@ const Overlay = styled(motion.div)`
   }
 `;
 
-const Dialog = styled(motion.section)<{ $type: CardModalType }>`
+const Dialog = styled(motion.section) <{ $type: CardModalType }>`
   position: relative;
   width: min(1260px, calc(100vw - 112px));
-  height: min(895px, calc(100dvh - 96px));
+  height: min(895px, calc(100lvh - 96px));
   padding: clamp(32px, 3.6vw, 52px);
   overflow: visible;
   border-radius: 40px;
@@ -49,8 +49,8 @@ const Dialog = styled(motion.section)<{ $type: CardModalType }>`
 
   ${mediaBreakpointDown('tablet', true)} {
     width: 100%;
-    height: 100dvh;
-    min-height: 100dvh;
+    height: 100lvh;
+    min-height: 100lvh;
     max-height: none;
     padding: 22px;
     overflow-x: hidden;
@@ -62,7 +62,7 @@ const Dialog = styled(motion.section)<{ $type: CardModalType }>`
 const CloseButton = styled.button<{ $light: boolean }>`
   position: absolute;
   z-index: 2;
-  top: calc(-1 * min(72px, max(0px, (100dvh - 895px) / 2 - 24px)));
+  top: calc(-1 * min(72px, max(0px, (100lvh - 895px) / 2 - 24px)));
   right: calc(-1 * min(180px, max(0px, (100vw - 1260px) / 2 - 24px)));
   display: grid;
   width: 56px;
@@ -149,17 +149,17 @@ const ImageFrame = styled.div<{ $portrait?: boolean }>`
 
   ${mediaBreakpointDown('tablet', true)} {
     min-height: 0;
-    max-height: ${({ $portrait }) => ($portrait ? '47dvh' : '34dvh')};
+    max-height: ${({ $portrait }) => ($portrait ? '47lvh' : '34lvh')};
     margin: 18px 0 25px;
 
     img {
       width: 100%;
-      max-height: ${({ $portrait }) => ($portrait ? '47dvh' : '34dvh')};
+      max-height: ${({ $portrait }) => ($portrait ? '47lvh' : '34lvh')};
     }
 
     .image-placeholder {
       width: ${({ $portrait }) => ($portrait ? '72%' : '100%')};
-      height: ${({ $portrait }) => ($portrait ? '47dvh' : 'auto')};
+      height: ${({ $portrait }) => ($portrait ? '47lvh' : 'auto')};
       aspect-ratio: ${({ $portrait }) => ($portrait ? '0.68' : '1.5')};
     }
   }
@@ -238,7 +238,7 @@ const StoryLayout = styled.div<{ $portrait?: boolean }>`
   ${mediaBreakpointDown('tablet', true)} {
     display: grid;
     height: auto;
-    min-height: calc(100dvh - 44px);
+    min-height: calc(100lvh - 44px);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
@@ -272,7 +272,7 @@ const ArtworkLayout = styled.div`
   ${mediaBreakpointDown('tablet', true)} {
     display: grid;
     height: auto;
-    min-height: calc(100dvh - 44px);
+    min-height: calc(100lvh - 44px);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
@@ -327,7 +327,7 @@ const PersonalLayout = styled.div`
   ${mediaBreakpointDown('tablet', true)} {
     display: grid;
     height: auto;
-    min-height: calc(100dvh - 44px);
+    min-height: calc(100lvh - 44px);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
@@ -375,7 +375,7 @@ const ParticipationLayout = styled.div`
 
   ${mediaBreakpointDown('tablet', true)} {
     height: auto;
-    min-height: calc(100dvh - 44px);
+    min-height: calc(100lvh - 44px);
     padding: 34px 0 12px;
 
     ${SectionTitle} {
@@ -530,7 +530,7 @@ function ImageContent({ image, imageAlt, portrait }: {
 function Paragraphs({ paragraphs }: { paragraphs: string[] }) {
   return (
     <Copy>
-      {paragraphs.map((paragraph, index) => <p key={`${index}-${paragraph.slice(0, 24)}`} dangerouslySetInnerHTML={{__html: paragraph}}/>)}
+      {paragraphs.map((paragraph, index) => <p key={`${index}-${paragraph.slice(0, 24)}`} dangerouslySetInnerHTML={{ __html: paragraph }} />)}
     </Copy>
   );
 }
@@ -545,7 +545,7 @@ function PhotoStory({ content }: { content: Extract<CardModalContent, { type: 'p
       <Copy>
         {content.title && <StoryTitle>{content.title}</StoryTitle>}
         {content.paragraphs.map((paragraph, index) => (
-          <p key={`${index}-${paragraph.slice(0, 24)}`} dangerouslySetInnerHTML={{__html: paragraph}}/>
+          <p key={`${index}-${paragraph.slice(0, 24)}`} dangerouslySetInnerHTML={{ __html: paragraph }} />
         ))}
       </Copy>
       <Footer>{content.author}</Footer>
@@ -565,7 +565,7 @@ function ArtistWork({ content }: { content: Extract<CardModalContent, { type: 'a
       <Copy>
         {content.title && <ArtworkTitle>{content.title}</ArtworkTitle>}
         {content.paragraphs.map((paragraph, index) => (
-          <p key={`${index}-${paragraph.slice(0, 24)}`} dangerouslySetInnerHTML={{ __html: paragraph }}/>
+          <p key={`${index}-${paragraph.slice(0, 24)}`} dangerouslySetInnerHTML={{ __html: paragraph }} />
         ))}
       </Copy>
       <Footer>
@@ -581,7 +581,7 @@ function PersonalStory({ content }: { content: Extract<CardModalContent, { type:
   return (
     <PersonalLayout>
       <SectionTitle id="card-modal-title">{content.sectionTitle}</SectionTitle>
-      <Quote dangerouslySetInnerHTML={{__html: content.quote}}/>
+      <Quote dangerouslySetInnerHTML={{ __html: content.quote }} />
       <Paragraphs paragraphs={content.paragraphs} />
       <Footer>{content.author}</Footer>
     </PersonalLayout>
