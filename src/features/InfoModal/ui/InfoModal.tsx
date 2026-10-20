@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import type { ThemeGuideBadge } from '../../../shared/styles/types';
 import { mediaBreakpointDown, mediaBreakpointUp } from '../../../shared/styles/mixins';
 
@@ -113,14 +113,24 @@ function TelegramIcon() {
   );
 }
 
-function CloseIcon({ size = 18 }: { size?: number }) {
+function CloseIcon() {
   return (
-    <svg viewBox="0 0 20 20" width={size} height={size} fill="none" aria-hidden="true">
+    <svg
+      viewBox="0 0 55 55"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
+    >
       <path
-        d="M2.5 2.5L17.5 17.5M17.5 2.5L2.5 17.5"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
+        d="M22.5216 19.8413C21.7814 19.1011 20.5811 19.1011 19.8408 19.8413C19.1006 20.5816 19.1006 21.7819 19.8408 22.5221L24.8191 27.5005L19.8409 32.4788C19.1006 33.2189 19.1006 34.4192 19.8409 35.1595C20.5812 35.8998 21.7814 35.8998 22.5216 35.1595L27.5 30.1814L32.4781 35.1595C33.2184 35.8998 34.4187 35.8998 35.159 35.1595C35.8993 34.4192 35.8993 33.2189 35.159 32.4786L30.1806 27.5005L35.159 22.5221C35.8993 21.7819 35.8993 20.5817 35.159 19.8414C34.4187 19.1011 33.2184 19.1011 32.4781 19.8414L27.5 24.8196L22.5216 19.8413Z"
+        fill="currentColor"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M27.5 0C12.3122 0 0 12.3122 0 27.5C0 42.6879 12.3122 55 27.5 55C42.6879 55 55 42.6879 55 27.5C55 12.3122 42.6879 0 27.5 0ZM3.83721 27.5C3.83721 14.4314 14.4314 3.83721 27.5 3.83721C40.5685 3.83721 51.1628 14.4314 51.1628 27.5C51.1628 40.5685 40.5685 51.1628 27.5 51.1628C14.4314 51.1628 3.83721 40.5685 3.83721 27.5Z"
+        fill="currentColor"
       />
     </svg>
   );
@@ -136,8 +146,8 @@ const Overlay = styled(motion.div)`
   place-items: center;
   padding: 24px;
   background: rgba(247, 247, 247, 0.55);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(5px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
 
   ${mediaBreakpointDown('tablet')} {
     padding: 12px;
@@ -178,35 +188,47 @@ const Dialog = styled(motion.section)`
 
 /* ────────────────────────────  CloseButton  ──────────────────────── */
 
-const closeButtonBase = css`
+const closeButtonStyles = `
   display: grid;
   place-items: center;
   padding: 0;
-  border: 1.5px solid #111111;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
-  color: #111111;
+  border: 0;
+  background: transparent;
+  color: #2f2f2f;
   cursor: pointer;
-  transition: background 200ms ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.95);
-  }
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 160ms ease, transform 160ms ease;
 
   svg {
     display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &:active {
+    opacity: 0.62;
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+    border-radius: 50%;
   }
 `;
 
 // Desktop: висит в правом верхнем углу вьюпорта, вне карточки
 const DesktopCloseButton = styled(motion.button)`
-  ${closeButtonBase};
+  ${closeButtonStyles};
   position: absolute;
   top: 72px;
   right: 32px;
   z-index: 1;
-  width: 48px;
-  height: 48px;
+  width: 55px;
+  height: 55px;
   display: none;
 
   ${mediaBreakpointUp('tablet')} {
@@ -216,20 +238,14 @@ const DesktopCloseButton = styled(motion.button)`
 
 // Mobile: прикреплён к верхнему правому углу самой карточки
 const MobileCloseButton = styled(motion.button)`
-  ${closeButtonBase};
+  ${closeButtonStyles};
   position: absolute;
   top: 14px;
   right: 14px;
   z-index: 2;
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.9);
+  width: 28px;
+  height: 28px;
   display: grid;
-
-  svg {
-    width: 15px;
-    height: 15px;
-  }
 
   ${mediaBreakpointUp('tablet')} {
     display: none;
@@ -571,7 +587,7 @@ export function InfoModal({ section, onClose }: InfoModalProps) {
               }}
               exit={{ opacity: 0, transition: { duration: 0.25, ease: modalEase } }}
             >
-              <CloseIcon size={15} />
+              <CloseIcon />
             </MobileCloseButton>
 
             {section === 'guide' ? (
@@ -653,7 +669,7 @@ export function InfoModal({ section, onClose }: InfoModalProps) {
             }}
             exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.4, ease: modalEase } }}
           >
-            <CloseIcon size={18} />
+            <CloseIcon />
           </DesktopCloseButton>
         </Overlay>
       )}

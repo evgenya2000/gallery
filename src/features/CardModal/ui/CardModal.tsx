@@ -27,8 +27,8 @@ const Overlay = styled(motion.div)`
   place-items: center;
   padding: 48px;
   background: rgba(250, 250, 250, 0.28);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
 
   ${mediaBreakpointDown('tablet', true)} {
     padding: 0;
@@ -61,45 +61,34 @@ const Dialog = styled(motion.section) <{ $type: CardModalType }>`
 
 const CloseButton = styled.button<{ $light: boolean }>`
   position: absolute;
-  z-index: 2;
+  z-index: 10;
   top: calc(-1 * min(72px, max(0px, (100lvh - 895px) / 2 - 24px)));
   right: calc(-1 * min(180px, max(0px, (100vw - 1260px) / 2 - 24px)));
   display: grid;
-  width: 56px;
-  height: 56px;
+  width: 55px;
+  height: 55px;
   place-items: center;
   padding: 0;
-  border: 2px solid ${({ $light }) => ($light ? '#262626' : '#fff')};
-  border-radius: 50%;
+  border: 0;
   background: transparent;
-  color: ${({ $light }) => ($light ? '#262626' : '#fff')};
-  font: inherit;
-  font-size: 38px;
-  line-height: 1;
+  color: #2f2f2f;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transition: opacity 160ms ease, transform 160ms ease;
 
-  &:hover {
-    transform: scale(1.05);
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
   }
-
-  &:active {
-    opacity: 0.62;
-  }
-
-  &:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 4px;
-  }
-
+  
   ${mediaBreakpointDown('tablet', true)} {
     top: 22px;
     right: 22px;
-    width: 30px;
-    height: 30px;
-    border-width: 1.5px;
-    font-size: 22px;
+    width: 28px;
+    height: 28px;
+    color: ${({ $light }) => ($light ? '#2f2f2f' : '#fff')};
   }
 `;
 
@@ -677,7 +666,24 @@ export function CardModal({ content, onClose }: CardModalProps) {
               aria-label="Закрыть"
               onClick={onClose}
             >
-              ×
+              <svg
+                viewBox="0 0 55 55"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M22.5216 19.8413C21.7814 19.1011 20.5811 19.1011 19.8408 19.8413C19.1006 20.5816 19.1006 21.7819 19.8408 22.5221L24.8191 27.5005L19.8409 32.4788C19.1006 33.2189 19.1006 34.4192 19.8409 35.1595C20.5812 35.8998 21.7814 35.8998 22.5216 35.1595L27.5 30.1814L32.4781 35.1595C33.2184 35.8998 34.4187 35.8998 35.159 35.1595C35.8993 34.4192 35.8993 33.2189 35.159 32.4786L30.1806 27.5005L35.159 22.5221C35.8993 21.7819 35.8993 20.5817 35.159 19.8414C34.4187 19.1011 33.2184 19.1011 32.4781 19.8414L27.5 24.8196L22.5216 19.8413Z"
+                  fill="currentColor"
+                />
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M27.5 0C12.3122 0 0 12.3122 0 27.5C0 42.6879 12.3122 55 27.5 55C42.6879 55 55 42.6879 55 27.5C55 12.3122 42.6879 0 27.5 0ZM3.83721 27.5C3.83721 14.4314 14.4314 3.83721 27.5 3.83721C40.5685 3.83721 51.1628 14.4314 51.1628 27.5C51.1628 40.5685 40.5685 51.1628 27.5 51.1628C14.4314 51.1628 3.83721 40.5685 3.83721 27.5Z"
+                  fill="currentColor"
+                />
+              </svg>
             </CloseButton>
             <ModalContent content={content} />
           </Dialog>
