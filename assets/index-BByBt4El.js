@@ -112,7 +112,7 @@ Error generating stack: `+e.message+`
 `,Zp=J(Tu.section)`
   position: relative;
   width: min(1260px, calc(100vw - 112px));
-  height: min(895px, calc(100dvh - 96px));
+  height: min(895px, calc(100svh - 96px));
   padding: clamp(32px, 3.6vw, 52px);
   overflow: visible;
   border-radius: 40px;
@@ -123,8 +123,8 @@ Error generating stack: `+e.message+`
 
   ${Y(`tablet`,!0)} {
     width: 100%;
-    height: 100dvh;
-    min-height: 100dvh;
+    height: 100svh;
+    min-height: 100svh;
     max-height: none;
     padding: 22px;
     overflow-x: hidden;
@@ -134,7 +134,7 @@ Error generating stack: `+e.message+`
 `,Qp=J.button`
   position: absolute;
   z-index: 2;
-  top: calc(-1 * min(72px, max(0px, (100dvh - 895px) / 2 - 24px)));
+  top: calc(-1 * min(72px, max(0px, (100svh - 895px) / 2 - 24px)));
   right: calc(-1 * min(180px, max(0px, (100vw - 1260px) / 2 - 24px)));
   display: grid;
   width: 56px;
@@ -217,17 +217,17 @@ Error generating stack: `+e.message+`
 
   ${Y(`tablet`,!0)} {
     min-height: 0;
-    max-height: ${({$portrait:e})=>e?`47dvh`:`34dvh`};
+    max-height: ${({$portrait:e})=>e?`47svh`:`34svh`};
     margin: 18px 0 25px;
 
     img {
       width: 100%;
-      max-height: ${({$portrait:e})=>e?`47dvh`:`34dvh`};
+      max-height: ${({$portrait:e})=>e?`47svh`:`34svh`};
     }
 
     .image-placeholder {
       width: ${({$portrait:e})=>e?`72%`:`100%`};
-      height: ${({$portrait:e})=>e?`47dvh`:`auto`};
+      height: ${({$portrait:e})=>e?`47svh`:`auto`};
       aspect-ratio: ${({$portrait:e})=>e?`0.68`:`1.5`};
     }
   }
@@ -300,7 +300,7 @@ Error generating stack: `+e.message+`
   ${Y(`tablet`,!0)} {
     display: grid;
     height: auto;
-    min-height: calc(100dvh - 44px);
+    min-height: calc(100svh - 44px);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
@@ -332,7 +332,7 @@ Error generating stack: `+e.message+`
   ${Y(`tablet`,!0)} {
     display: grid;
     height: auto;
-    min-height: calc(100dvh - 44px);
+    min-height: calc(100svh - 44px);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
@@ -381,7 +381,7 @@ Error generating stack: `+e.message+`
   ${Y(`tablet`,!0)} {
     display: grid;
     height: auto;
-    min-height: calc(100dvh - 44px);
+    min-height: calc(100svh - 44px);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
@@ -425,7 +425,7 @@ Error generating stack: `+e.message+`
 
   ${Y(`tablet`,!0)} {
     height: auto;
-    min-height: calc(100dvh - 44px);
+    min-height: calc(100svh - 44px);
     padding: 34px 0 12px;
 
     ${$p} {
