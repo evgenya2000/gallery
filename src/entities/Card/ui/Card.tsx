@@ -45,7 +45,7 @@ const CardButton = styled(motion.button) <{ $card: CardData }>`
   cursor: pointer;
   rotate: ${({ $card }) => `${$card.position.rotation}deg`};
   transition: ${({ theme }) => theme.transitions.card};
-  will-change: transform;
+  will-change: opacity;
 
   // Мобильный канвас 1040×800
   ${mediaBreakpointDown('tablet', true)} {
