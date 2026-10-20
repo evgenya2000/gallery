@@ -3,7 +3,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import type { CardModalContent, CardModalType } from '../../../entities/Card';
-import { mediaBreakpointDown } from '../../../shared/styles/mixins';
+import {
+  mediaBreakpointBetween,
+  mediaBreakpointDown,
+  mediaBreakpointUp,
+} from '../../../shared/styles/mixins';
 import { getResponsiveImageSources } from '../../../shared/lib/images';
 
 interface CardModalProps {
@@ -30,15 +34,15 @@ const Overlay = styled(motion.div)`
   backdrop-filter: blur(5px) saturate(140%);
   -webkit-backdrop-filter: blur(10px) saturate(140%);
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointDown('compact')} {
     padding: 0;
   }
 `;
 
 const Dialog = styled(motion.section) <{ $type: CardModalType }>`
   position: relative;
-  width: min(1260px, calc(100vw - 112px));
-  height: min(895px, calc(100lvh - 96px));
+  width: min(960px, calc(100vw - 112px));
+  height: min(682px, calc(100lvh - 96px));
   padding: clamp(32px, 3.6vw, 52px);
   overflow: visible;
   border-radius: 40px;
@@ -47,7 +51,13 @@ const Dialog = styled(motion.section) <{ $type: CardModalType }>`
   box-shadow: 0 18px 80px rgba(25, 25, 25, 0.16);
   font-family: inherit;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    width: min(796px, calc(100vw - 112px));
+    height: min(531px, calc(100lvh - 96px));
+    padding: 35px 58px 45px 58px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     width: 100%;
     height: 100lvh;
     min-height: 100lvh;
@@ -62,8 +72,8 @@ const Dialog = styled(motion.section) <{ $type: CardModalType }>`
 const CloseButton = styled.button<{ $light: boolean }>`
   position: absolute;
   z-index: 10;
-  top: calc(-1 * min(72px, max(0px, (100lvh - 895px) / 2 - 24px)));
-  right: calc(-1 * min(180px, max(0px, (100vw - 1260px) / 2 - 24px)));
+  top: calc(-1 * min(72px, max(0px, (100lvh - 682px) / 2 - 24px)));
+  right: calc(-1 * min(72px, max(0px, (100vw - 960px) / 2 - 24px)));
   display: grid;
   width: 55px;
   height: 55px;
@@ -82,8 +92,15 @@ const CloseButton = styled.button<{ $light: boolean }>`
     height: 100%;
     cursor: pointer;
   }
-  
-  ${mediaBreakpointDown('tablet', true)} {
+
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    width: 44px;
+    height: 44px;
+    top: calc(-1 * min(64px, max(0px, (100lvh - 531px) / 2 - 20px)));
+    right: calc(-1 * min(64px, max(0px, (100vw - 796px) / 2 - 20px)));
+  }
+
+  ${mediaBreakpointDown('compact')} {
     top: 22px;
     right: 22px;
     width: 28px;
@@ -103,8 +120,15 @@ const SectionTitle = styled.h2<{ $center?: boolean }>`
   text-align: ${({ $center }) => ($center ? 'center' : 'left')};
   text-transform: uppercase;
   white-space: pre-line;
+  margin-bottom: 10px;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    padding-right: 44px;
+    font-size: 18px;
+    line-height: 21px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     padding-right: 42px;
     font-size: 18px;
     line-height: 1.2;
@@ -136,7 +160,7 @@ const ImageFrame = styled.div<{ $portrait?: boolean }>`
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0.08));
   }
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointDown('compact')} {
     min-height: 0;
     max-height: ${({ $portrait }) => ($portrait ? '47lvh' : '34lvh')};
     margin: 18px 0 25px;
@@ -164,9 +188,14 @@ const Copy = styled.div`
   line-height: 23px;
   white-space: pre-wrap;
   scrollbar-width: none;
+  overscroll-behavior: contain;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  ${mediaBreakpointUp('compact')} {
+    max-height: 100%;
   }
 
   p {
@@ -177,7 +206,16 @@ const Copy = styled.div`
     margin-bottom: 0;
   }
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    font-size: 16px;
+    line-height: 19px;
+
+    p {
+      margin-bottom: 14px;
+    }
+  }
+
+  ${mediaBreakpointDown('compact')} {
     align-self: start;
     font-size: 14px;
     line-height: 1.22;
@@ -201,7 +239,13 @@ const Footer = styled.div`
     text-decoration: none;
   }
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    padding-top: 18px;
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     padding-top: 28px;
     font-size: 18px;
   }
@@ -224,7 +268,7 @@ const StoryLayout = styled.div<{ $portrait?: boolean }>`
     padding: 0 ${({ $portrait }) => ($portrait ? '8%' : '0')} 0 0;
   }
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointDown('compact')} {
     display: grid;
     height: auto;
     min-height: calc(100lvh - 44px);
@@ -258,7 +302,7 @@ const ArtworkLayout = styled.div`
     'visual footer';
   column-gap: clamp(36px, 3vw, 54px);
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointDown('compact')} {
     display: grid;
     height: auto;
     min-height: calc(100lvh - 44px);
@@ -281,7 +325,13 @@ const ArtworkTitle = styled.h3`
   font-weight: 400;
   line-height: 40px;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    margin-bottom: 16px;
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     margin-bottom: 20px;
     font-size: 24px;
     line-height: 1.12;
@@ -294,7 +344,12 @@ const StoryTitle = styled.h3`
   font-weight: 400;
   line-height: 1.15;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    margin-bottom: 16px;
+    font-size: 24px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     margin-bottom: 16px;
     font-size: 18px;
   }
@@ -313,7 +368,7 @@ const PersonalLayout = styled.div`
     'footer body';
   column-gap: clamp(42px, 4vw, 72px);
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointDown('compact')} {
     display: grid;
     height: auto;
     min-height: calc(100lvh - 44px);
@@ -340,8 +395,19 @@ const Quote = styled.blockquote`
   line-height: 1.16;
   text-align: center;
   white-space: pre-wrap;
+  overflow-y: auto;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  ${mediaBreakpointUp('compact')} {
+    max-height: 100%;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     margin: 58px 0 52px;
     padding: 0 8px;
     font-size: clamp(30px, 9vw, 42px);
@@ -362,7 +428,11 @@ const ParticipationLayout = styled.div`
     line-height: 1.1;
   }
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    padding: 6px 20px 4px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     height: auto;
     min-height: calc(100lvh - 44px);
     padding: 34px 0 12px;
@@ -380,7 +450,12 @@ const Intro = styled.p`
   font-size: clamp(16px, 1.45vw, 24px);
   line-height: 1.3;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    margin: 20px 0 24px;
+    font-size: 18px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     margin: 28px 0 30px;
     font-size: 15px;
   }
@@ -392,7 +467,12 @@ const ActionList = styled.div`
   gap: clamp(24px, 5vw, 90px);
   margin-bottom: 36px;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    gap: 24px;
+    margin-bottom: 20px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     grid-template-columns: minmax(0, 1fr);
     gap: 16px;
     margin-bottom: 26px;
@@ -408,7 +488,13 @@ const ActionCard = styled.article<{ $red: boolean }>`
   background: ${({ $red }) => ($red ? '#812926' : '#607984')};
   color: #fff;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    min-height: 200px;
+    padding: 20px 22px 18px;
+    border-radius: 28px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     min-height: 0;
     padding: 22px;
     border-radius: 28px;
@@ -420,7 +506,12 @@ const Audience = styled.span`
   font-size: 16px;
   line-height: 1.2;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    margin-bottom: 18px;
+    font-size: 14px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     margin-bottom: 18px;
     font-size: 14px;
   }
@@ -432,7 +523,11 @@ const ActionTitle = styled.h3`
   font-weight: 400;
   line-height: 1.12;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    font-size: 26px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     font-size: 24px;
   }
 `;
@@ -442,7 +537,11 @@ const ActionDescription = styled.p`
   font-size: clamp(14px, 1.2vw, 20px);
   line-height: 1.25;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    font-size: 14px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     font-size: 14px;
   }
 `;
@@ -488,7 +587,11 @@ const ParticipationFooter = styled.p`
   font-size: clamp(16px, 1.45vw, 24px);
   line-height: 1.3;
 
-  ${mediaBreakpointDown('tablet', true)} {
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    font-size: 16px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
     margin-top: 6px;
     font-size: 14px;
   }
@@ -505,7 +608,7 @@ function ImageContent({ image, imageAlt, portrait }: {
     <ImageFrame $portrait={portrait}>
       {image ? (
         <picture>
-          <source media="(max-width: 768px)" srcSet={getResponsiveImageSources(image).mobile} type="image/webp" />
+          <source media="(max-width: 1199px)" srcSet={getResponsiveImageSources(image).mobile} type="image/webp" />
           <source srcSet={getResponsiveImageSources(image).desktop} type="image/webp" />
           <img src={getResponsiveImageSources(image).fallback} alt={imageAlt ?? ''} loading="lazy" decoding="async" draggable={false} />
         </picture>

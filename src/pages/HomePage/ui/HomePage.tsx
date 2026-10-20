@@ -47,13 +47,6 @@ const PageFrame = styled.div<{ $dimmed: boolean }>`
     pointer-events: none;
   }
 
-  ${mediaBreakpointBetween('compact', 'desktop')} {
-    /* --roof-anchor-x: 50vw;
-    --house-art-left: calc(var(--roof-anchor-x) - 12.07dvh);
-    --face-anchor-x: calc(var(--house-art-left) + 21.5dvh);
-    --description-left-x: 25vw; */
-  }
-
   ${mediaBreakpointDown('desktop', true)} {
     &::before {
       background-position: right -155px bottom -3svh;
@@ -749,6 +742,7 @@ const HeadingNav = styled.nav`
 `;
 
 const HeadingLink = styled.button<{ $hidden?: boolean }>`
+  z-index: 10;
   padding: 0;
   border: 0;
   background: transparent;
@@ -783,7 +777,7 @@ const HeadingLink = styled.button<{ $hidden?: boolean }>`
 
 const SharpLinkLabel = styled(motion.span)`
   position: fixed;
-  z-index: 25;
+  z-index: 1001;
   display: flex;
   align-items: center;
   justify-content: flex-end;
