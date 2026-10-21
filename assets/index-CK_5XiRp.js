@@ -1028,7 +1028,7 @@ Error generating stack: `+e.message+`
   align-items: center;
   justify-content: center;
   top: 0;
-  left: -30px;
+  left: -47px;
   width: 30px;
   height: 30px;
   color: #111111;
