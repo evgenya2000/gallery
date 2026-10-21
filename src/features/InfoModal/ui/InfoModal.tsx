@@ -315,6 +315,10 @@ const Step = styled.div`
   gap: 20px;
   align-items: center;
 
+  &:nth-child(2) > span {
+    top: -2.3px;
+  }
+
   p {
     margin: 0;
     color: #111111;
@@ -360,7 +364,7 @@ const StepIcon = styled.span`
   align-items: center;
   justify-content: center;
   top: 0;
-  left: -47px;
+  left: -30px;
   width: 30px;
   height: 30px;
   color: #111111;
