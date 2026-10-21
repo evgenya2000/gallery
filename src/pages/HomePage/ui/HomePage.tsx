@@ -692,31 +692,23 @@ const PageHeading = styled(motion.header)`
   justify-content: space-between;
 
   ${mediaBreakpointUp('tablet')} {
-    padding-top: 27px;
-    padding-right: 1.9vw;
-    padding-left: 1.9vw;
+    padding: 18px 1.9vw 9px;
   }
 
   ${mediaBreakpointUp('compact')} {
-    padding-top: 38px;
-    padding-right: 5.3vw;
-    padding-left: 3.2vw;
+    padding: 29px 5.3vw 9px 3.2vw;
   }
 
   ${mediaBreakpointUp('wide')} {
-    padding-top: 43px;
-    padding-right: 8.62vw;
-    padding-left: 8.62vw;
+    padding: 34px 8.62vw 9px;
   }
 
   ${mediaBreakpointUp('qhd')} {
-    padding-top: 54px;
-    padding-left: 10vw;
-    padding-right: 10vw;
+    padding: 45px 10vw 9px;
   }
 
   ${mediaBreakpointDown('tablet', true)} {
-    padding: 29px 22px 0;
+    padding: 20px 22px 9px;
   }
 `;
 
