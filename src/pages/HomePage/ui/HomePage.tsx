@@ -1,10 +1,12 @@
-import { useEffect, useState, useRef, useLayoutEffect } from 'react';
+import { useEffect, useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import { InteractiveGrid } from '../../../widgets/InteractiveGrid';
 import { PanZoomCanvas } from '../../../features/PanZoomCanvas';
 import { InfoModal, type InfoModalSection } from '../../../features/InfoModal';
+import { cards } from '../../../entities/Card';
+import { useImagePreloader } from '../../../shared/lib/useImagePreloader';
 import galleryBackdrop from '../../../shared/assets/background.png';
 import introLeft from '../../../shared/assets/intro-left.png';
 import introRight from '../../../shared/assets/intro-right.png';
@@ -916,6 +918,12 @@ export function HomePage() {
     if (!isIntroTitleClickable) return;
     setIntroStage('about');
   };
+
+  const cardImagePaths = useMemo(
+    () => cards.map((card) => card.image).filter((image): image is string => Boolean(image)),
+    []
+  );
+  useImagePreloader(cardImagePaths, introStage !== 'content');
 
   return (
     <PageFrame $dimmed={mainContentVisible}>

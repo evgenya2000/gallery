@@ -113,7 +113,7 @@ const CardImage = ({ image, alt }: { image: string; alt: string }) => {
     <picture>
       <source media="(max-width: 768px)" srcSet={mobile} type="image/webp" />
       <source srcSet={desktop} type="image/webp" />
-      <img src={fallback} alt={alt} loading="lazy" decoding="async" draggable={false} />
+      <img src={fallback} alt={alt} decoding="async" draggable={false} />
     </picture>
   );
 };
