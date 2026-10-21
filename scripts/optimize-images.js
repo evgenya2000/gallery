@@ -6,9 +6,11 @@ const PHOTOS_DIR = join(process.cwd(), 'public', 'photos');
 const MOBILE_DIR = join(PHOTOS_DIR, 'mobile');
 const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png']);
 
-const DESKTOP_QUALITY = 80;
-const MOBILE_QUALITY = 75;
+const DESKTOP_QUALITY = 75;
+const MOBILE_QUALITY = 70;
+const DESKTOP_MAX_WIDTH = 1440;
 const MOBILE_WIDTH = 400;
+const WEBP_EFFORT = 6;
 
 async function ensureDir(dir) {
   await mkdir(dir, { recursive: true });
@@ -52,7 +54,8 @@ async function optimizeImage(inputPath) {
     tasks.push(
       pipeline
         .clone()
-        .webp({ quality: DESKTOP_QUALITY, effort: 4 })
+        .resize({ width: DESKTOP_MAX_WIDTH, withoutEnlargement: true })
+        .webp({ quality: DESKTOP_QUALITY, effort: WEBP_EFFORT })
         .toFile(desktopWebpPath)
         .then(() => {
           console.log(`Created desktop WebP: ${relative(process.cwd(), desktopWebpPath)}`);
@@ -65,7 +68,7 @@ async function optimizeImage(inputPath) {
       pipeline
         .clone()
         .resize({ width: MOBILE_WIDTH, withoutEnlargement: true })
-        .webp({ quality: MOBILE_QUALITY, effort: 4 })
+        .webp({ quality: MOBILE_QUALITY, effort: WEBP_EFFORT })
         .toFile(mobileWebpPath)
         .then(() => {
           console.log(`Created mobile WebP: ${relative(process.cwd(), mobileWebpPath)}`);

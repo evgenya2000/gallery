@@ -3,7 +3,7 @@ export interface ResponsiveImageSources {
   desktop: string;
   /** Narrow WebP source optimized for mobile cards. */
   mobile: string;
-  /** Original source as a safe fallback. */
+  /** Desktop WebP source as a safe fallback. */
   fallback: string;
 }
 
@@ -29,10 +29,11 @@ export function getResponsiveImageSources(originalPath: string): ResponsiveImage
   const basePath = normalized.slice(0, lastDot);
   const directory = basePath.slice(0, basePath.lastIndexOf('/') + 1);
   const name = basePath.slice(basePath.lastIndexOf('/') + 1);
+  const desktop = `/${directory}${name}.webp`;
 
   return {
-    desktop: `/${directory}${name}.webp`,
+    desktop,
     mobile: `/${directory}mobile/${name}.webp`,
-    fallback: `/${normalized}`,
+    fallback: desktop,
   };
 }
