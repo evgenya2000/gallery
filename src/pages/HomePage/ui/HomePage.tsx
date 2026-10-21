@@ -137,7 +137,7 @@ const GridReveal = styled(motion.div)`
 const IntroLayer = styled.div<{ $isAbout: boolean; $clickable: boolean }>`
   position: absolute;
   z-index: 8;
-  inset: var(--header-height) 0 0;
+  inset: clamp(90px, 13.67dvh, 140px) 0 0;
   --intro-pad: clamp(20px, 1.5vw, 40px);
   display: flex;
   align-items: center;
@@ -145,6 +145,10 @@ const IntroLayer = styled.div<{ $isAbout: boolean; $clickable: boolean }>`
   padding: 0 var(--intro-pad);
   cursor: ${({ $clickable }) => ($clickable ? 'pointer' : 'auto')};
   -webkit-tap-highlight-color: transparent;
+
+  ${mediaBreakpointDown('wide', true)} {
+    top: 80px;
+  }
 
   ${mediaBreakpointDown('compact')} {
     --intro-pad: clamp(16px, 4vw, 48px);
@@ -533,7 +537,7 @@ const AboutCard = styled(motion.section)`
   width: 980px;
   height: auto;
   max-width: calc(100vw - 48px);
-  max-height: calc(100dvh - var(--header-height) - 48px);
+  max-height: calc(100dvh - var(--header-height));
   overflow-y: auto;
   padding: 56px 64px 52px;
   border-radius: 30px;
@@ -554,11 +558,15 @@ const AboutCard = styled(motion.section)`
     height: 0;
   }
 
+  ${mediaBreakpointDown('xxl', true)} {
+    padding: 28px 32px 26px;
+  }
+
   ${mediaBreakpointDown('modal', true)} {
     overflow-y: auto;
     position: fixed;
     z-index: 15;
-    top: var(--header-height);
+    top: 48px;
     right: 0;
     bottom: 0;
     left: 0;
@@ -586,6 +594,10 @@ const AboutTitle = styled.h2`
   text-align: center;
   text-transform: uppercase;
 
+  ${mediaBreakpointDown('xxl', true)} {
+    margin-bottom: 28px;
+  }
+
   ${mediaBreakpointDown('smallDesktop', true)} {
     font-size: clamp(28px, 6vw, 40px);
     margin-bottom: 28px;
@@ -606,6 +618,9 @@ const AboutSubtitle = styled.h3`
   text-align: center;
   text-transform: uppercase;
 
+  ${mediaBreakpointDown('smallDesktop', true)} {
+    margin: 28px 0 16px;
+  }
   ${mediaBreakpointDown('smallDesktop', true)} {
     font-size: clamp(22px, 4.5vw, 30px);
     margin: 28px 0 16px;
@@ -913,6 +928,8 @@ export function HomePage() {
   }, [activeInfo, isMobile]);
 
   const isIntroTitleClickable = isMobile && introStage === 'title';
+  
+  const isAboutLayout = introStage === 'about' || (introStage === 'content' && !mainContentVisible);
 
   const handleIntroClick = () => {
     if (!isIntroTitleClickable) return;
@@ -956,7 +973,7 @@ export function HomePage() {
 
       {!mainContentVisible ? (
         <IntroLayer
-          $isAbout={introStage === 'about'}
+          $isAbout={isAboutLayout}
           $clickable={isIntroTitleClickable}
           onClick={handleIntroClick}
         >
@@ -1002,11 +1019,8 @@ export function HomePage() {
                     },
                   }}
                 >
-                  <p>Исследование разных представлений о доме.</p>
-                  <p>
-                    Через художественные образы и личные истории предлагаем взглянуть на привычное
-                    понятие с разных сторон и задуматься, что делает пространство домом.
-                  </p>
+                  <p dangerouslySetInnerHTML={{ __html: 'Исследование разных представлений о&nbsp;доме.' }} />
+                  <p dangerouslySetInnerHTML={{ __html: 'Через художественные образы и&nbsp;личные истории предлагаем взглянуть на&nbsp;привычное понятие с&nbsp;разных сторон и&nbsp;задуматься, что делает пространство домом.' }} />
                 </IntroDescription>
               </SplashContent>
             )}
@@ -1020,29 +1034,17 @@ export function HomePage() {
               >
                 <AboutTitle id="about-title">О проекте</AboutTitle>
 
-                <AboutCopy>
-                  «Что такое дом?» — исследование того, как разные люди понимают и ощущают дом.
-                </AboutCopy>
-                <AboutCopy>
-                  Для одних дом — это конкретное место, для других — близкие люди, воспоминания,
-                  природа или чувство принадлежности.
-                </AboutCopy>
-                <AboutCopy>
-                  Проект объединяет работы художников и фотографов с личными историями участников.
-                  Вместе они формируют интерактивный архив представлений о доме, выраженных через
-                  изображения и тексты.
-                </AboutCopy>
+                <AboutCopy dangerouslySetInnerHTML={{ __html: '&laquo;Что такое дом?&raquo;&nbsp;&mdash; исследование того, как разные люди понимают и&nbsp;ощущают дом.' }} />
+
+                <AboutCopy dangerouslySetInnerHTML={{ __html: 'Для одних дом&nbsp;&mdash; это конкретное место, для других&nbsp;&mdash; близкие люди, воспоминания, природа или чувство принадлежности.' }} />
+
+                <AboutCopy dangerouslySetInnerHTML={{ __html: 'Проект объединяет работы художников и&nbsp;фотографов с&nbsp;личными историями участников. Вместе они формируют интерактивный архив представлений о&nbsp;доме, выраженных через изображения и&nbsp;тексты.' }} />
 
                 <AboutSubtitle>Принять участие</AboutSubtitle>
 
-                <AboutCopy>
-                  Каждый может стать частью исследования: ответить на вопрос «Что для тебя дом?»
-                  словами, фотографией или рисунком.
-                </AboutCopy>
-                <AboutCopy>
-                  Собранные материалы станут основой будущей выставки, а сайт продолжит пополняться
-                  новыми историями и интерпретациями.
-                </AboutCopy>
+                <AboutCopy dangerouslySetInnerHTML={{ __html: 'Каждый может стать частью исследования: ответить на&nbsp;вопрос &laquo;Что для тебя дом?&raquo; словами, фотографией или рисунком.' }} />
+
+                <AboutCopy dangerouslySetInnerHTML={{ __html: 'Собранные материалы станут основой будущей выставки, а&nbsp;сайт продолжит пополняться новыми историями и&nbsp;интерпретациями.' }} />
 
                 <ContinueButton type="button" onClick={() => setIntroStage('content')}>
                   перейти к карте
@@ -1071,7 +1073,7 @@ export function HomePage() {
               animate={{ opacity: gridRevealed ? 1 : 0 }}
               transition={{ duration: 1.75, ease: [0.4, 0, 0.2, 1] }}
             >
-              <InteractiveGrid onAllCardsRevealed={() => setGridRevealComplete(true)} shouldReveal={gridRevealed}/>
+              <InteractiveGrid onAllCardsRevealed={() => setGridRevealComplete(true)} shouldReveal={gridRevealed} />
             </GridReveal>
           </CanvasContent>
         </PanZoomCanvas>
