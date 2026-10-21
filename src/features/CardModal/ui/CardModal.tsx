@@ -633,9 +633,9 @@ function PhotoStory({ content }: { content: Extract<CardModalContent, { type: 'p
   return (
     <StoryLayout $portrait={portrait}>
       <ImageContent image={content.image} imageAlt={content.imageAlt} portrait={portrait} />
-      <SectionTitle id="card-modal-title">{content.sectionTitle}</SectionTitle>
+      <SectionTitle id="card-modal-title" dangerouslySetInnerHTML={{__html: content.sectionTitle}}/>
       <Copy>
-        {content.title && <StoryTitle>{content.title}</StoryTitle>}
+        {content.title && <StoryTitle dangerouslySetInnerHTML={{__html: content.title}}/>}
         {content.paragraphs.map((paragraph, index) => (
           <p key={`${index}-${paragraph.slice(0, 24)}`} dangerouslySetInnerHTML={{ __html: paragraph }} />
         ))}
@@ -653,9 +653,9 @@ function ArtistWork({ content }: { content: Extract<CardModalContent, { type: 'a
   return (
     <ArtworkLayout>
       <ImageContent image={content.image} imageAlt={content.imageAlt} />
-      <SectionTitle id="card-modal-title">{sectionLabel}</SectionTitle>
+      <SectionTitle id="card-modal-title" dangerouslySetInnerHTML={{__html: sectionLabel}}/>
       <Copy>
-        {content.title && <ArtworkTitle>{content.title}</ArtworkTitle>}
+        {content.title && <ArtworkTitle dangerouslySetInnerHTML={{__html: content.title}}/>}
         {content.paragraphs.map((paragraph, index) => (
           <p key={`${index}-${paragraph.slice(0, 24)}`} dangerouslySetInnerHTML={{ __html: paragraph }} />
         ))}
@@ -672,7 +672,7 @@ function ArtistWork({ content }: { content: Extract<CardModalContent, { type: 'a
 function PersonalStory({ content }: { content: Extract<CardModalContent, { type: 'personal-story' }> }) {
   return (
     <PersonalLayout>
-      <SectionTitle id="card-modal-title">{content.sectionTitle}</SectionTitle>
+      <SectionTitle id="card-modal-title" dangerouslySetInnerHTML={{__html: content.sectionTitle}}/>
       <Quote dangerouslySetInnerHTML={{ __html: content.quote }} />
       <Paragraphs paragraphs={content.paragraphs} />
       <Footer>{content.author}</Footer>
@@ -690,8 +690,8 @@ function Participation({ content }: { content: Extract<CardModalContent, { type:
           const children = (
             <>
               <Audience>{action.audience}</Audience>
-              <ActionTitle>{action.title}</ActionTitle>
-              <ActionDescription>{action.description}</ActionDescription>
+              <ActionTitle dangerouslySetInnerHTML={{__html: action.title}}/>
+              <ActionDescription dangerouslySetInnerHTML={{__html: action.description}}/>
               {action.href ? (
                 <ActionLink href={action.href} target="_blank" rel="noreferrer">
                   <span>{action.linkLabel}</span><span aria-hidden="true">↗</span>

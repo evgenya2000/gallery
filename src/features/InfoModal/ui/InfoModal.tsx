@@ -17,33 +17,33 @@ const modalEase = [0.16, 1, 0.3, 1] as const;
 const guideContent = {
   title: '[руководство]',
   intro: [
-    'Перед вами коллекция разных представлений о доме.',
-    'Исследуйте художественные проекты, читайте личные истории и перемещайтесь между карточками.',
+    'Перед вами коллекция разных представлений о&nbsp;доме.',
+    'Исследуйте художественные проекты, читайте личные истории и&nbsp;перемещайтесь между карточками.',
   ],
   exploreHeading: 'Как исследовать карту',
   exploreSteps: [
-    { icon: 'cursor' as const, text: 'Нажмите на карточку, чтобы прочитать историю или узнать больше о проекте.' },
-    { icon: 'move'   as const, text: 'Перемещайтесь по карте и исследуйте материалы в любом порядке.' },
+    { icon: 'cursor' as const, text: 'Нажмите на&nbsp;карточку, чтобы прочитать историю или узнать больше о&nbsp;проекте.' },
+    { icon: 'move' as const, text: 'Перемещайтесь по&nbsp;карте и&nbsp;исследуйте материалы в&nbsp;любом порядке.' },
   ],
   typesHeading: 'Типы материалов',
   types: [
-    { id: 'projects' as ThemeGuideBadge, label: 'Авторские проекты', description: 'Фотографические и художественные проекты, исследующие понятие дома.' },
-    { id: 'stories'  as ThemeGuideBadge, label: 'Личные истории',   description: 'Ответы участников на вопрос «Что для тебя дом?», выраженные словами.' },
-    { id: 'photos'   as ThemeGuideBadge, label: 'Фотоистории',      description: 'Личные фотографии и связанные с ними воспоминания, ощущения и истории.' },
+    { id: 'projects' as ThemeGuideBadge, label: 'Авторские проекты', description: 'Фотографические и&nbsp;художественные проекты, исследующие понятие дома.' },
+    { id: 'stories' as ThemeGuideBadge, label: 'Личные истории', description: 'Ответы участников на&nbsp;вопрос &laquo;Что для тебя дом?&raquo;, выраженные словами.' },
+    { id: 'photos' as ThemeGuideBadge, label: 'Фотоистории', description: 'Личные фотографии и&nbsp;связанные с&nbsp;ними воспоминания, ощущения и&nbsp;истории.' },
   ],
 };
 
 const contactsContent = {
   title: '[контакты]',
-  lead: 'Есть вопросы о проекте, идеи для сотрудничества или предложения?',
-  note: 'Напишите нам — мы будем рады обратной связи.',
+  lead: 'Есть вопросы о&nbsp;проекте, идеи для сотрудничества или предложения?',
+  note: 'Напишите нам&nbsp;&mdash; мы&nbsp;будем рады обратной связи.',
   contactHeading: 'Связаться',
   email: 'melnichnikova.project@gmail.com',
   telegramLabel: '[Telegram-канал]',
   telegramUrl: 'https://t.me/whatishomeproject',
   authorHeading: 'Автор проекта',
   authorName: 'Анна Мельничникова',
-  authorNote: '«Что такое дом?»<br> — дипломный проект магистратуры НИУ ВШЭ — Санкт-Петербург',
+  authorNote: '&laquo;Что такое дом?&raquo;<br> &mdash;&nbsp;дипломный проект магистратуры НИУ ВШЭ&nbsp;&mdash; Санкт-Петербург',
 };
 
 function CursorIcon() {
@@ -637,18 +637,18 @@ export function InfoModal({ section, onClose }: InfoModalProps) {
               {section === 'guide' ? (
                 <>
                   <Title id="info-modal-title">{guideContent.title}</Title>
-                  {guideContent.intro.map((paragraph) => (
-                    <Paragraph key={paragraph} dangerouslySetInnerHTML={{__html: paragraph}}/>
+                  {guideContent.intro.map((paragraph, index) => (
+                    <Paragraph key={index} dangerouslySetInnerHTML={{ __html: paragraph }} />
                   ))}
 
                   <SectionTitle>{guideContent.exploreHeading}</SectionTitle>
                   <Steps>
-                    {guideContent.exploreSteps.map((step) => (
-                      <Step key={step.text}>
+                    {guideContent.exploreSteps.map((step, index) => (
+                      <Step key={index}>
                         <StepIcon>
                           {step.icon === 'cursor' ? <CursorIcon /> : <MoveIcon />}
                         </StepIcon>
-                        <p>{step.text}</p>
+                        <p dangerouslySetInnerHTML={{ __html: step.text }} />
                       </Step>
                     ))}
                   </Steps>
@@ -658,7 +658,7 @@ export function InfoModal({ section, onClose }: InfoModalProps) {
                     {guideContent.types.map((item) => (
                       <TypeItem key={item.id}>
                         <TypeBadge $badge={item.id}>{item.label}</TypeBadge>
-                        <TypeText>{item.description}</TypeText>
+                        <TypeText dangerouslySetInnerHTML={{ __html: item.description }} />
                       </TypeItem>
                     ))}
                   </Types>
@@ -666,8 +666,8 @@ export function InfoModal({ section, onClose }: InfoModalProps) {
               ) : (
                 <>
                   <Title id="info-modal-title">{contactsContent.title}</Title>
-                  <Lead>{contactsContent.lead}</Lead>
-                  <Note>{contactsContent.note}</Note>
+                  <Lead dangerouslySetInnerHTML={{ __html: contactsContent.lead }} />
+                  <Note dangerouslySetInnerHTML={{ __html: contactsContent.note }} />
 
                   <ContactsGrid>
                     <ContactsColumn>
@@ -693,7 +693,7 @@ export function InfoModal({ section, onClose }: InfoModalProps) {
 
                   <SectionTitle $contacts>{contactsContent.authorHeading}</SectionTitle>
                   <AuthorName>{contactsContent.authorName}</AuthorName>
-                  <AuthorNote dangerouslySetInnerHTML={{__html: contactsContent.authorNote}}/>
+                  <AuthorNote dangerouslySetInnerHTML={{ __html: contactsContent.authorNote }} />
                 </>
               )}
             </Content>
