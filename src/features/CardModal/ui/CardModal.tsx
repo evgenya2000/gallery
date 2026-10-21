@@ -21,7 +21,6 @@ const colors: Record<CardModalType, string> = {
   'portrait-photo-story': '#2f2f2f',
   'artist-work': '#812926',
   'personal-story': '#607984',
-  participation: '#fff',
 };
 
 const Overlay = styled(motion.div)`
@@ -48,7 +47,7 @@ const Dialog = styled(motion.section) <{ $type: CardModalType }>`
   overflow: visible;
   border-radius: 40px;
   background: ${({ $type }) => colors[$type]};
-  color: ${({ $type }) => ($type === 'participation' ? '#111' : '#f7f7f7')};
+  color: #f7f7f7;
   box-shadow: 0 18px 80px rgba(25, 25, 25, 0.16);
   font-family: inherit;
 
@@ -69,7 +68,7 @@ const Dialog = styled(motion.section) <{ $type: CardModalType }>`
   }
 `;
 
-const CloseButton = styled.button<{ $light: boolean }>`
+const CloseButton = styled.button`
   position: absolute;
   z-index: 10;
   top: calc(-1 * min(72px, max(0px, (100lvh - 682px) / 2 - 24px)));
@@ -105,7 +104,7 @@ const CloseButton = styled.button<{ $light: boolean }>`
     right: 22px;
     width: 28px;
     height: 28px;
-    color: ${({ $light }) => ($light ? '#2f2f2f' : '#fff')};
+    color: #fff;
   }
 `;
 
@@ -426,190 +425,6 @@ const Quote = styled.blockquote`
   } 
 `;
 
-const ParticipationLayout = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  padding: 10px 40px 6px;
-
-  ${SectionTitle} {
-    padding: 0;
-    font-size: clamp(34px, 3.6vw, 56px);
-    line-height: 1.1;
-  }
-
-  ${mediaBreakpointBetween('compact', 'xxl')} {
-    padding: 6px 20px 4px;
-  }
-
-  ${mediaBreakpointDown('compact')} {
-    height: auto;
-    min-height: calc(100lvh - 44px);
-    padding: 34px 0 12px;
-
-    ${SectionTitle} {
-      padding-right: 32px;
-      font-size: 30px;
-      text-align: center;
-    }
-  }
-`;
-
-const Intro = styled.p`
-  margin: 34px 0 42px;
-  font-size: clamp(16px, 1.45vw, 24px);
-  line-height: 1.3;
-  ${hyphens}
-
-  ${mediaBreakpointBetween('compact', 'xxl')} {
-    margin: 20px 0 24px;
-    font-size: 18px;
-  }
-
-  ${mediaBreakpointDown('compact')} {
-    margin: 28px 0 30px;
-    font-size: 15px;
-  }
-`;
-
-const ActionList = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(24px, 5vw, 90px);
-  margin-bottom: 36px;
-
-  ${mediaBreakpointBetween('compact', 'xxl')} {
-    gap: 24px;
-    margin-bottom: 20px;
-  }
-
-  ${mediaBreakpointDown('compact')} {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
-    margin-bottom: 26px;
-  }
-`;
-
-const ActionCard = styled.article<{ $red: boolean }>`
-  display: flex;
-  min-height: 250px;
-  flex-direction: column;
-  padding: 28px 30px 24px;
-  border-radius: 40px;
-  background: ${({ $red }) => ($red ? '#812926' : '#607984')};
-  color: #fff;
-
-  ${mediaBreakpointBetween('compact', 'xxl')} {
-    min-height: 200px;
-    padding: 20px 22px 18px;
-    border-radius: 28px;
-  }
-
-  ${mediaBreakpointDown('compact')} {
-    min-height: 0;
-    padding: 22px;
-    border-radius: 28px;
-  }
-`;
-
-const Audience = styled.span`
-  margin-bottom: 28px;
-  font-size: 16px;
-  line-height: 1.2;
-
-  ${mediaBreakpointBetween('compact', 'xxl')} {
-    margin-bottom: 18px;
-    font-size: 14px;
-  }
-
-  ${mediaBreakpointDown('compact')} {
-    margin-bottom: 18px;
-    font-size: 14px;
-  }
-`;
-
-const ActionTitle = styled.h3`
-  margin: 0 0 12px;
-  font-size: clamp(24px, 2.3vw, 38px);
-  font-weight: 400;
-  line-height: 1.12;
-
-  ${mediaBreakpointBetween('compact', 'xxl')} {
-    font-size: 26px;
-  }
-
-  ${mediaBreakpointDown('compact')} {
-    font-size: 24px;
-  }
-`;
-
-const ActionDescription = styled.p`
-  margin: 0 0 22px;
-  font-size: clamp(14px, 1.2vw, 20px);
-  line-height: 1.25;
-  ${hyphens}
-
-  ${mediaBreakpointBetween('compact', 'xxl')} {
-    font-size: 14px;
-  }
-
-  ${mediaBreakpointDown('compact')} {
-    font-size: 14px;
-  }
-`;
-
-const ActionLink = styled.a`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: auto;
-  padding-top: 12px;
-  border-bottom: 1px solid currentColor;
-  color: inherit;
-  font-size: 16px;
-  line-height: 1.4;
-  text-decoration: none;
-
-  span:last-child {
-    font-size: 24px;
-    line-height: 1;
-  }
-`;
-
-const ActionLabel = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: auto;
-  padding-top: 12px;
-  border-bottom: 1px solid currentColor;
-  font-size: 16px;
-  line-height: 1.4;
-
-  span:last-child {
-    font-size: 24px;
-    line-height: 1;
-  }
-`;
-
-const ParticipationFooter = styled.p`
-  margin: auto 0 0;
-  font-size: clamp(16px, 1.45vw, 24px);
-  line-height: 1.3;
-
-  ${mediaBreakpointBetween('compact', 'xxl')} {
-    font-size: 16px;
-  }
-
-  ${mediaBreakpointDown('compact')} {
-    margin-top: 6px;
-    font-size: 14px;
-  }
-`;
-
 const modalEase = [0.16, 1, 0.3, 1] as const;
 
 function ImageContent({ image, imageAlt, portrait }: {
@@ -693,36 +508,6 @@ function PersonalStory({ content }: { content: Extract<CardModalContent, { type:
   );
 }
 
-function Participation({ content }: { content: Extract<CardModalContent, { type: 'participation' }> }) {
-  return (
-    <ParticipationLayout>
-      <SectionTitle id="card-modal-title" $center>{content.sectionTitle}</SectionTitle>
-      <Intro>{content.intro}</Intro>
-      <ActionList>
-        {content.actions.map((action, index) => {
-          const children = (
-            <>
-              <Audience>{action.audience}</Audience>
-              <ActionTitle dangerouslySetInnerHTML={{__html: action.title}}/>
-              <ActionDescription dangerouslySetInnerHTML={{__html: action.description}}/>
-              {action.href ? (
-                <ActionLink href={action.href} target="_blank" rel="noreferrer">
-                  <span>{action.linkLabel}</span><span aria-hidden="true">↗</span>
-                </ActionLink>
-              ) : (
-                <ActionLabel><span>{action.linkLabel}</span><span aria-hidden="true">↗</span></ActionLabel>
-              )}
-            </>
-          );
-
-          return <ActionCard key={`${action.title}-${index}`} $red={index % 2 === 1}>{children}</ActionCard>;
-        })}
-      </ActionList>
-      <ParticipationFooter>{content.footer}</ParticipationFooter>
-    </ParticipationLayout>
-  );
-}
-
 function ModalContent({ content }: { content: CardModalContent }) {
   switch (content.type) {
     case 'photo-story':
@@ -732,8 +517,6 @@ function ModalContent({ content }: { content: CardModalContent }) {
       return <ArtistWork content={content} />;
     case 'personal-story':
       return <PersonalStory content={content} />;
-    case 'participation':
-      return <Participation content={content} />;
   }
 }
 
@@ -778,7 +561,6 @@ export function CardModal({ content, onClose }: CardModalProps) {
             exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.4, ease: modalEase } }}
           >
             <CloseButton
-              $light={content.type === 'participation'}
               type="button"
               aria-label="Закрыть"
               onClick={onClose}

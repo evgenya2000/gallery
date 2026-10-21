@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { InteractiveGrid } from '../../../widgets/InteractiveGrid';
 import { PanZoomCanvas } from '../../../features/PanZoomCanvas';
 import { InfoModal, type InfoModalSection } from '../../../features/InfoModal';
-import { cards } from '../../../entities/Card';
+import { cards, centralCard } from '../../../entities/Card';
 import { useImagePreloader } from '../../../shared/lib/useImagePreloader';
 import galleryBackdrop from '../../../shared/assets/background.png';
 import introLeft from '../../../shared/assets/intro-left.png';
@@ -897,7 +897,7 @@ export function HomePage() {
   // Синхронизируем позицию "острого" дубликата активной ссылки в хедере.
   // На мобиле (< 768px) фича отключена — работает обычное блюр-затемнение.
   useLayoutEffect(() => {
-    if (isMobile || !activeInfo) {
+    if (isMobile || !activeInfo || activeInfo === 'participation') {
       setSharpLink(null);
       return;
     }
@@ -1073,13 +1073,21 @@ export function HomePage() {
               animate={{ opacity: gridRevealed ? 1 : 0 }}
               transition={{ duration: 1.75, ease: [0.4, 0, 0.2, 1] }}
             >
-              <InteractiveGrid onAllCardsRevealed={() => setGridRevealComplete(true)} shouldReveal={gridRevealed} />
+              <InteractiveGrid
+                onAllCardsRevealed={() => setGridRevealComplete(true)}
+                onOpenParticipation={() => setActiveInfo('participation')}
+                shouldReveal={gridRevealed}
+              />
             </GridReveal>
           </CanvasContent>
         </PanZoomCanvas>
       )}
 
-      <InfoModal section={activeInfo} onClose={() => setActiveInfo(null)} />
+      <InfoModal
+        section={activeInfo}
+        participationContent={centralCard.modalContent}
+        onClose={() => setActiveInfo(null)}
+      />
 
       {!isMobile &&
         createPortal(

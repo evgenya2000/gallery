@@ -98,9 +98,10 @@ const gridVariants: Variants = {
 interface InteractiveGridProps {
   onAllCardsRevealed: () => void;
   shouldReveal: boolean;
+  onOpenParticipation: () => void;
 }
 
-export function InteractiveGrid({ onAllCardsRevealed, shouldReveal }: InteractiveGridProps) {
+export function InteractiveGrid({ onAllCardsRevealed, shouldReveal, onOpenParticipation }: InteractiveGridProps) {
   const [selectedContent, setSelectedContent] = useState<CardModalContent | null>(null);
   const { revealDelays, lastRevealCardId } = useMemo(() => {
     const randomizedCards = [...cards];
@@ -127,7 +128,7 @@ export function InteractiveGrid({ onAllCardsRevealed, shouldReveal }: Interactiv
           $position={centralCard.position}
           $mobilePosition={centralCard.mobilePosition}
           aria-label="Принять участие в проекте"
-          onClick={() => setSelectedContent(centralCard.modalContent)}
+          onClick={onOpenParticipation}
           initial={{ opacity: 0 }}
           animate={shouldReveal ? { opacity: 1 } : { opacity: 0 }}
           transition={{duration: 0.85, delay: 0.25, ease: [0.16, 1, 0.3, 1]}}

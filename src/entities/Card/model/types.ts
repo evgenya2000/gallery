@@ -13,8 +13,7 @@ export type CardModalType =
   | 'photo-story'
   | 'portrait-photo-story'
   | 'artist-work'
-  | 'personal-story'
-  | 'participation';
+  | 'personal-story';
 
 export interface PhotoStoryModalContent {
   type: 'photo-story' | 'portrait-photo-story';
@@ -65,8 +64,7 @@ export interface ParticipationModalContent {
 export type CardModalContent =
   | PhotoStoryModalContent
   | ArtistWorkModalContent
-  | PersonalStoryModalContent
-  | ParticipationModalContent;
+  | PersonalStoryModalContent;
 
 export interface CentralCardData {
   title: string;

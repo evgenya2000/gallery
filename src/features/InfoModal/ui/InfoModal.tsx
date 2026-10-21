@@ -2,13 +2,15 @@ import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
+import type { ParticipationModalContent } from '../../../entities/Card';
 import type { ThemeGuideBadge } from '../../../shared/styles/types';
 import { mediaBreakpointBetween, mediaBreakpointDown } from '../../../shared/styles/mixins';
 
-export type InfoModalSection = 'guide' | 'contacts';
+export type InfoModalSection = 'guide' | 'contacts' | 'participation';
 
 interface InfoModalProps {
   section: InfoModalSection | null;
+  participationContent: ParticipationModalContent;
   onClose: () => void;
 }
 
@@ -600,7 +602,206 @@ const AuthorNote = styled.p`
   }
 `;
 
-export function InfoModal({ section, onClose }: InfoModalProps) {
+const ParticipationLayout = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  padding: 0;
+
+  ${mediaBreakpointDown('compact')} {
+    height: auto;
+    min-height: calc(100lvh - 92px);
+  }
+`;
+
+const ParticipationIntro = styled(Paragraph)`
+  margin: 0 0 65px;
+
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    margin: 0 0 40px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
+    margin: 28px 0 30px;
+  }
+`;
+
+const ParticipationActions = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 5vw, 90px);
+  margin-bottom: 36px;
+
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    gap: 24px;
+    margin-bottom: 20px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 26px;
+  }
+
+`;
+
+const ParticipationAction = styled.article<{ $red: boolean }>`
+  display: flex;
+  min-height: 250px;
+  flex-direction: column;
+  padding: 20px 32px 26px;
+  border-radius: 30px;
+  background: ${({ $red }) => ($red ? '#812926' : '#607984')};
+  color: #ffffff;
+
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    min-height: 200px;
+    border-radius: 28px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
+    min-height: 0;
+    width: auto;
+    max-width: 375px;
+    flex: 1 1 320px;
+    border-radius: 28px;
+  }
+
+  ${mediaBreakpointDown('tablet', true)} {
+    width: auto;
+    max-width: none;
+    flex: 1 1 100%;
+  }
+`;
+
+const ParticipationAudience = styled.span`
+  margin-bottom: 28px;
+  font-size: 20px;
+  line-height: 23px;
+
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    margin-bottom: 18px;
+    font-size: 18px;
+    line-height: 21px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
+    margin-bottom: 18px;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+`;
+
+const ParticipationActionTitle = styled.h3`
+  margin: 0 0 12px;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 31px;
+
+  ${mediaBreakpointDown('xxl')} {
+    font-size: 26px;
+    line-height: 27px;
+  }
+`;
+
+const ParticipationActionDescription = styled(TypeText)`
+  margin: 0 0 22px;
+  color: #fff;
+`;
+
+const ParticipationActionLink = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-bottom: 1px solid currentColor;
+  color: inherit;
+  font-size: 16px;
+  line-height: 1.4;
+  text-decoration: none;
+
+`;
+
+const ParticipationActionLabel = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-bottom: 1px solid currentColor;
+  font-size: 16px;
+  line-height: 1.4;
+
+`;
+
+const ParticipationArrow = styled.svg`
+  display: block;
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+
+  ${mediaBreakpointDown('compact')} {
+    width: 8.7px;
+    height: 8.7px;
+  }
+`;
+
+function ParticipationArrowIcon() {
+  return (
+    <ParticipationArrow width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+      <path
+        d="M0.5 9.5L9.5 0.5M9.5 8.6V0.5H1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        stroke="white"
+      />
+    </ParticipationArrow>
+  );
+}
+
+const ParticipationFooter = styled(Paragraph)`
+  margin: auto 0 0;
+
+  ${mediaBreakpointDown('compact')} {
+    margin-top: 6px;
+  }
+`;
+
+function ParticipationContent({ content }: { content: ParticipationModalContent }) {
+  return (
+    <ParticipationLayout>
+      <Title id="info-modal-title">{content.sectionTitle}</Title>
+      <ParticipationIntro dangerouslySetInnerHTML={{ __html: content.intro }} />
+      <ParticipationActions>
+        {content.actions.map((action, index) => (
+          <ParticipationAction key={`${action.title}-${index}`} $red={index % 2 === 1}>
+            <ParticipationAudience>{action.audience}</ParticipationAudience>
+            <ParticipationActionTitle dangerouslySetInnerHTML={{ __html: action.title }} />
+            <ParticipationActionDescription dangerouslySetInnerHTML={{ __html: action.description }} />
+            {action.href ? (
+              <ParticipationActionLink href={action.href} target="_blank" rel="noreferrer">
+                <span>{action.linkLabel}</span><ParticipationArrowIcon />
+              </ParticipationActionLink>
+            ) : (
+              <ParticipationActionLabel>
+                <span>{action.linkLabel}</span><ParticipationArrowIcon />
+              </ParticipationActionLabel>
+            )}
+          </ParticipationAction>
+        ))}
+      </ParticipationActions>
+      <ParticipationFooter dangerouslySetInnerHTML={{ __html: content.footer }} />
+    </ParticipationLayout>
+  );
+}
+
+export function InfoModal({ section, participationContent, onClose }: InfoModalProps) {
   useEffect(() => {
     if (!section) return undefined;
 
@@ -638,7 +839,9 @@ export function InfoModal({ section, onClose }: InfoModalProps) {
             </CloseButton>
 
             <Content>
-              {section === 'guide' ? (
+              {section === 'participation' ? (
+                <ParticipationContent content={participationContent} />
+              ) : section === 'guide' ? (
                 <>
                   <Title id="info-modal-title">{guideContent.title}</Title>
                   {guideContent.intro.map((paragraph, index) => (

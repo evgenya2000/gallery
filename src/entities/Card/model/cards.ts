@@ -22,7 +22,7 @@ export const centralCard: CentralCardData = {
   mobilePosition: { x: 443.97, y: 311.11, width: 160.67, height: 113.68, rotation: 0 },
   modalContent: {
     type: 'participation',
-    sectionTitle: 'ПРИНЯТЬ УЧАСТИЕ',
+    sectionTitle: '[ПРИНЯТЬ УЧАСТИЕ]',
     intro: 'У каждого свое представление о доме. Поделитесь своей историей, фотографией или художественной работой и станьте частью общего визуального архива.',
     actions: [
       {
@@ -30,12 +30,14 @@ export const centralCard: CentralCardData = {
         title: 'ЛИЧНАЯ ИСТОРИЯ',
         description: 'Расскажите, что для вас означает дом, через слова, фотографию или рисунок.',
         linkLabel: 'поделиться',
+        href: 'https://forms.yandex.ru/u/6aca1c3949af47509beb7e36',
       },
       {
         audience: 'ДЛЯ АВТОРОВ',
         title: 'АВТОРСКИЙ ПРОЕКТ',
         description: 'Предложите художественную работу или фотопроект, раскрывающий тему дома.',
         linkLabel: 'предложить проект',
+        href: 'https://forms.yandex.ru/u/6aca2601c45c0775bd6ae582',
       },
     ],
     footer: 'Все материалы проходят предварительный просмотр перед публикацией в архиве.',
