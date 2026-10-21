@@ -20,7 +20,7 @@ Error generating stack: `+e.message+`
     + ${t-e}
     * (100v${i} - ${n}px)
     / (${r-n})
-  )`;function Rp(e){let t=e.replace(/^\/+/,``),n=t.lastIndexOf(`.`);if(n===-1)return{desktop:e,mobile:e,fallback:e};let r=t.slice(0,n),i=r.slice(0,r.lastIndexOf(`/`)+1),a=r.slice(r.lastIndexOf(`/`)+1);return{desktop:`/${i}${a}.webp`,mobile:`/${i}mobile/${a}.webp`,fallback:`/${t}`}}var zp={hidden:{opacity:0},visible:e=>({opacity:1,transition:{duration:.85,delay:e,ease:[.16,1,.3,1]}})},Bp=q(Eu.button)`
+  )`;function Rp(e){let t=e.replace(/^\/+/,``),n=t.lastIndexOf(`.`);if(n===-1)return{desktop:e,mobile:e,fallback:e};let r=t.slice(0,n),i=r.slice(0,r.lastIndexOf(`/`)+1),a=r.slice(r.lastIndexOf(`/`)+1),o=`/${i}${a}.webp`;return{desktop:o,mobile:`/${i}mobile/${a}.webp`,fallback:o}}var zp={hidden:{opacity:0},visible:e=>({opacity:1,transition:{duration:.85,delay:e,ease:[.16,1,.3,1]}})},Bp=q(Eu.button)`
   position: absolute;
   top: ${({$card:e})=>`${e.position.y}px`};
   left: ${({$card:e})=>`${e.position.x}px`};
@@ -1863,31 +1863,23 @@ Error generating stack: `+e.message+`
   justify-content: space-between;
 
   ${Fp(`tablet`)} {
-    padding-top: 27px;
-    padding-right: 1.9vw;
-    padding-left: 1.9vw;
+    padding: 18px 1.9vw 9px;
   }
 
   ${Fp(`compact`)} {
-    padding-top: 38px;
-    padding-right: 5.3vw;
-    padding-left: 3.2vw;
+    padding: 29px 5.3vw 9px 3.2vw;
   }
 
   ${Fp(`wide`)} {
-    padding-top: 43px;
-    padding-right: 8.62vw;
-    padding-left: 8.62vw;
+    padding: 34px 8.62vw 9px;
   }
 
   ${Fp(`qhd`)} {
-    padding-top: 54px;
-    padding-left: 10vw;
-    padding-right: 10vw;
+    padding: 45px 10vw 9px;
   }
 
   ${J(`tablet`,!0)} {
-    padding: 29px 22px 0;
+    padding: 20px 22px 9px;
   }
 `,vv=q.nav`
   display: flex;
