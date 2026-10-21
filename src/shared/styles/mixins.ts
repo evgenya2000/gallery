@@ -49,3 +49,9 @@ export const smoothValue = (
     * (100v${dimension} - ${minPoint}px)
     / (${maxPoint - minPoint})
   )`;
+
+export const hyphens = `
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  overflow-wrap: break-word;
+`;

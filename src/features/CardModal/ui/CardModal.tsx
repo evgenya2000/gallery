@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import type { CardModalContent, CardModalType } from '../../../entities/Card';
 import {
+  hyphens,
   mediaBreakpointBetween,
   mediaBreakpointDown,
   mediaBreakpointUp,
@@ -43,7 +44,7 @@ const Dialog = styled(motion.section) <{ $type: CardModalType }>`
   position: relative;
   width: min(960px, calc(100vw - 112px));
   height: min(682px, calc(100lvh - 96px));
-  padding: clamp(32px, 3.6vw, 52px);
+  padding: 37px 40px 30px;
   overflow: visible;
   border-radius: 40px;
   background: ${({ $type }) => colors[$type]};
@@ -54,7 +55,6 @@ const Dialog = styled(motion.section) <{ $type: CardModalType }>`
   ${mediaBreakpointBetween('compact', 'xxl')} {
     width: min(796px, calc(100vw - 112px));
     height: min(531px, calc(100lvh - 96px));
-    padding: 35px 58px 45px 58px;
   }
 
   ${mediaBreakpointDown('compact')} {
@@ -189,6 +189,7 @@ const Copy = styled.div`
   white-space: pre-wrap;
   scrollbar-width: none;
   overscroll-behavior: contain;
+  ${hyphens}
 
   &::-webkit-scrollbar {
     display: none;
@@ -360,7 +361,7 @@ const PersonalLayout = styled.div`
   width: 100%;
   height: 100%;
   min-height: 0;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  grid-template-columns: minmax(0, 0.98fr) minmax(0, 1.02fr);
   grid-template-rows: auto minmax(0, 1fr) auto;
   grid-template-areas:
     'section section'
@@ -390,9 +391,9 @@ const Quote = styled.blockquote`
   align-self: center;
   margin: 0;
   padding: 0 8px;
-  font-size: clamp(34px, 3.4vw, 56px);
+  font-size: 36px;
   font-weight: 400;
-  line-height: 1.16;
+  line-height: 40px;
   text-align: center;
   white-space: pre-wrap;
   overflow-y: auto;
@@ -413,6 +414,16 @@ const Quote = styled.blockquote`
     font-size: clamp(30px, 9vw, 42px);
     line-height: 1.16;
   }
+
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  ${mediaBreakpointDown('compact')} {
+    font-size: 24px;
+    line-height: 25px;
+  } 
 `;
 
 const ParticipationLayout = styled.div`
@@ -449,6 +460,7 @@ const Intro = styled.p`
   margin: 34px 0 42px;
   font-size: clamp(16px, 1.45vw, 24px);
   line-height: 1.3;
+  ${hyphens}
 
   ${mediaBreakpointBetween('compact', 'xxl')} {
     margin: 20px 0 24px;
@@ -536,6 +548,7 @@ const ActionDescription = styled.p`
   margin: 0 0 22px;
   font-size: clamp(14px, 1.2vw, 20px);
   line-height: 1.25;
+  ${hyphens}
 
   ${mediaBreakpointBetween('compact', 'xxl')} {
     font-size: 14px;
@@ -755,6 +768,7 @@ export function CardModal({ content, onClose }: CardModalProps) {
           }}
         >
           <Dialog
+            lang="ru"
             $type={content.type}
             role="dialog"
             aria-modal="true"
