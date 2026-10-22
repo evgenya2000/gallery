@@ -1251,7 +1251,7 @@ Error generating stack: `+e.message+`
   ${J(`compact`)} {
     margin-top: 6px;
   }
-`;function ev({content:e}){return(0,V.jsxs)(H_,{children:[(0,V.jsx)(C_,{id:`info-modal-title`,children:e.sectionTitle}),(0,V.jsx)(U_,{dangerouslySetInnerHTML:{__html:e.intro}}),(0,V.jsx)(W_,{children:e.actions.map((e,t)=>(0,V.jsxs)(G_,{$red:t%2==1,children:[(0,V.jsx)(K_,{children:e.audience}),(0,V.jsx)(q_,{dangerouslySetInnerHTML:{__html:e.title}}),(0,V.jsx)(J_,{dangerouslySetInnerHTML:{__html:e.description}}),e.href?(0,V.jsxs)(Y_,{href:e.href,target:`_blank`,rel:`noreferrer`,children:[(0,V.jsx)(`span`,{children:e.linkLabel}),(0,V.jsx)(Q_,{})]}):(0,V.jsxs)(X_,{children:[(0,V.jsx)(`span`,{children:e.linkLabel}),(0,V.jsx)(Q_,{})]})]},`${e.title}-${t}`))}),(0,V.jsx)($_,{dangerouslySetInnerHTML:{__html:e.footer}})]})}function tv({section:e,participationContent:t,onClose:n}){return(0,x.useEffect)(()=>{if(!e)return;let t=e=>{e.key===`Escape`&&n()};return window.addEventListener(`keydown`,t),()=>window.removeEventListener(`keydown`,t)},[e,n]),(0,Ad.createPortal)((0,V.jsx)(Oc,{children:e&&(0,V.jsx)(y_,{initial:{opacity:0},animate:{opacity:1,transition:{duration:.42,ease:f_}},exit:{opacity:0,transition:{duration:.4,ease:f_}},onMouseDown:e=>{e.target===e.currentTarget&&n()},children:(0,V.jsxs)(b_,{role:`dialog`,"aria-modal":`true`,"aria-labelledby":`info-modal-title`,lang:`ru`,initial:{opacity:0,scale:.96},animate:{opacity:1,scale:1,transition:{duration:.6,ease:f_}},exit:{opacity:0,scale:.96,transition:{duration:.4,ease:f_}},children:[(0,V.jsx)(S_,{type:`button`,"aria-label":`Закрыть окно`,onClick:n,children:(0,V.jsx)(v_,{})}),(0,V.jsx)(x_,{children:e===`participation`?(0,V.jsx)(ev,{content:t}):e===`guide`?(0,V.jsxs)(V.Fragment,{children:[(0,V.jsx)(C_,{id:`info-modal-title`,children:p_.title}),p_.intro.map((e,t)=>(0,V.jsx)(w_,{dangerouslySetInnerHTML:{__html:e}},t)),(0,V.jsx)(D_,{children:p_.exploreHeading}),(0,V.jsx)(O_,{children:p_.exploreSteps.map((e,t)=>(0,V.jsxs)(k_,{children:[(0,V.jsx)(A_,{children:e.icon===`cursor`?(0,V.jsx)(h_,{}):(0,V.jsx)(g_,{})}),(0,V.jsx)(`p`,{dangerouslySetInnerHTML:{__html:e.text}})]},t))}),(0,V.jsx)(D_,{children:p_.typesHeading}),(0,V.jsx)(j_,{children:p_.types.map(e=>(0,V.jsxs)(M_,{children:[(0,V.jsx)(N_,{$badge:e.id,children:e.label}),(0,V.jsx)(P_,{dangerouslySetInnerHTML:{__html:e.description}})]},e.id))})]}):(0,V.jsxs)(V.Fragment,{children:[(0,V.jsx)(C_,{id:`info-modal-title`,children:m_.title}),(0,V.jsx)(T_,{dangerouslySetInnerHTML:{__html:m_.lead}}),(0,V.jsx)(E_,{dangerouslySetInnerHTML:{__html:m_.note}}),(0,V.jsxs)(F_,{children:[(0,V.jsxs)(I_,{children:[(0,V.jsx)(L_,{children:m_.contactHeading}),(0,V.jsx)(R_,{href:`mailto:${m_.email}`,children:m_.email})]}),(0,V.jsxs)(I_,{children:[(0,V.jsx)(z_,{children:(0,V.jsx)(__,{})}),(0,V.jsx)(R_,{href:m_.telegramUrl,target:`_blank`,rel:`noopener noreferrer`,children:m_.telegramLabel})]})]}),(0,V.jsx)(D_,{$contacts:!0,children:m_.authorHeading}),(0,V.jsx)(B_,{children:m_.authorName}),(0,V.jsx)(V_,{dangerouslySetInnerHTML:{__html:m_.authorNote}})]})})]})},`info-modal-${e}`)}),document.body)}function nv(e,t){let[n,r]=(0,x.useState)(!1),i=(0,x.useRef)(new Map);return(0,x.useEffect)(()=>{if(!t)return;if(e.length===0){r(!0);return}let n=window.matchMedia(`(max-width: 768px)`).matches,a=e.map(e=>{let{mobile:t,desktop:r}=zp(e),a=n?t:r,o=i.current.get(a);if(o)return o;let s=new Image;s.decoding=`async`,s.src=a;let c=typeof s.decode==`function`?s.decode().catch(()=>void 0):new Promise(e=>{if(s.complete){e();return}s.onload=()=>e(),s.onerror=()=>e()});return i.current.set(a,c),c});Promise.all(a).then(()=>r(!0))},[t,e]),n}var rv=`/gallery/assets/background-CNU9X8Rn.png`,iv=`/gallery/assets/intro-left-BlfuSQa2.png`,av=`/gallery/assets/intro-right-CJOh8xwG.png`,ov=q.div`
+`;function ev({content:e}){return(0,V.jsxs)(H_,{children:[(0,V.jsx)(C_,{id:`info-modal-title`,children:e.sectionTitle}),(0,V.jsx)(U_,{dangerouslySetInnerHTML:{__html:e.intro}}),(0,V.jsx)(W_,{children:e.actions.map((e,t)=>(0,V.jsxs)(G_,{$red:t%2==1,children:[(0,V.jsx)(K_,{children:e.audience}),(0,V.jsx)(q_,{dangerouslySetInnerHTML:{__html:e.title}}),(0,V.jsx)(J_,{dangerouslySetInnerHTML:{__html:e.description}}),e.href?(0,V.jsxs)(Y_,{href:e.href,target:`_blank`,rel:`noreferrer`,children:[(0,V.jsx)(`span`,{children:e.linkLabel}),(0,V.jsx)(Q_,{})]}):(0,V.jsxs)(X_,{children:[(0,V.jsx)(`span`,{children:e.linkLabel}),(0,V.jsx)(Q_,{})]})]},`${e.title}-${t}`))}),(0,V.jsx)($_,{dangerouslySetInnerHTML:{__html:e.footer}})]})}function tv({section:e,participationContent:t,onClose:n}){return(0,x.useEffect)(()=>{if(!e)return;let t=e=>{e.key===`Escape`&&n()};return window.addEventListener(`keydown`,t),()=>window.removeEventListener(`keydown`,t)},[e,n]),(0,Ad.createPortal)((0,V.jsx)(Oc,{children:e&&(0,V.jsx)(y_,{initial:{opacity:0},animate:{opacity:1,transition:{duration:.42,ease:f_}},exit:{opacity:0,transition:{duration:.4,ease:f_}},onMouseDown:e=>{e.target===e.currentTarget&&n()},children:(0,V.jsxs)(b_,{role:`dialog`,"aria-modal":`true`,"aria-labelledby":`info-modal-title`,lang:`ru`,initial:{opacity:0,scale:.96},animate:{opacity:1,scale:1,transition:{duration:.6,ease:f_}},exit:{opacity:0,scale:.96,transition:{duration:.4,ease:f_}},children:[(0,V.jsx)(S_,{type:`button`,"aria-label":`Закрыть окно`,onClick:n,children:(0,V.jsx)(v_,{})}),(0,V.jsx)(x_,{children:e===`participation`?(0,V.jsx)(ev,{content:t}):e===`guide`?(0,V.jsxs)(V.Fragment,{children:[(0,V.jsx)(C_,{id:`info-modal-title`,children:p_.title}),p_.intro.map((e,t)=>(0,V.jsx)(w_,{dangerouslySetInnerHTML:{__html:e}},t)),(0,V.jsx)(D_,{children:p_.exploreHeading}),(0,V.jsx)(O_,{children:p_.exploreSteps.map((e,t)=>(0,V.jsxs)(k_,{children:[(0,V.jsx)(A_,{children:e.icon===`cursor`?(0,V.jsx)(h_,{}):(0,V.jsx)(g_,{})}),(0,V.jsx)(`p`,{dangerouslySetInnerHTML:{__html:e.text}})]},t))}),(0,V.jsx)(D_,{children:p_.typesHeading}),(0,V.jsx)(j_,{children:p_.types.map(e=>(0,V.jsxs)(M_,{children:[(0,V.jsx)(N_,{$badge:e.id,children:e.label}),(0,V.jsx)(P_,{dangerouslySetInnerHTML:{__html:e.description}})]},e.id))})]}):(0,V.jsxs)(V.Fragment,{children:[(0,V.jsx)(C_,{id:`info-modal-title`,children:m_.title}),(0,V.jsx)(T_,{dangerouslySetInnerHTML:{__html:m_.lead}}),(0,V.jsx)(E_,{dangerouslySetInnerHTML:{__html:m_.note}}),(0,V.jsxs)(F_,{children:[(0,V.jsxs)(I_,{children:[(0,V.jsx)(L_,{children:m_.contactHeading}),(0,V.jsx)(R_,{href:`mailto:${m_.email}`,children:m_.email})]}),(0,V.jsxs)(I_,{children:[(0,V.jsx)(z_,{children:(0,V.jsx)(__,{})}),(0,V.jsx)(R_,{href:m_.telegramUrl,target:`_blank`,rel:`noopener noreferrer`,children:m_.telegramLabel})]})]}),(0,V.jsx)(D_,{$contacts:!0,children:m_.authorHeading}),(0,V.jsx)(B_,{children:m_.authorName}),(0,V.jsx)(V_,{dangerouslySetInnerHTML:{__html:m_.authorNote}})]})})]})},`info-modal-${e}`)}),document.body)}function nv(e,t){let[n,r]=(0,x.useState)(!1),i=(0,x.useRef)(new Map);return(0,x.useEffect)(()=>{if(!t)return;if(e.length===0){r(!0);return}let n=window.matchMedia(`(max-width: 768px)`).matches,a=e.map(e=>{let{mobile:t,desktop:r}=zp(e),a=n?t:r,o=i.current.get(a);if(o)return o;let s=new Image;s.decoding=`async`,s.src=a;let c=typeof s.decode==`function`?s.decode().catch(()=>void 0):new Promise(e=>{if(s.complete){e();return}s.onload=()=>e(),s.onerror=()=>e()});return i.current.set(a,c),c});Promise.all(a).then(()=>r(!0))},[t,e]),n}var rv={title:`О проекте`,introduction:[`&laquo;Что такое дом?&raquo;&nbsp;&mdash; исследование того, как разные люди понимают и&nbsp;ощущают дом.`,`Для одних дом&nbsp;&mdash; это конкретное место, для других&nbsp;&mdash; близкие люди, воспоминания, природа или чувство принадлежности.`,`Проект объединяет работы художников и&nbsp;фотографов с&nbsp;личными историями участников. Вместе они формируют интерактивный архив представлений о&nbsp;доме, выраженных через изображения и&nbsp;тексты.`],participationHeading:`Принять участие`,participation:[`Каждый может стать частью исследования: ответить на&nbsp;вопрос &laquo;Что для тебя дом?&raquo; словами, фотографией или рисунком.`,`Собранные материалы станут основой будущей выставки, а&nbsp;сайт продолжит пополняться новыми историями и&nbsp;интерпретациями.`]},iv=`/gallery/assets/background-CNU9X8Rn.png`,av=`/gallery/assets/intro-left-BlfuSQa2.png`,ov=`/gallery/assets/intro-right-CJOh8xwG.png`,sv=q.div`
   position: relative;
   isolation: isolate;
   display: flex;
@@ -1272,7 +1272,7 @@ Error generating stack: `+e.message+`
     position: absolute;
     z-index: -1;
     inset: 0;
-    background-image: url(${rv});
+    background-image: url(${iv});
     background-position: 40vw calc(var(--roof-anchor-y) - 31.4dvh);
     background-repeat: no-repeat;
     background-size: var(--house-art-width);
@@ -1327,7 +1327,7 @@ Error generating stack: `+e.message+`
       background-attachment: scroll;
     }
   }
-`,sv=q.main`
+`,cv=q.main`
   position: relative;
   width: 1440px;
   height: 935px;
@@ -1357,11 +1357,11 @@ Error generating stack: `+e.message+`
       display: none;
     }
   }
-`,cv=q.div`
+`,lv=q.div`
   position: relative;
   width: 100%;
   height: 100%;
-`,lv=q.div`
+`,uv=q.div`
   position: absolute;
   z-index: 8;
   inset: clamp(90px, 13.67dvh, 140px) 0 0;
@@ -1417,7 +1417,7 @@ Error generating stack: `+e.message+`
       padding-bottom: 36px;
     }
   }
-`,uv=q.div`
+`,dv=q.div`
   display: none;
 
   opacity: ${({$dimmed:e})=>e?.2:1};
@@ -1434,7 +1434,7 @@ Error generating stack: `+e.message+`
     overflow: hidden;
     pointer-events: none;
   }
-`,dv=q(Eu.img)`
+`,fv=q(Eu.img)`
   display: none;
 
   ${J(`tablet`,!0)} {
@@ -1459,7 +1459,7 @@ Error generating stack: `+e.message+`
     max-height: 48svh;
 
   }
-`,fv=q(Eu.img)`
+`,pv=q(Eu.img)`
   display: none;
 
   ${J(`compact`)} {
@@ -1488,7 +1488,7 @@ Error generating stack: `+e.message+`
       height: 100vh;
     }
   }
-`,pv=q(Eu.section)`
+`,mv=q(Eu.section)`
   position: absolute;
   top: calc(var(--roof-anchor-y) - var(--header-height) - 20px);
   left: var(--intro-pad);
@@ -1518,7 +1518,7 @@ Error generating stack: `+e.message+`
     flex-direction: column;
     flex: 1;
   }
-`,mv=q(Eu.button)`
+`,hv=q(Eu.button)`
   position: relative;
   display: flex;
   width: 100%;
@@ -1681,7 +1681,7 @@ Error generating stack: `+e.message+`
       line-height: 81px;
     }
   }
-`,hv=q(Eu.div)`
+`,gv=q(Eu.div)`
   width: calc(var(--face-anchor-x) - var(--description-left-x));
   margin: clamp(28px, 4.5dvh, 52px) 0 0 calc(var(--description-left-x) - var(--intro-pad));
   color: ${({theme:e})=>e.colors.text};
@@ -1742,12 +1742,12 @@ Error generating stack: `+e.message+`
     width: 275px;
   }
 
-`,gv=q(Eu.section)`
+`,_v=q(Eu.section)`
   position: relative;
   width: 980px;
   height: auto;
   max-width: calc(100vw - 48px);
-  max-height: calc(100dvh - var(--header-height));
+  max-height: ${({$modal:e})=>e?`calc(100dvh - 48px)`:`calc(100dvh - var(--header-height))`};
   overflow-y: auto;
   padding: 56px 64px 52px;
   border-radius: 30px;
@@ -1792,7 +1792,7 @@ Error generating stack: `+e.message+`
   ${J(`phone`,!0)} {
     padding: 54px 22px 40px;
   }
-`,_v=q.h2`
+`,vv=q.h2`
   margin: 0 0 40px;
   color: ${({theme:e})=>e.colors.text};
   font-size: 48px;
@@ -1814,7 +1814,7 @@ Error generating stack: `+e.message+`
   ${J(`phone`,!0)} {
     font-size: 32px;
   }
-`,vv=q.h3`
+`,yv=q.h3`
   margin: 40px 0 20px;
   color: ${({theme:e})=>e.colors.text};
   font-size: 36px;
@@ -1835,7 +1835,7 @@ Error generating stack: `+e.message+`
   ${J(`phone`,!0)} {
     font-size: 32px;
   }
-`,yv=q.p`
+`,bv=q.p`
   margin: 0 0 18px;
   color: ${({theme:e})=>e.colors.text};
   font-size: 20px;
@@ -1855,7 +1855,7 @@ Error generating stack: `+e.message+`
     font-size: 14px;
     line-height: 16px;
   }
-`,bv=q.button`
+`,xv=q.button`
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -1902,7 +1902,60 @@ Error generating stack: `+e.message+`
   ${J(`phone`,!0)} {
     font-size: 18px;
   }
-`,xv=q(Eu.header)`
+`,Sv=q(Eu.div)`
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(247, 247, 247, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  ${J(`modal`,!0)} {
+    padding: 0;
+  }
+`,Cv=q.button`
+  position: absolute;
+  z-index: 2;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  width: 55px;
+  height: 55px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: ${({theme:e})=>e.colors.text};
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 180ms ease;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &:hover,
+  &:active {
+    opacity: 0.6;
+  }
+
+  ${Y(`compact`,`xxl`)} {
+    width: 44px;
+    height: 44px;
+  }
+
+  ${J(`modal`,!0)} {
+    top: 12px;
+    right: 16px;
+    width: 28px;
+    height: 28px;
+  }
+`;function wv({onContinue:e,titleId:t=`about-title`}){return(0,V.jsxs)(V.Fragment,{children:[(0,V.jsx)(vv,{id:t,children:rv.title}),rv.introduction.map(e=>(0,V.jsx)(bv,{dangerouslySetInnerHTML:{__html:e}},e)),(0,V.jsx)(yv,{children:rv.participationHeading}),rv.participation.map(e=>(0,V.jsx)(bv,{dangerouslySetInnerHTML:{__html:e}},e)),(0,V.jsxs)(xv,{type:`button`,onClick:e,children:[`перейти к карте`,(0,V.jsx)(`svg`,{viewBox:`0 0 12 12`,fill:`none`,xmlns:`http://www.w3.org/2000/svg`,"aria-hidden":`true`,children:(0,V.jsx)(`path`,{d:`M0.5 11.5L11.5 0.5M11.5 10.4V0.5H1.6`,strokeLinecap:`round`,strokeLinejoin:`round`})})]})]})}var Tv=q(Eu.header)`
   position: relative;
   z-index: 9;
   display: flex;
@@ -1927,7 +1980,7 @@ Error generating stack: `+e.message+`
   ${J(`tablet`,!0)} {
     padding: 20px 22px 9px;
   }
-`,Sv=q.nav`
+`,Ev=q.nav`
   display: flex;
   gap: 7.65vw;
 
@@ -1946,7 +1999,7 @@ Error generating stack: `+e.message+`
   ${J(`tablet`,!0)} {
     gap: 12px;
   }
-`,Cv=q.button`
+`,Dv=q.button`
   z-index: 10;
   padding: 0;
   border: 0;
@@ -1983,7 +2036,7 @@ Error generating stack: `+e.message+`
   ${J(`tablet`,!0)} {
     font-size: 11px;
   }
-`,wv=q(Eu.span)`
+`,Ov=q(Eu.span)`
   position: fixed;
   z-index: 1001;
   display: flex;
@@ -1996,7 +2049,7 @@ Error generating stack: `+e.message+`
   white-space: nowrap;
   text-align: right;
   pointer-events: none;
-`,Tv=q.h1`
+`,kv=q.h1`
   margin: 0;
   color: ${({theme:e})=>e.colors.text};
   font-weight: 400;
@@ -2024,7 +2077,23 @@ Error generating stack: `+e.message+`
   ${J(`tablet`,!0)} {
     font-size: 11px;
   }
-`;function Ev(){let[e,t]=(0,x.useState)(`title`),[n,r]=(0,x.useState)(!1),[i,a]=(0,x.useState)(!1),[o,s]=(0,x.useState)(!1),[c,l]=(0,x.useState)(null),[u,d]=(0,x.useState)(!1),[f,p]=(0,x.useState)(null),[m,h]=(0,x.useState)(null),g=(0,x.useRef)(null),_=(0,x.useRef)(null),v=(0,x.useRef)(null),y=nv((0,x.useMemo)(()=>Yp.map(e=>e.image).filter(e=>!!e),[]),e!==`content`);(0,x.useEffect)(()=>{let e=window.matchMedia(`(max-width: 768px)`),t=()=>d(e.matches);return t(),e.addEventListener(`change`,t),()=>e.removeEventListener(`change`,t)},[]),(0,x.useEffect)(()=>{if(!n){a(!1),s(!1);return}if(!y)return;let e=window.setTimeout(()=>a(!0),500);return()=>window.clearTimeout(e)},[n,y]),(0,x.useLayoutEffect)(()=>{if(u||e!==`title`){p(null);return}let t=g.current;if(!t)return;let n=()=>{p(t.offsetLeft)};return n(),window.addEventListener(`resize`,n),document.fonts&&document.fonts.ready.then(n),()=>window.removeEventListener(`resize`,n)},[u,e]),(0,x.useLayoutEffect)(()=>{if(u||!c||c===`participation`){h(null);return}let e=c===`guide`?_.current:v.current;if(!e)return;let t=()=>{let t=e.getBoundingClientRect(),n=window.getComputedStyle(e);h({text:(e.textContent??``).trim(),x:t.left,y:t.top,width:t.width,height:t.height,fontSize:n.fontSize})};return t(),window.addEventListener(`resize`,t),window.addEventListener(`scroll`,t,!0),()=>{window.removeEventListener(`resize`,t),window.removeEventListener(`scroll`,t,!0)}},[c,u]);let b=u&&e===`title`,S=e===`about`||e===`content`&&!n;return(0,V.jsxs)(ov,{$dimmed:n,children:[(0,V.jsxs)(uv,{"aria-hidden":`true`,$dimmed:n,children:[(0,V.jsx)(fv,{src:iv,alt:``,draggable:!1}),(0,V.jsx)(dv,{src:av,alt:``,draggable:!1})]}),(0,V.jsxs)(xv,{children:[(0,V.jsx)(Tv,{children:`[что такое дом?]`}),(0,V.jsxs)(Sv,{"aria-label":`Информация о проекте`,children:[(0,V.jsx)(Cv,{ref:_,type:`button`,$hidden:!u&&c===`guide`,onClick:()=>l(`guide`),children:`[руководство]`}),(0,V.jsx)(Cv,{ref:v,type:`button`,$hidden:!u&&c===`contacts`,onClick:()=>l(`contacts`),children:`[контакты]`})]})]}),n?(0,V.jsx)(d_,{zoomAfterLoad:o,children:(0,V.jsx)(sv,{children:(0,V.jsx)(cv,{children:(0,V.jsx)(xm,{onAllCardsRevealed:()=>s(!0),onOpenParticipation:()=>l(`participation`),shouldReveal:i})})})}):(0,V.jsx)(lv,{$isAbout:S,$clickable:b,onClick:()=>{b&&t(`about`)},children:(0,V.jsxs)(Oc,{mode:`wait`,onExitComplete:()=>{e===`content`&&r(!0)},children:[e===`title`&&(0,V.jsxs)(pv,{initial:!1,animate:{opacity:1},exit:{opacity:0,transition:{duration:.95,ease:[.4,0,.2,1]}},children:[(0,V.jsxs)(mv,{type:`button`,"aria-describedby":`intro-continue-hint`,initial:{opacity:0},animate:{opacity:1,y:0,transition:{duration:2,ease:[.4,0,.2,1]}},onClick:()=>t(`about`),children:[(0,V.jsx)(`span`,{children:`ЧТО ТАКОЕ`}),(0,V.jsx)(`span`,{ref:g,children:`ДОМ?`}),(0,V.jsx)(`span`,{id:`intro-continue-hint`,className:`continue-hint`,children:`[нажмите, чтобы продолжить]`})]}),(0,V.jsxs)(hv,{style:!u&&f!=null?{marginLeft:f+4}:void 0,initial:{opacity:0},animate:{opacity:1,transition:{delay:1.35,duration:1.5,ease:[.4,0,.2,1]}},children:[(0,V.jsx)(`p`,{dangerouslySetInnerHTML:{__html:`Исследование разных представлений о&nbsp;доме.`}}),(0,V.jsx)(`p`,{dangerouslySetInnerHTML:{__html:`Через художественные образы и&nbsp;личные истории предлагаем взглянуть на&nbsp;привычное понятие с&nbsp;разных сторон и&nbsp;задуматься, что делает пространство настоящим домом для человека.`}})]})]},`intro-title`),e===`about`&&(0,V.jsxs)(gv,{initial:{opacity:0},animate:{opacity:1,transition:{duration:1.1,ease:[.16,1,.3,1]}},exit:{opacity:0,transition:{duration:.9,ease:[.4,0,.2,1]}},"aria-labelledby":`about-title`,children:[(0,V.jsx)(_v,{id:`about-title`,children:`О проекте`}),(0,V.jsx)(yv,{dangerouslySetInnerHTML:{__html:`&laquo;Что такое дом?&raquo;&nbsp;&mdash; исследование того, как разные люди понимают и&nbsp;ощущают дом.`}}),(0,V.jsx)(yv,{dangerouslySetInnerHTML:{__html:`Для одних дом&nbsp;&mdash; это конкретное место, для других&nbsp;&mdash; близкие люди, воспоминания, природа или чувство принадлежности.`}}),(0,V.jsx)(yv,{dangerouslySetInnerHTML:{__html:`Проект объединяет работы художников и&nbsp;фотографов с&nbsp;личными историями участников. Вместе они формируют интерактивный архив представлений о&nbsp;доме, выраженных через изображения и&nbsp;тексты.`}}),(0,V.jsx)(vv,{children:`Принять участие`}),(0,V.jsx)(yv,{dangerouslySetInnerHTML:{__html:`Каждый может стать частью исследования: ответить на&nbsp;вопрос &laquo;Что для тебя дом?&raquo; словами, фотографией или рисунком.`}}),(0,V.jsx)(yv,{dangerouslySetInnerHTML:{__html:`Собранные материалы станут основой будущей выставки, а&nbsp;сайт продолжит пополняться новыми историями и&nbsp;интерпретациями.`}}),(0,V.jsxs)(bv,{type:`button`,onClick:()=>t(`content`),children:[`перейти к карте`,(0,V.jsx)(`svg`,{viewBox:`0 0 12 12`,fill:`none`,xmlns:`http://www.w3.org/2000/svg`,"aria-hidden":`true`,children:(0,V.jsx)(`path`,{d:`M0.5 11.5L11.5 0.5M11.5 10.4V0.5H1.6`,strokeLinecap:`round`,strokeLinejoin:`round`})})]})]},`about-project`)]})}),(0,V.jsx)(tv,{section:c,participationContent:Wp.modalContent,onClose:()=>l(null)}),!u&&(0,Ad.createPortal)((0,V.jsx)(Oc,{children:m&&(0,V.jsx)(wv,{initial:{opacity:0},animate:{opacity:1,transition:{duration:.35,delay:.12,ease:[.16,1,.3,1]}},exit:{opacity:0,transition:{duration:.28,ease:[.4,0,.2,1]}},style:{top:m.y,left:m.x,width:m.width,height:m.height,fontSize:m.fontSize},children:m.text},`sharp-active-link`)}),document.body)]})}var Dv=Np`
+`,Av=q.button`
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 200ms ease;
+
+  &:hover,
+  &:active {
+    opacity: 0.65;
+  }
+`;function jv(){let[e,t]=(0,x.useState)(`title`),[n,r]=(0,x.useState)(!1),[i,a]=(0,x.useState)(!1),[o,s]=(0,x.useState)(!1),[c,l]=(0,x.useState)(null),[u,d]=(0,x.useState)(!1),[f,p]=(0,x.useState)(!1),[m,h]=(0,x.useState)(null),[g,_]=(0,x.useState)(null),v=(0,x.useRef)(null),y=(0,x.useRef)(null),b=(0,x.useRef)(null),S=nv((0,x.useMemo)(()=>Yp.map(e=>e.image).filter(e=>!!e),[]),e!==`content`);(0,x.useEffect)(()=>{let e=window.matchMedia(`(max-width: 768px)`),t=()=>p(e.matches);return t(),e.addEventListener(`change`,t),()=>e.removeEventListener(`change`,t)},[]),(0,x.useEffect)(()=>{if(!u)return;let e=e=>{e.key===`Escape`&&d(!1)};return window.addEventListener(`keydown`,e),()=>window.removeEventListener(`keydown`,e)},[u]),(0,x.useEffect)(()=>{if(!n){a(!1),s(!1);return}if(!S)return;let e=window.setTimeout(()=>a(!0),500);return()=>window.clearTimeout(e)},[n,S]),(0,x.useLayoutEffect)(()=>{if(f||e!==`title`){h(null);return}let t=v.current;if(!t)return;let n=()=>{h(t.offsetLeft)};return n(),window.addEventListener(`resize`,n),document.fonts&&document.fonts.ready.then(n),()=>window.removeEventListener(`resize`,n)},[f,e]),(0,x.useLayoutEffect)(()=>{if(f||!c||c===`participation`){_(null);return}let e=c===`guide`?y.current:b.current;if(!e)return;let t=()=>{let t=e.getBoundingClientRect(),n=window.getComputedStyle(e);_({text:(e.textContent??``).trim(),x:t.left,y:t.top,width:t.width,height:t.height,fontSize:n.fontSize})};return t(),window.addEventListener(`resize`,t),window.addEventListener(`scroll`,t,!0),()=>{window.removeEventListener(`resize`,t),window.removeEventListener(`scroll`,t,!0)}},[c,f]);let C=f&&e===`title`,w=e===`about`||e===`content`&&!n,T=()=>{C&&t(`about`)},E=()=>{d(!1),t(`content`)};return(0,V.jsxs)(sv,{$dimmed:n,children:[(0,V.jsxs)(dv,{"aria-hidden":`true`,$dimmed:n,children:[(0,V.jsx)(pv,{src:av,alt:``,draggable:!1}),(0,V.jsx)(fv,{src:ov,alt:``,draggable:!1})]}),(0,V.jsxs)(Tv,{children:[(0,V.jsx)(kv,{children:(0,V.jsx)(Av,{type:`button`,onClick:()=>{l(null),d(!0)},"aria-haspopup":`dialog`,children:`[что такое дом?]`})}),(0,V.jsxs)(Ev,{"aria-label":`Информация о проекте`,children:[(0,V.jsx)(Dv,{ref:y,type:`button`,$hidden:!f&&c===`guide`,onClick:()=>l(`guide`),children:`[руководство]`}),(0,V.jsx)(Dv,{ref:b,type:`button`,$hidden:!f&&c===`contacts`,onClick:()=>l(`contacts`),children:`[контакты]`})]})]}),n?(0,V.jsx)(d_,{zoomAfterLoad:o,children:(0,V.jsx)(cv,{children:(0,V.jsx)(lv,{children:(0,V.jsx)(xm,{onAllCardsRevealed:()=>s(!0),onOpenParticipation:()=>l(`participation`),shouldReveal:i})})})}):(0,V.jsx)(uv,{$isAbout:w,$clickable:C,onClick:T,children:(0,V.jsxs)(Oc,{mode:`wait`,onExitComplete:()=>{e===`content`&&r(!0)},children:[e===`title`&&(0,V.jsxs)(mv,{initial:!1,animate:{opacity:1},exit:{opacity:0,transition:{duration:.95,ease:[.4,0,.2,1]}},children:[(0,V.jsxs)(hv,{type:`button`,"aria-describedby":`intro-continue-hint`,initial:{opacity:0},animate:{opacity:1,y:0,transition:{duration:2,ease:[.4,0,.2,1]}},onClick:()=>t(`about`),children:[(0,V.jsx)(`span`,{children:`ЧТО ТАКОЕ`}),(0,V.jsx)(`span`,{ref:v,children:`ДОМ?`}),(0,V.jsx)(`span`,{id:`intro-continue-hint`,className:`continue-hint`,children:`[нажмите, чтобы продолжить]`})]}),(0,V.jsxs)(gv,{style:!f&&m!=null?{marginLeft:m+4}:void 0,initial:{opacity:0},animate:{opacity:1,transition:{delay:1.35,duration:1.5,ease:[.4,0,.2,1]}},children:[(0,V.jsx)(`p`,{dangerouslySetInnerHTML:{__html:`Исследование разных представлений о&nbsp;доме.`}}),(0,V.jsx)(`p`,{dangerouslySetInnerHTML:{__html:`Через художественные образы и&nbsp;личные истории предлагаем взглянуть на&nbsp;привычное понятие с&nbsp;разных сторон и&nbsp;задуматься, что делает пространство настоящим домом для человека.`}})]})]},`intro-title`),e===`about`&&(0,V.jsx)(_v,{initial:{opacity:0},animate:{opacity:1,transition:{duration:1.1,ease:[.16,1,.3,1]}},exit:{opacity:0,transition:{duration:.9,ease:[.4,0,.2,1]}},"aria-labelledby":`about-title`,children:(0,V.jsx)(wv,{onContinue:E})},`about-project`)]})}),(0,V.jsx)(tv,{section:c,participationContent:Wp.modalContent,onClose:()=>l(null)}),(0,Ad.createPortal)((0,V.jsx)(Oc,{children:u&&(0,V.jsx)(Sv,{initial:{opacity:0},animate:{opacity:1,transition:{duration:.35,ease:[.16,1,.3,1]}},exit:{opacity:0,transition:{duration:.3,ease:[.4,0,.2,1]}},onMouseDown:e=>{e.target===e.currentTarget&&d(!1)},children:(0,V.jsxs)(_v,{$modal:!0,role:`dialog`,"aria-modal":`true`,"aria-labelledby":`about-modal-title`,initial:{opacity:0,scale:.98},animate:{opacity:1,scale:1,transition:{duration:.5,ease:[.16,1,.3,1]}},exit:{opacity:0,scale:.98,transition:{duration:.3,ease:[.4,0,.2,1]}},children:[(0,V.jsx)(Cv,{type:`button`,"aria-label":`Закрыть окно`,onClick:()=>d(!1),children:(0,V.jsxs)(`svg`,{viewBox:`0 0 55 55`,fill:`none`,"aria-hidden":`true`,focusable:`false`,children:[(0,V.jsx)(`path`,{d:`M22.5216 19.8413C21.7814 19.1011 20.5811 19.1011 19.8408 19.8413C19.1006 20.5816 19.1006 21.7819 19.8408 22.5221L24.8191 27.5005L19.8409 32.4788C19.1006 33.2189 19.1006 34.4192 19.8409 35.1595C20.5812 35.8998 21.7814 35.8998 22.5216 35.1595L27.5 30.1814L32.4781 35.1595C33.2184 35.8998 34.4187 35.8998 35.159 35.1595C35.8993 34.4192 35.8993 33.2189 35.159 32.4786L30.1806 27.5005L35.159 22.5221C35.8993 21.7819 35.8993 20.5817 35.159 19.8414C34.4187 19.1011 33.2184 19.1011 32.4781 19.8414L27.5 24.8196L22.5216 19.8413Z`,fill:`currentColor`}),(0,V.jsx)(`path`,{fillRule:`evenodd`,clipRule:`evenodd`,d:`M27.5 0C12.3122 0 0 12.3122 0 27.5C0 42.6879 12.3122 55 27.5 55C42.6879 55 55 42.6879 55 27.5C55 12.3122 42.6879 0 27.5 0ZM3.83721 27.5C3.83721 14.4314 14.4314 3.83721 27.5 3.83721C40.5685 3.83721 51.1628 14.4314 51.1628 27.5C51.1628 40.5685 40.5685 51.1628 27.5 51.1628C14.4314 51.1628 3.83721 40.5685 3.83721 27.5Z`,fill:`currentColor`})]})}),(0,V.jsx)(wv,{onContinue:E,titleId:`about-modal-title`})]})},`about-project-modal-overlay`)}),document.body),!f&&(0,Ad.createPortal)((0,V.jsx)(Oc,{children:g&&(0,V.jsx)(Ov,{initial:{opacity:0},animate:{opacity:1,transition:{duration:.35,delay:.12,ease:[.16,1,.3,1]}},exit:{opacity:0,transition:{duration:.28,ease:[.4,0,.2,1]}},style:{top:g.y,left:g.x,width:g.width,height:g.height,fontSize:g.fontSize},children:g.text},`sharp-active-link`)}),document.body)]})}var Mv=Np`
   @font-face {
     font-family: 'Roboto Mono';
     src: url('${`/gallery/`}fonts/RobotoMono-VariableFont_wght.woff2')
@@ -2106,4 +2175,4 @@ Error generating stack: `+e.message+`
     color: ${({theme:e})=>e.colors.bg};
     background: ${({theme:e})=>e.colors.categories.artwork};
   }
-`,Ov={colors:{bg:`#F7F7F7`,surface:`#141414`,text:`#000`,textMuted:`#8b8985`,categories:{text:`#E63946`,artwork:`#2A9D8F`,sketch:`#57CC99`,symbol:`#E9C46A`},guide:{badge:{projects:`#8B2E3D`,stories:`#6E7D8B`,photos:`#2A2A2A`}}},radii:{card:`16px`,modal:`24px`},shadows:{card:`0 18px 44px rgba(0, 0, 0, 0.38)`,modal:`0 32px 100px rgba(0, 0, 0, 0.62)`},transitions:{card:`all 280ms cubic-bezier(0.4, 0, 0.2, 1)`,modal:`all 420ms cubic-bezier(0.16, 1, 0.3, 1)`}};function kv({children:e}){return(0,V.jsx)(xp,{theme:Ov,children:e})}function Av(){return(0,V.jsxs)(kv,{children:[(0,V.jsx)(Dv,{}),(0,V.jsx)(Ev,{})]})}jd.createRoot(document.getElementById(`root`)).render((0,V.jsx)(x.StrictMode,{children:(0,V.jsx)(Av,{})}));
+`,Nv={colors:{bg:`#F7F7F7`,surface:`#141414`,text:`#000`,textMuted:`#8b8985`,categories:{text:`#E63946`,artwork:`#2A9D8F`,sketch:`#57CC99`,symbol:`#E9C46A`},guide:{badge:{projects:`#8B2E3D`,stories:`#6E7D8B`,photos:`#2A2A2A`}}},radii:{card:`16px`,modal:`24px`},shadows:{card:`0 18px 44px rgba(0, 0, 0, 0.38)`,modal:`0 32px 100px rgba(0, 0, 0, 0.62)`},transitions:{card:`all 280ms cubic-bezier(0.4, 0, 0.2, 1)`,modal:`all 420ms cubic-bezier(0.16, 1, 0.3, 1)`}};function Pv({children:e}){return(0,V.jsx)(xp,{theme:Nv,children:e})}function Fv(){return(0,V.jsxs)(Pv,{children:[(0,V.jsx)(Mv,{}),(0,V.jsx)(jv,{})]})}jd.createRoot(document.getElementById(`root`)).render((0,V.jsx)(x.StrictMode,{children:(0,V.jsx)(Fv,{})}));
