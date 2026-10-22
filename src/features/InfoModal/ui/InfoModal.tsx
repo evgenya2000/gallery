@@ -29,7 +29,7 @@ const guideContent = {
   ],
   typesHeading: 'Типы материалов',
   types: [
-    { id: 'projects' as ThemeGuideBadge, label: 'Авторские проекты', description: 'Фотографические и&nbsp;художественные проекты, исследующие понятие дома.' },
+    { id: 'projects' as ThemeGuideBadge, label: 'Авторские проекты', description: 'Фотографии и&nbsp;художественные работы, посвященные теме дома.' },
     { id: 'stories' as ThemeGuideBadge, label: 'Личные истории', description: 'Ответы участников на&nbsp;вопрос &laquo;Что для тебя дом?&raquo;, выраженные словами.' },
     { id: 'photos' as ThemeGuideBadge, label: 'Фотоистории', description: 'Личные фотографии и&nbsp;связанные с&nbsp;ними воспоминания, ощущения и&nbsp;истории.' },
   ],
@@ -189,7 +189,7 @@ const CloseButton = styled.button`
 
 const Title = styled.h2`
   margin: 0 0 30px;
-  color: #111111;
+  color: #000;
   font-size: 48px;
   font-weight: 400;
   letter-spacing: 0;
@@ -217,7 +217,7 @@ const Title = styled.h2`
 
 const Paragraph = styled.p`
   margin: 0 0 27px;
-  color: #111111;
+  color: #000;
   font-size: 20px;
   font-weight: 400;
   line-height: 23px;
@@ -243,7 +243,7 @@ const Paragraph = styled.p`
 
 const Lead = styled.p`
   margin: 0px 0 21px;
-  color: #111111;
+  color: #000;
   font-size: 32px;
   font-weight: 400;
   line-height: 36px;
@@ -263,7 +263,7 @@ const Lead = styled.p`
 
 const Note = styled.p`
   margin: 0 0 54px;
-  color: #333333;
+  color: #000;
   font-size: 20px;
   line-height: 36px;
   letter-spacing: 0;
@@ -281,7 +281,7 @@ const Note = styled.p`
 
 const SectionTitle = styled.h3<{ $contacts?: boolean }>`
   margin: 47px 0 17px;
-  color: #111111;
+  color: #000;
   font-size: ${({ $contacts }) => ($contacts ? '32px' : '36px')};
   font-weight: 400;
   letter-spacing: 0;
@@ -323,7 +323,7 @@ const Step = styled.div`
 
   p {
     margin: 0;
-    color: #111111;
+    color: #000;
     font-size: 20px;
     line-height: 23px;
     letter-spacing: 0;
@@ -419,7 +419,7 @@ const StepIcon = styled.span`
 const Types = styled.div`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
+  /* gap: 28px; */
   margin-top: 4px;
 
   ${mediaBreakpointDown('compact')} {
@@ -435,10 +435,12 @@ const Types = styled.div`
 const TypeItem = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 259px;
 `;
 
 const TypeBadge = styled.span<{ $badge: ThemeGuideBadge }>`
   width: 100%;
+  max-width: 238px;
   align-self: flex-start;
   padding: 8px 9px;
   border-radius: 10px;
@@ -470,7 +472,7 @@ const TypeBadge = styled.span<{ $badge: ThemeGuideBadge }>`
 
 const TypeText = styled.p`
   margin: 14px 0 0;
-  color: #333333;
+  color: #000;
   font-size: 16px;
   line-height: 18px;
   letter-spacing: 0;
@@ -513,7 +515,7 @@ const ContactsColumn = styled.div`
 
 const ContactsHeading = styled.h3`
   margin: 0;
-  color: #111111;
+  color: #000;
   font-size: 32px;
   font-weight: 400;
   letter-spacing: 0;
@@ -530,7 +532,7 @@ const ContactsHeading = styled.h3`
 `;
 
 const ContactLink = styled.a`
-  color: #111111;
+  color: #000;
   font-size: 20px;
   line-height: 23px;
   letter-spacing: 0;
@@ -558,7 +560,7 @@ const TelegramRow = styled.div`
   display: flex;
   align-items: center;
   min-height: 32px;
-  color: #111111;
+  color: #000;
 
   svg {
     flex-shrink: 0;
@@ -568,7 +570,7 @@ const TelegramRow = styled.div`
 
 const AuthorName = styled.p`
   margin: 0;
-  color: #111111;
+  color: #000;
   font-size: 20px;
   line-height: 23px;
   letter-spacing: 0;
@@ -585,7 +587,7 @@ const AuthorName = styled.p`
 
 const AuthorNote = styled.p`
   margin: 18px 0 0;
-  color: #333333;
+  color: #000;
   font-size: 20px;
   line-height: 23px;
   letter-spacing: 0;

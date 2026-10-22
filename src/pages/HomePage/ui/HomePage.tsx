@@ -490,7 +490,7 @@ const IntroDescription = styled(motion.div)`
     max-width: 32.5vw;
     margin: clamp(28px, 4.5dvh, 52px) 0 0 calc(23vw - var(--intro-pad));
     font-size: 21.5px;
-    line-height: 22.5px;
+    line-height: 27.5px;
   }
 
   ${mediaBreakpointBetween('xxl', 'wide')} {
@@ -1026,7 +1026,7 @@ export function HomePage() {
                   }}
                 >
                   <p dangerouslySetInnerHTML={{ __html: 'Исследование разных представлений о&nbsp;доме.' }} />
-                  <p dangerouslySetInnerHTML={{ __html: 'Через художественные образы и&nbsp;личные истории предлагаем взглянуть на&nbsp;привычное понятие с&nbsp;разных сторон и&nbsp;задуматься, что делает пространство домом.' }} />
+                  <p dangerouslySetInnerHTML={{ __html: 'Через художественные образы и&nbsp;личные истории предлагаем взглянуть на&nbsp;привычное понятие с&nbsp;разных сторон и&nbsp;задуматься, что делает пространство настоящим домом для человека.' }} />
                 </IntroDescription>
               </SplashContent>
             )}
