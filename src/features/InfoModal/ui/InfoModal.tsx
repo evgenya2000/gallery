@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import type { ParticipationModalContent } from '../../../entities/Card';
 import type { ThemeGuideBadge } from '../../../shared/styles/types';
-import { mediaBreakpointBetween, mediaBreakpointDown } from '../../../shared/styles/mixins';
+import { hyphens, mediaBreakpointBetween, mediaBreakpointDown } from '../../../shared/styles/mixins';
 
 export type InfoModalSection = 'guide' | 'contacts' | 'participation';
 
@@ -631,11 +631,11 @@ const ParticipationActions = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(24px, 5vw, 90px);
-  margin-bottom: 36px;
+  margin-bottom: 65px;
 
   ${mediaBreakpointBetween('compact', 'xxl')} {
     gap: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
 
   ${mediaBreakpointDown('compact')} {
@@ -643,7 +643,7 @@ const ParticipationActions = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     gap: 16px;
-    margin-bottom: 26px;
+    margin-bottom: 30px;
   }
 
 `;
@@ -656,6 +656,8 @@ const ParticipationAction = styled.article<{ $red: boolean }>`
   border-radius: 30px;
   background: ${({ $red }) => ($red ? '#812926' : '#607984')};
   color: #ffffff;
+  transition: background-color 0.5s ease;
+  cursor: pointer;
 
   ${mediaBreakpointBetween('compact', 'xxl')} {
     min-height: 200px;
@@ -674,6 +676,11 @@ const ParticipationAction = styled.article<{ $red: boolean }>`
     width: auto;
     max-width: none;
     flex: 1 1 100%;
+  }
+
+  &:hover {
+    background: ${({ $red }) =>
+      $red ? 'rgba(129, 41, 38, 0.7)' : 'rgba(96, 121, 132, 0.7)'};
   }
 `;
 
@@ -766,7 +773,7 @@ function ParticipationArrowIcon() {
 }
 
 const ParticipationFooter = styled(Paragraph)`
-  margin: auto 0 0;
+  ${hyphens}
 
   ${mediaBreakpointDown('compact')} {
     margin-top: 6px;

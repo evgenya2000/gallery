@@ -11,6 +11,7 @@ import galleryBackdrop from '../../../shared/assets/background.png';
 import introLeft from '../../../shared/assets/intro-left.png';
 import introRight from '../../../shared/assets/intro-right.png';
 import {
+  hyphens,
   mediaBreakpointBetween,
   mediaBreakpointDown,
   mediaBreakpointUp,
@@ -475,7 +476,7 @@ const IntroDescription = styled(motion.div)`
   color: ${({ theme }) => theme.colors.text};
   font-size: clamp(20px, 1.5vw, 28px);
   line-height: 1.28;
-  hyphens: auto;
+  ${hyphens}
 
   p {
     margin: 0;
@@ -758,6 +759,11 @@ const HeadingLink = styled.button<{ $hidden?: boolean }>`
   color: ${({ theme }) => theme.colors.text};
   cursor: pointer;
   visibility: ${({ $hidden }) => ($hidden ? 'hidden' : 'visible')};
+  transition: opacity ease-out 300ms;
+
+  &:hover{
+    opacity: 0.5;
+  }
 
   ${mediaBreakpointBetween('compact', 'wide')} {
     font-size: 24px;

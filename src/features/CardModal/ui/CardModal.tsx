@@ -121,6 +121,11 @@ const SectionTitle = styled.h2<{ $center?: boolean }>`
   white-space: pre-line;
   margin-bottom: 10px;
 
+  ${mediaBreakpointBetween('xxl', 'fhd')} {
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
   ${mediaBreakpointBetween('compact', 'xxl')} {
     padding-right: 44px;
     font-size: 18px;
@@ -206,6 +211,15 @@ const Copy = styled.div`
     margin-bottom: 0;
   }
 
+  ${mediaBreakpointBetween('xxl', 'fhd')} {
+    font-size: 18px;
+    line-height: 1.3;
+    hyphens: none;
+    -webkit-hyphens: none;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
   ${mediaBreakpointBetween('compact', 'xxl')} {
     font-size: 16px;
     line-height: 19px;
@@ -237,6 +251,11 @@ const Footer = styled.div`
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  ${mediaBreakpointBetween('xxl', 'fhd')} {
+    font-size: 16px;
+    line-height: 1.3;
   }
 
   ${mediaBreakpointBetween('compact', 'xxl')} {
@@ -325,6 +344,12 @@ const ArtworkTitle = styled.h3`
   font-weight: 400;
   line-height: 40px;
 
+
+  ${mediaBreakpointBetween('xxl', 'fhd')} {
+    font-size: 32px;
+    line-height: 1.1;
+  }
+
   ${mediaBreakpointBetween('compact', 'xxl')} {
     margin-bottom: 16px;
     font-size: 28px;
@@ -401,6 +426,11 @@ const Quote = styled.blockquote`
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  ${mediaBreakpointBetween('xxl', 'fhd')} {
+    font-size: 32px;
+    line-height: 1.3;
   }
 
   ${mediaBreakpointUp('compact')} {
