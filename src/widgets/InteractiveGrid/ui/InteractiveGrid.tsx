@@ -17,6 +17,8 @@ const Grid = styled(motion.div)`
   position: relative;
   width: 1440px;
   height: 935px;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
 
   ${mediaBreakpointDown('tablet', true)} {
     width: 1040px;
@@ -42,11 +44,8 @@ const CentralPrompt = styled(motion.button) <{ $position: CardPosition; $mobileP
   color: #111;
   text-align: left;
   cursor: pointer;
-  transition: opacity 180ms ease;
-
-  &:active {
-    opacity: 0.72;
-  }
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 
   &:focus-visible {
     outline: 2px solid #2f2f2f;
@@ -132,6 +131,10 @@ export function InteractiveGrid({ onAllCardsRevealed, shouldReveal, onOpenPartic
           initial={{ opacity: 0 }}
           animate={shouldReveal ? { opacity: 1 } : { opacity: 0 }}
           transition={{duration: 0.85, delay: 0.25, ease: [0.16, 1, 0.3, 1]}}
+          transformTemplate={(_, generatedTransform) => generatedTransform === 'none'
+            ? 'translate3d(0, 0, 0)'
+            : `${generatedTransform} translate3d(0, 0, 0)`}
+          whileTap={{ opacity: 0.72, transition: { duration: 0.18, ease: [0.4, 0, 0.2, 1] } }}
         >
           <h2>{centralCard.title}</h2>
           <p>{centralCard.description}</p>

@@ -129,7 +129,7 @@ const CanvasContent = styled.main`
   }
 `;
 
-const GridReveal = styled(motion.div)`
+const GridReveal = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
@@ -856,6 +856,12 @@ export function HomePage() {
   const guideLinkRef = useRef<HTMLButtonElement>(null);
   const contactsLinkRef = useRef<HTMLButtonElement>(null);
 
+  const cardImagePaths = useMemo(
+    () => cards.map((card) => card.image).filter((image): image is string => Boolean(image)),
+    []
+  );
+  const cardImagesReady = useImagePreloader(cardImagePaths, introStage !== 'content');
+
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 768px)');
     const update = () => setIsMobile(mq.matches);
@@ -864,18 +870,20 @@ export function HomePage() {
     return () => mq.removeEventListener('change', update);
   }, []);
 
-  // Карточки начинают появляться через 0.5 с после того,
-  // как mainContentVisible = true (то есть после старта
-  // анимации opacity у фона PageFrame::before).
+  // Ждём декодирования изображений, затем начинаем появление карточек
+  // через 0.5 с после того, как mainContentVisible = true.
   useEffect(() => {
     if (!mainContentVisible) {
       setGridRevealed(false);
       setGridRevealComplete(false);
       return undefined;
     }
+
+    if (!cardImagesReady) return undefined;
+
     const timeout = window.setTimeout(() => setGridRevealed(true), 500);
     return () => window.clearTimeout(timeout);
-  }, [mainContentVisible]);
+  }, [mainContentVisible, cardImagesReady]);
 
   // Измеряем смещение буквы "Д" относительно SplashContent
   useLayoutEffect(() => {
@@ -941,12 +949,6 @@ export function HomePage() {
     if (!isIntroTitleClickable) return;
     setIntroStage('about');
   };
-
-  const cardImagePaths = useMemo(
-    () => cards.map((card) => card.image).filter((image): image is string => Boolean(image)),
-    []
-  );
-  useImagePreloader(cardImagePaths, introStage !== 'content');
 
   return (
     <PageFrame $dimmed={mainContentVisible}>
@@ -1074,11 +1076,7 @@ export function HomePage() {
       ) : (
         <PanZoomCanvas zoomAfterLoad={gridRevealComplete}>
           <CanvasContent>
-            <GridReveal
-              initial={{ opacity: 0 }}
-              animate={{ opacity: gridRevealed ? 1 : 0 }}
-              transition={{ duration: 1.75, ease: [0.4, 0, 0.2, 1] }}
-            >
+            <GridReveal>
               <InteractiveGrid
                 onAllCardsRevealed={() => setGridRevealComplete(true)}
                 onOpenParticipation={() => setActiveInfo('participation')}

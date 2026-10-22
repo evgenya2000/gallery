@@ -44,8 +44,8 @@ const CardButton = styled(motion.button) <{ $card: CardData }>`
   color: ${({ $card, theme }) => ($card.presentation === 'quote' ? '#fff' : theme.colors.text)};
   cursor: pointer;
   rotate: ${({ $card }) => `${$card.position.rotation}deg`};
-  transition: ${({ theme }) => theme.transitions.card};
-  will-change: opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 
   // Мобильный канвас 1040×800
   ${mediaBreakpointDown('tablet', true)} {
@@ -65,6 +65,8 @@ const CardButton = styled(motion.button) <{ $card: CardData }>`
     object-fit: cover;
     user-select: none;
     -webkit-user-drag: none;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
 
   .image-placeholder {
@@ -126,6 +128,9 @@ export function Card({ card, onSelect, revealDelay, onRevealComplete }: CardProp
       aria-label={card.externalUrl ? 'Открыть профиль в Telegram' : card.quote ? `Цитата: ${card.quote}` : card.title}
       custom={revealDelay}
       variants={cardVariants}
+      transformTemplate={(_, generatedTransform) => generatedTransform === 'none'
+        ? 'translate3d(0, 0, 0)'
+        : `${generatedTransform} translate3d(0, 0, 0)`}
       onAnimationComplete={onRevealComplete}
       whileHover={
         card.presentation === 'quote'
