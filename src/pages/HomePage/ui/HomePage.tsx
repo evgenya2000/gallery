@@ -7,6 +7,7 @@ import { PanZoomCanvas } from '../../../features/PanZoomCanvas';
 import { InfoModal, type InfoModalSection } from '../../../features/InfoModal';
 import { cards, centralCard } from '../../../entities/Card';
 import { useImagePreloader } from '../../../shared/lib/useImagePreloader';
+import { aboutProjectContent } from '../../../shared/lib/aboutProjectContent';
 import galleryBackdrop from '../../../shared/assets/background.png';
 import introLeft from '../../../shared/assets/intro-left.png';
 import introRight from '../../../shared/assets/intro-right.png';
@@ -533,12 +534,12 @@ const IntroDescription = styled(motion.div)`
 
 `;
 
-const AboutCard = styled(motion.section)`
+const AboutCard = styled(motion.section) <{ $modal?: boolean }>`
   position: relative;
   width: 980px;
   height: auto;
   max-width: calc(100vw - 48px);
-  max-height: calc(100dvh - var(--header-height));
+  max-height: ${({ $modal }) => ($modal ? 'calc(100dvh - 48px)' : 'calc(100dvh - var(--header-height))')};
   overflow-y: auto;
   padding: 56px 64px 52px;
   border-radius: 30px;
@@ -703,6 +704,97 @@ const ContinueButton = styled.button`
   }
 `;
 
+const AboutModalOverlay = styled(motion.div)`
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(247, 247, 247, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  ${mediaBreakpointDown('modal', true)} {
+    padding: 0;
+  }
+`;
+
+const AboutCloseButton = styled.button`
+  position: absolute;
+  z-index: 2;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  width: 55px;
+  height: 55px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 180ms ease;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &:hover,
+  &:active {
+    opacity: 0.6;
+  }
+
+  ${mediaBreakpointBetween('compact', 'xxl')} {
+    width: 44px;
+    height: 44px;
+  }
+
+  ${mediaBreakpointDown('modal', true)} {
+    top: 12px;
+    right: 16px;
+    width: 28px;
+    height: 28px;
+  }
+`;
+
+function AboutProjectContent({ onContinue, titleId = 'about-title' }: { onContinue: () => void; titleId?: string }) {
+  return (
+    <>
+      <AboutTitle id={titleId}>{aboutProjectContent.title}</AboutTitle>
+
+      {aboutProjectContent.introduction.map((paragraph) => (
+        <AboutCopy key={paragraph} dangerouslySetInnerHTML={{ __html: paragraph }} />
+      ))}
+
+      <AboutSubtitle>{aboutProjectContent.participationHeading}</AboutSubtitle>
+
+      {aboutProjectContent.participation.map((paragraph) => (
+        <AboutCopy key={paragraph} dangerouslySetInnerHTML={{ __html: paragraph }} />
+      ))}
+
+      <ContinueButton type="button" onClick={onContinue}>
+        перейти к карте
+        <svg
+          viewBox="0 0 12 12"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M0.5 11.5L11.5 0.5M11.5 10.4V0.5H1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </ContinueButton>
+    </>
+  );
+}
+
 const PageHeading = styled(motion.header)`
   position: relative;
   z-index: 9;
@@ -835,12 +927,31 @@ const Title = styled.h1`
   }
 `;
 
+const TitleButton = styled.button`
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 200ms ease;
+
+  &:hover,
+  &:active {
+    opacity: 0.65;
+  }
+`;
+
 export function HomePage() {
   const [introStage, setIntroStage] = useState<'title' | 'about' | 'content'>('title');
   const [mainContentVisible, setMainContentVisible] = useState(false);
   const [gridRevealed, setGridRevealed] = useState(false);
   const [gridRevealComplete, setGridRevealComplete] = useState(false);
   const [activeInfo, setActiveInfo] = useState<InfoModalSection | null>(null);
+  const [aboutModalOpen, setAboutModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [descriptionOffset, setDescriptionOffset] = useState<number | null>(null);
   const [sharpLink, setSharpLink] = useState<{
@@ -869,6 +980,17 @@ export function HomePage() {
     mq.addEventListener('change', update);
     return () => mq.removeEventListener('change', update);
   }, []);
+
+  useEffect(() => {
+    if (!aboutModalOpen) return undefined;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setAboutModalOpen(false);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [aboutModalOpen]);
 
   // Ждём декодирования изображений, затем начинаем появление карточек
   // через 0.5 с после того, как mainContentVisible = true.
@@ -950,6 +1072,11 @@ export function HomePage() {
     setIntroStage('about');
   };
 
+  const handleAboutContinue = () => {
+    setAboutModalOpen(false);
+    setIntroStage('content');
+  };
+
   return (
     <PageFrame $dimmed={mainContentVisible}>
       <IntroImagesOverlay aria-hidden="true" $dimmed={mainContentVisible}>
@@ -958,7 +1085,18 @@ export function HomePage() {
       </IntroImagesOverlay>
 
       <PageHeading>
-        <Title>[что такое дом?]</Title>
+        <Title>
+          <TitleButton
+            type="button"
+            onClick={() => {
+              setActiveInfo(null);
+              setAboutModalOpen(true);
+            }}
+            aria-haspopup="dialog"
+          >
+            [что такое дом?]
+          </TitleButton>
+        </Title>
         <HeadingNav aria-label="Информация о проекте">
           <HeadingLink
             ref={guideLinkRef}
@@ -1040,35 +1178,7 @@ export function HomePage() {
                 exit={{ opacity: 0, transition: { duration: 0.9, ease: [0.4, 0, 0.2, 1] } }}
                 aria-labelledby="about-title"
               >
-                <AboutTitle id="about-title">О проекте</AboutTitle>
-
-                <AboutCopy dangerouslySetInnerHTML={{ __html: '&laquo;Что такое дом?&raquo;&nbsp;&mdash; исследование того, как разные люди понимают и&nbsp;ощущают дом.' }} />
-
-                <AboutCopy dangerouslySetInnerHTML={{ __html: 'Для одних дом&nbsp;&mdash; это конкретное место, для других&nbsp;&mdash; близкие люди, воспоминания, природа или чувство принадлежности.' }} />
-
-                <AboutCopy dangerouslySetInnerHTML={{ __html: 'Проект объединяет работы художников и&nbsp;фотографов с&nbsp;личными историями участников. Вместе они формируют интерактивный архив представлений о&nbsp;доме, выраженных через изображения и&nbsp;тексты.' }} />
-
-                <AboutSubtitle>Принять участие</AboutSubtitle>
-
-                <AboutCopy dangerouslySetInnerHTML={{ __html: 'Каждый может стать частью исследования: ответить на&nbsp;вопрос &laquo;Что для тебя дом?&raquo; словами, фотографией или рисунком.' }} />
-
-                <AboutCopy dangerouslySetInnerHTML={{ __html: 'Собранные материалы станут основой будущей выставки, а&nbsp;сайт продолжит пополняться новыми историями и&nbsp;интерпретациями.' }} />
-
-                <ContinueButton type="button" onClick={() => setIntroStage('content')}>
-                  перейти к карте
-                  <svg
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M0.5 11.5L11.5 0.5M11.5 10.4V0.5H1.6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </ContinueButton>
+                <AboutProjectContent onContinue={handleAboutContinue} />
               </AboutCard>
             )}
           </AnimatePresence>
@@ -1092,6 +1202,41 @@ export function HomePage() {
         participationContent={centralCard.modalContent}
         onClose={() => setActiveInfo(null)}
       />
+
+      {createPortal(
+        <AnimatePresence>
+          {aboutModalOpen && (
+            <AboutModalOverlay
+              key="about-project-modal-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } }}
+              exit={{ opacity: 0, transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] } }}
+              onMouseDown={(event) => {
+                if (event.target === event.currentTarget) setAboutModalOpen(false);
+              }}
+            >
+              <AboutCard
+                $modal
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="about-modal-title"
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }}
+                exit={{ opacity: 0, scale: 0.98, transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] } }}
+              >
+                <AboutCloseButton type="button" aria-label="Закрыть окно" onClick={() => setAboutModalOpen(false)}>
+                  <svg viewBox="0 0 55 55" fill="none" aria-hidden="true" focusable="false">
+                    <path d="M22.5216 19.8413C21.7814 19.1011 20.5811 19.1011 19.8408 19.8413C19.1006 20.5816 19.1006 21.7819 19.8408 22.5221L24.8191 27.5005L19.8409 32.4788C19.1006 33.2189 19.1006 34.4192 19.8409 35.1595C20.5812 35.8998 21.7814 35.8998 22.5216 35.1595L27.5 30.1814L32.4781 35.1595C33.2184 35.8998 34.4187 35.8998 35.159 35.1595C35.8993 34.4192 35.8993 33.2189 35.159 32.4786L30.1806 27.5005L35.159 22.5221C35.8993 21.7819 35.8993 20.5817 35.159 19.8414C34.4187 19.1011 33.2184 19.1011 32.4781 19.8414L27.5 24.8196L22.5216 19.8413Z" fill="currentColor" />
+                    <path fillRule="evenodd" clipRule="evenodd" d="M27.5 0C12.3122 0 0 12.3122 0 27.5C0 42.6879 12.3122 55 27.5 55C42.6879 55 55 42.6879 55 27.5C55 12.3122 42.6879 0 27.5 0ZM3.83721 27.5C3.83721 14.4314 14.4314 3.83721 27.5 3.83721C40.5685 3.83721 51.1628 14.4314 51.1628 27.5C51.1628 40.5685 40.5685 51.1628 27.5 51.1628C14.4314 51.1628 3.83721 40.5685 3.83721 27.5Z" fill="currentColor" />
+                  </svg>
+                </AboutCloseButton>
+                <AboutProjectContent onContinue={handleAboutContinue} titleId="about-modal-title" />
+              </AboutCard>
+            </AboutModalOverlay>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
 
       {!isMobile &&
         createPortal(
