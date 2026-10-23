@@ -544,7 +544,7 @@ const AboutCard = styled(motion.section) <{ $modal?: boolean }>`
   padding: 56px 64px 52px;
   border-radius: 30px;
 
-  background: rgba(255, 255, 255, 0.12);
+  background: ${({ $modal }) => ($modal ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0.12)')};
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 

@@ -31,7 +31,7 @@ const guideContent = {
   types: [
     { id: 'projects' as ThemeGuideBadge, label: 'Авторские проекты', description: 'Фотографии и&nbsp;художественные работы, посвященные теме дома.' },
     { id: 'stories' as ThemeGuideBadge, label: 'Личные истории', description: 'Ответы участников на&nbsp;вопрос &laquo;Что для тебя дом?&raquo;, выраженные словами.' },
-    { id: 'photos' as ThemeGuideBadge, label: 'Фотоистории', description: 'Личные фотографии и&nbsp;связанные с&nbsp;ними воспоминания, ощущения и&nbsp;истории.' },
+    { id: 'photos' as ThemeGuideBadge, label: 'Фотоистории', description: 'Личные фотографии и&nbsp;связанные с&nbsp;ними воспоминания.' },
   ],
 };
 
@@ -422,7 +422,7 @@ const Types = styled.div`
   /* gap: 28px; */
   margin-top: 4px;
 
-  ${mediaBreakpointDown('compact')} {
+  ${mediaBreakpointDown('xxl')} {
     gap: 20px;
   }
 
@@ -436,6 +436,11 @@ const TypeItem = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 259px;
+
+  ${mediaBreakpointDown('xxl')} {
+    max-width: none;
+    width: 100%;
+  }
 `;
 
 const TypeBadge = styled.span<{ $badge: ThemeGuideBadge }>`
@@ -618,6 +623,7 @@ const ParticipationLayout = styled.div`
 `;
 
 const ParticipationIntro = styled(Paragraph)`
+  hyphens: none;
   margin: 0 0 65px;
 
   ${mediaBreakpointBetween('compact', 'xxl')} {
