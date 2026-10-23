@@ -103,7 +103,7 @@ const mobilePositions: Record<number, { x: number; y: number; width: number; hei
   33: { x: 647, y: 605, width: 123.34, height: 82.2 },
   34: { x: 808.52, y: 573.34, width: 89.34, height: 119.11 },
   35: { x: 924.47, y: 539.99, width: 97.09, height: 69.05 },
-  36: { x: 520, y: 710, width: 96.33, height: 64.2 },
+  36: { x: 670, y: 498, width: 96.33, height: 64.2 },
 };
 
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;

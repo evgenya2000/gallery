@@ -276,7 +276,7 @@ const IntroImageLeft = styled(motion.img)`
 
 const SplashContent = styled(motion.section)`
   position: absolute;
-  top: calc(var(--roof-anchor-y) - var(--header-height) - 20px);
+  top: calc(var(--roof-anchor-y) - var(--header-height) - 70px);
   left: var(--intro-pad);
   width: calc(var(--roof-anchor-x) - var(--intro-pad));
 

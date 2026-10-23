@@ -31,7 +31,7 @@ const guideContent = {
   types: [
     { id: 'projects' as ThemeGuideBadge, label: 'Авторские проекты', description: 'Фотографии и&nbsp;художественные работы, посвященные теме дома.' },
     { id: 'stories' as ThemeGuideBadge, label: 'Личные истории', description: 'Ответы участников на&nbsp;вопрос &laquo;Что для тебя дом?&raquo;, выраженные словами.' },
-    { id: 'photos' as ThemeGuideBadge, label: 'Фотоистории', description: 'Личные фотографии и&nbsp;связанные с&nbsp;ними воспоминания.' },
+    { id: 'photos' as ThemeGuideBadge, label: 'Фотоистории', description: 'Личные фотографии и&nbsp;связанные с&nbsp;ними&nbsp;воспоминания.' },
   ],
 };
 
