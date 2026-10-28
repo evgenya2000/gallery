@@ -134,12 +134,15 @@ Error generating stack: `+e.message+`
 
   ${J(`compact`)} {
     width: 100%;
-    height: 100lvh;
-    min-height: 100lvh;
+    height: 100dvh;
+    min-height: 100dvh;
     max-height: none;
     padding: 22px;
     overflow-x: hidden;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
     border-radius: 0;
   }
 `,$p=q.button`
@@ -299,6 +302,10 @@ Error generating stack: `+e.message+`
 
   ${J(`compact`)} {
     align-self: start;
+    min-height: auto;
+    max-height: none;
+    overflow-y: visible;
+    overscroll-behavior: auto;
     font-size: 14px;
     line-height: 1.22;
 
@@ -354,7 +361,7 @@ Error generating stack: `+e.message+`
   ${J(`compact`)} {
     display: grid;
     height: auto;
-    min-height: calc(100lvh - 44px);
+    min-height: calc(100dvh - 44px);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
@@ -386,7 +393,7 @@ Error generating stack: `+e.message+`
   ${J(`compact`)} {
     display: grid;
     height: auto;
-    min-height: calc(100lvh - 44px);
+    min-height: calc(100dvh - 44px);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
@@ -452,7 +459,7 @@ Error generating stack: `+e.message+`
   ${J(`compact`)} {
     display: grid;
     height: auto;
-    min-height: calc(100lvh - 44px);
+    min-height: calc(100dvh - 44px);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
@@ -494,6 +501,10 @@ Error generating stack: `+e.message+`
   ${J(`compact`)} {
     margin: 58px 0 52px;
     padding: 0 8px;
+    min-height: auto;
+    max-height: none;
+    overflow-y: visible;
+    overscroll-behavior: auto;
     font-size: clamp(30px, 9vw, 42px);
     line-height: 1.16;
   }
@@ -664,8 +675,8 @@ Error generating stack: `+e.message+`
 
   ${J(`compact`)} {
     width: 100%;
-    height: 100lvh;
-    min-height: 100lvh;
+    height: 100dvh;
+    min-height: 100dvh;
     max-height: none;
     border-radius: 0;
   }
