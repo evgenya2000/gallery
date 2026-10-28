@@ -58,12 +58,15 @@ const Dialog = styled(motion.section) <{ $type: CardModalType }>`
 
   ${mediaBreakpointDown('compact')} {
     width: 100%;
-    height: 100lvh;
-    min-height: 100lvh;
+    height: 100dvh;
+    min-height: 100dvh;
     max-height: none;
     padding: 22px;
     overflow-x: hidden;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
     border-radius: 0;
   }
 `;
@@ -231,6 +234,10 @@ const Copy = styled.div`
 
   ${mediaBreakpointDown('compact')} {
     align-self: start;
+    min-height: auto;
+    max-height: none;
+    overflow-y: visible;
+    overscroll-behavior: auto;
     font-size: 14px;
     line-height: 1.22;
 
@@ -290,7 +297,7 @@ const StoryLayout = styled.div<{ $portrait?: boolean }>`
   ${mediaBreakpointDown('compact')} {
     display: grid;
     height: auto;
-    min-height: calc(100lvh - 44px);
+    min-height: calc(100dvh - 44px);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
@@ -324,7 +331,7 @@ const ArtworkLayout = styled.div`
   ${mediaBreakpointDown('compact')} {
     display: grid;
     height: auto;
-    min-height: calc(100lvh - 44px);
+    min-height: calc(100dvh - 44px);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
@@ -396,7 +403,7 @@ const PersonalLayout = styled.div`
   ${mediaBreakpointDown('compact')} {
     display: grid;
     height: auto;
-    min-height: calc(100lvh - 44px);
+    min-height: calc(100dvh - 44px);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto 1fr auto;
     grid-template-areas:
@@ -440,6 +447,10 @@ const Quote = styled.blockquote`
   ${mediaBreakpointDown('compact')} {
     margin: 58px 0 52px;
     padding: 0 8px;
+    min-height: auto;
+    max-height: none;
+    overflow-y: visible;
+    overscroll-behavior: auto;
     font-size: clamp(30px, 9vw, 42px);
     line-height: 1.16;
   }

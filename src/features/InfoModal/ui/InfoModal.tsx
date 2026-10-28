@@ -115,8 +115,8 @@ const Dialog = styled(motion.section)`
 
   ${mediaBreakpointDown('compact')} {
     width: 100%;
-    height: 100lvh;
-    min-height: 100lvh;
+    height: 100dvh;
+    min-height: 100dvh;
     max-height: none;
     border-radius: 0;
   }
